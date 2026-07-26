@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="KrishiMitra AI – Empowering farmers with Artificial Intelligence. Detect crop diseases, identify pests, get weather advice, and make smarter farming decisions." />
+  <meta name="keywords"
+    content="agriculture AI, crop disease detection, pest detection, smart farming, KrishiMitra, farmer advisor, AI chatbot agriculture" />
+  <meta name="author" content="KrishiMitra AI Team" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="KrishiMitra AI – Intelligent Agriculture Advisor" />
+  <meta property="og:description"
+    content="Empowering Farmers with Artificial Intelligence. Get AI-powered crop disease detection, weather advisory, and smart farming guidance." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/images/logo.png" />
+
+  <title>KrishiMitra AI – Intelligent Agriculture Advisor</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="assets/images/logo.png" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       INTRO VIDEO OVERLAY
+  ════════════════════════════════════════════════════════════ -->
+  <div id="intro-video-overlay"
+    style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:999999;background:#000;display:flex;justify-content:center;align-items:center;flex-direction:column;">
+    <video id="intro-video" src="assets/videos/intro.mp4" autoplay playsinline
+      style="width:100%;height:100%;object-fit:cover;"></video>
+
+    <!-- Actions shown after video ends -->
+    <div id="intro-actions"
+      style="position:absolute;display:none;flex-direction:column;align-items:center;justify-content:center;z-index:2;background:rgba(0,0,0,0.6);width:100%;height:100%;backdrop-filter:blur(4px);">
+      <h2 style="color:#fff;margin-bottom:24px;font-family:'Poppins',sans-serif;font-weight:700;">Welcome to KrishiMitra
+        AI</h2>
+      <button onclick="window.location.href='pages/login.html'"
+        style="padding:16px 36px;font-size:1.2rem;background:#22c55e;color:#fff;border:none;border-radius:12px;cursor:pointer;font-weight:700;margin-bottom:16px;box-shadow:0 8px 24px rgba(34,197,94,0.4);transition:all 0.2s;">Go
+        to Login</button>
+      <button onclick="document.getElementById('intro-video-overlay').style.display='none'"
+        style="padding:10px 24px;font-size:1rem;background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.3);border-radius:8px;cursor:pointer;transition:all 0.2s;">Skip
+        to Landing Page</button>
+    </div>
+
+    <!-- Skip button while playing -->
+    <button onclick="document.getElementById('intro-video-overlay').style.display='none'"
+      style="position:absolute;top:24px;right:24px;z-index:2;background:rgba(0,0,0,0.4);color:#fff;border:1px solid rgba(255,255,255,0.2);padding:8px 16px;border-radius:20px;cursor:pointer;font-size:0.85rem;backdrop-filter:blur(4px);">Skip
+      Video</button>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const vid = document.getElementById('intro-video');
+      const actions = document.getElementById('intro-actions');
+      vid.addEventListener('ended', () => {
+        actions.style.display = 'flex';
+      });
+      // Handle autoplay block
+      const playPromise = vid.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          // Autoplay blocked, try muted
+          vid.muted = true;
+          vid.play();
+        });
+      }
+    });
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     PAGE LOADER
+════════════════════════════════════════════════════════════ -->
+  <div id="page-loader" class="page-loader" role="status" aria-label="Loading KrishiMitra AI">
+    <div class="loader__content">
+      <div class="loader__logo">
+        <i class="fas fa-seedling" aria-hidden="true"></i>
+      </div>
+      <p class="loader__text">KrishiMitra AI</p>
+      <div class="loader__bar">
+        <div class="loader__bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     ANNOUNCEMENT BAR
+════════════════════════════════════════════════════════════ -->
+  <div id="announcement-bar" class="announcement-bar" role="banner">
+    <i class="fas fa-star" aria-hidden="true"></i>
+    <span>🌾 KrishiMitra AI is now live! Get AI-powered farming guidance in <strong>3 languages</strong>.</span>
+    <a href="pages/register.html">Register Free →</a>
+    <button id="announcement-close" class="announcement-bar__close" aria-label="Close announcement">
+      <i class="fas fa-times" aria-hidden="true"></i>
+    </button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════════════════════ -->
+  <header id="main-navbar" class="navbar" role="banner">
+    <nav class="navbar__inner" aria-label="Main navigation">
+
+      <!-- Logo -->
+      <a href="index.html" class="nav__logo" aria-label="KrishiMitra AI – Home">
+        <div class="nav__logo-icon" aria-hidden="true">
+          <i class="fas fa-seedling"></i>
+        </div>
+        <div class="nav__logo-texts">
+          <span class="nav__logo-text">KrishiMitra AI</span>
+          <span class="nav__tagline">Intelligent Agriculture Advisor</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <ul class="nav__links" role="list" aria-label="Site navigation">
+        <li><a href="#hero" class="nav__link active" data-section="hero" aria-label="Go to Home section">Home</a></li>
+        <li><a href="#features" class="nav__link" data-section="features" aria-label="Go to AI Features section">AI
+            Features</a></li>
+        <li><a href="#how-it-works" class="nav__link" data-section="how-it-works"
+            aria-label="Go to How It Works section">How It Works</a></li>
+        <li><a href="#ai-intelligence" class="nav__link" data-section="ai-intelligence"
+            aria-label="Go to About section">About</a></li>
+        <li><a href="#contact" class="nav__link" data-section="contact" aria-label="Go to Contact section">Contact</a>
+        </li>
+      </ul>
+
+      <!-- Nav Actions -->
+      <div class="nav__actions" aria-label="User actions">
+        <!-- Language Selector -->
+        <div class="lang-selector" aria-label="Language selection">
+          <i class="fas fa-globe" aria-hidden="true"></i>
+          <select id="lang-select" aria-label="Select language" title="Choose display language">
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+            <option value="mr">मराठी</option>
+          </select>
+        </div>
+
+        <!-- Login Button -->
+        <a href="pages/login.html" class="btn btn--ghost btn--sm" id="nav-login-btn" aria-label="Login to your account">
+          <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+          Login
+        </a>
+
+        <!-- Get Started Button -->
+        <a href="pages/register.html" class="btn btn--white btn--sm" id="nav-register-btn"
+          aria-label="Get started with KrishiMitra AI">
+          <i class="fas fa-rocket" aria-hidden="true"></i>
+          Get Started
+        </a>
+
+        <!-- Hamburger -->
+        <button id="nav-hamburger" class="nav__hamburger" aria-label="Toggle mobile menu" aria-expanded="false"
+          aria-controls="nav-mobile-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ─── Mobile Menu ──────────────────────────────────────── -->
+  <nav id="nav-mobile-menu" class="nav__mobile-menu" aria-label="Mobile navigation" aria-hidden="true">
+    <a href="#hero" class="nav__mobile-link" aria-label="Home"><i class="fas fa-home" aria-hidden="true"></i> Home</a>
+    <a href="#features" class="nav__mobile-link" aria-label="AI Features"><i class="fas fa-robot"
+        aria-hidden="true"></i> AI Features</a>
+    <a href="#how-it-works" class="nav__mobile-link" aria-label="How It Works"><i class="fas fa-list-ol"
+        aria-hidden="true"></i> How It Works</a>
+    <a href="#ai-intelligence" class="nav__mobile-link" aria-label="About"><i class="fas fa-brain"
+        aria-hidden="true"></i> About AI</a>
+    <a href="#contact" class="nav__mobile-link" aria-label="Contact"><i class="fas fa-envelope" aria-hidden="true"></i>
+      Contact</a>
+    <div class="nav__mobile-divider" aria-hidden="true"></div>
+    <div class="nav__mobile-actions">
+      <a href="pages/login.html" class="btn btn--outline" id="mobile-login-btn" aria-label="Login">Login</a>
+      <a href="pages/register.html" class="btn btn--primary" id="mobile-register-btn" aria-label="Get Started">Get
+        Started Free</a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     HERO SECTION
+════════════════════════════════════════════════════════════ -->
+  <section id="hero" class="hero" aria-labelledby="hero-heading">
+
+    <!-- Background Elements -->
+    <div class="hero__grid-pattern" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--3" aria-hidden="true"></div>
+
+    <div class="hero__inner">
+
+      <!-- Content -->
+      <div class="hero__content">
+
+        <!-- Badge -->
+        <div class="hero__badge" role="status" aria-label="AI Powered Agriculture Technology">
+          <span class="hero__badge-dot" aria-hidden="true"></span>
+          AI Powered Agriculture Technology
+        </div>
+
+        <!-- Heading -->
+        <h1 id="hero-heading" class="hero__heading">
+          Smart Farming <br />
+          <span class="hero__heading-gradient">Starts with AI</span>
+        </h1>
+
+        <!-- Tagline -->
+        <p class="hero__tagline">Empowering Farmers with Artificial Intelligence.</p>
+
+        <!-- Description -->
+        <p class="hero__description">
+          KrishiMitra AI helps farmers detect crop diseases, identify pests, understand soil reports,
+          receive weather-based advice, and make smarter farming decisions using Artificial Intelligence.
+        </p>
+
+        <!-- Actions -->
+        <div class="hero__actions">
+          <a href="pages/register.html" id="hero-cta-primary" class="btn btn--white btn--lg" data-action="register"
+            aria-label="Start your free AI consultation">
+            <i class="fas fa-leaf" aria-hidden="true"></i>
+            Start AI Consultation
+          </a>
+          <a href="#features" id="hero-cta-secondary" class="btn btn--ghost btn--lg" data-action="explore"
+            aria-label="Explore all AI features">
+            <i class="fas fa-compass" aria-hidden="true"></i>
+            Explore Features
+          </a>
+        </div>
+
+        <!-- Trust Indicators -->
+        <div class="hero__trust" aria-label="Key statistics">
+          <div class="hero__trust-item">
+            <span class="hero__trust-value">12+</span>
+            <span class="hero__trust-label">AI Features</span>
+          </div>
+          <div class="hero__trust-divider" aria-hidden="true"></div>
+          <div class="hero__trust-item">
+            <span class="hero__trust-value">3</span>
+            <span class="hero__trust-label">Languages</span>
+          </div>
+          <div class="hero__trust-divider" aria-hidden="true"></div>
+          <div class="hero__trust-item">
+            <span class="hero__trust-value">24/7</span>
+            <span class="hero__trust-label">AI Support</span>
+          </div>
+          <div class="hero__trust-divider" aria-hidden="true"></div>
+          <div class="hero__trust-item">
+            <span class="hero__trust-value">100%</span>
+            <span class="hero__trust-label">Free to Start</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual -->
+      <div class="hero__visual" aria-hidden="true">
+        <div class="hero__img-wrapper">
+
+          <!-- Animated Background -->
+          <div class="hero__img-bg"></div>
+          <div class="hero__img-ring"></div>
+
+          <!-- Farmer Image with Fallback -->
+          <img id="farmer-img" src="assets/images/farmer.png"
+            alt="Indian farmer using KrishiMitra AI on a smartphone in the field" class="hero__farmer-img"
+            data-fallback="farmer-fallback" loading="eager" />
+
+          <!-- Fallback if image missing -->
+          <div id="farmer-fallback" class="hero__img-placeholder" style="display:none;">
+            <i class="fas fa-user-tie" aria-hidden="true"></i>
+            <span>Smart Farmer</span>
+          </div>
+
+          <!-- Floating Cards -->
+          <div class="hero__float-card hero__float-card--1" aria-label="AI Disease Detection feature">
+            <div class="hero__float-icon hero__float-icon--green">
+              <i class="fas fa-microscope" aria-hidden="true"></i>
+            </div>
+            <div class="hero__float-texts">
+              <span class="hero__float-label">AI Disease Detection</span>
+              <span class="hero__float-sub">Computer Vision Powered</span>
+            </div>
+          </div>
+
+          <div class="hero__float-card hero__float-card--2" aria-label="Weather Advisory feature">
+            <div class="hero__float-icon hero__float-icon--blue">
+              <i class="fas fa-cloud-sun" aria-hidden="true"></i>
+            </div>
+            <div class="hero__float-texts">
+              <span class="hero__float-label">Weather Advisory</span>
+              <span class="hero__float-sub">Real-time Alerts</span>
+            </div>
+          </div>
+
+          <div class="hero__float-card hero__float-card--3" aria-label="Smart Recommendations feature">
+            <div class="hero__float-icon hero__float-icon--gold">
+              <i class="fas fa-lightbulb" aria-hidden="true"></i>
+            </div>
+            <div class="hero__float-texts">
+              <span class="hero__float-label">Smart Recommendations</span>
+              <span class="hero__float-sub">AI Powered Insights</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     STATS / TRUST SECTION
+════════════════════════════════════════════════════════════ -->
+  <section aria-labelledby="stats-heading" class="stats section">
+    <div class="container">
+      <h2 id="stats-heading" class="sr-only">Platform Statistics</h2>
+      <div class="stats__inner reveal">
+
+        <div class="stats__item" aria-label="AI Powered platform">
+          <div class="stats__icon-wrap" aria-hidden="true">
+            <i class="fas fa-brain"></i>
+          </div>
+          <div class="stats__value" data-counter data-target="100" data-suffix="%" aria-live="polite">100%</div>
+          <div class="stats__label">AI Powered</div>
+        </div>
+
+        <div class="stats__item" aria-label="24/7 AI assistance">
+          <div class="stats__icon-wrap" aria-hidden="true">
+            <i class="fas fa-headset"></i>
+          </div>
+          <div class="stats__value" aria-label="24 by 7 hours">24/7</div>
+          <div class="stats__label">AI Assistance</div>
+        </div>
+
+        <div class="stats__item" aria-label="3 supported languages">
+          <div class="stats__icon-wrap" aria-hidden="true">
+            <i class="fas fa-language"></i>
+          </div>
+          <div class="stats__value" data-counter data-target="3" data-suffix="" aria-live="polite">3</div>
+          <div class="stats__label">Languages Supported</div>
+        </div>
+
+        <div class="stats__item" aria-label="Smart Recommendations">
+          <div class="stats__icon-wrap" aria-hidden="true">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <div class="stats__value" data-counter data-target="12" data-suffix="+" aria-live="polite">12+</div>
+          <div class="stats__label">Smart Recommendations</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     AI FEATURES SECTION
+════════════════════════════════════════════════════════════ -->
+  <section id="features" class="features section" aria-labelledby="features-heading">
+    <div class="container">
+
+      <div class="section__header reveal">
+        <span class="section__eyebrow">
+          <i class="fas fa-robot" aria-hidden="true"></i>
+          AI Features
+        </span>
+        <h2 id="features-heading" class="section__title">
+          Everything Farmers Need in<br />
+          <span>One Intelligent Platform</span>
+        </h2>
+        <p class="section__subtitle">
+          Powerful AI tools designed to help Indian farmers make better decisions, reduce losses, and maximise crop
+          yield.
+        </p>
+      </div>
+
+      <div class="features__grid" role="list" aria-label="AI Features list">
+
+        <!-- 1. Crop Disease Detection -->
+        <article class="feature-card reveal reveal--delay-1" role="listitem">
+          <div class="feature-card__icon-wrap icon--green" aria-hidden="true">
+            <i class="fas fa-microscope"></i>
+          </div>
+          <h3 class="feature-card__name">Crop Disease Detection</h3>
+          <p class="feature-card__desc">Upload a photo of your crop and our AI instantly detects diseases with treatment
+            recommendations.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Crop Disease Detection">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 2. Pest Radar -->
+        <article class="feature-card reveal reveal--delay-2" role="listitem">
+          <div class="feature-card__icon-wrap icon--orange" aria-hidden="true">
+            <i class="fas fa-bug"></i>
+          </div>
+          <h3 class="feature-card__name">Pest Radar</h3>
+          <p class="feature-card__desc">Identify harmful pests from images and receive AI-guided integrated pest
+            management strategies.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Pest Radar">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 3. AI Chatbot -->
+        <article class="feature-card reveal reveal--delay-3" role="listitem">
+          <div class="feature-card__icon-wrap icon--blue" aria-hidden="true">
+            <i class="fas fa-comments"></i>
+          </div>
+          <h3 class="feature-card__name">AI Chatbot</h3>
+          <p class="feature-card__desc">Ask any farming question in plain language and get expert answers powered by
+            Generative AI.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about AI Chatbot">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 4. Voice Assistant -->
+        <article class="feature-card reveal reveal--delay-4" role="listitem">
+          <div class="feature-card__icon-wrap icon--purple" aria-hidden="true">
+            <i class="fas fa-microphone"></i>
+          </div>
+          <h3 class="feature-card__name">Voice Assistant</h3>
+          <p class="feature-card__desc">Talk to KrishiMitra AI in Hindi, Marathi, or English and get voice responses in
+            your local language.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Voice Assistant">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 5. Soil Health Analysis -->
+        <article class="feature-card reveal reveal--delay-1" role="listitem">
+          <div class="feature-card__icon-wrap icon--teal" aria-hidden="true">
+            <i class="fas fa-flask"></i>
+          </div>
+          <h3 class="feature-card__name">Soil Health Analysis</h3>
+          <p class="feature-card__desc">Upload your soil report PDF and get AI-generated insights about soil health and
+            crop suitability.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Soil Health Analysis">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 6. Fertilizer Recommendation -->
+        <article class="feature-card reveal reveal--delay-2" role="listitem">
+          <div class="feature-card__icon-wrap icon--emerald" aria-hidden="true">
+            <i class="fas fa-vial"></i>
+          </div>
+          <h3 class="feature-card__name">Fertilizer Recommendation</h3>
+          <p class="feature-card__desc">Receive precise fertilizer dosage recommendations based on your soil data and
+            chosen crop type.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Fertilizer Recommendations">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 7. Irrigation Advisory -->
+        <article class="feature-card reveal reveal--delay-3" role="listitem">
+          <div class="feature-card__icon-wrap icon--cyan" aria-hidden="true">
+            <i class="fas fa-tint"></i>
+          </div>
+          <h3 class="feature-card__name">Irrigation Advisory</h3>
+          <p class="feature-card__desc">Get smart irrigation schedules tailored to your crop, soil moisture, and local
+            weather forecasts.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Irrigation Advisory">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 8. Weather Advisory -->
+        <article class="feature-card reveal reveal--delay-4" role="listitem">
+          <div class="feature-card__icon-wrap icon--indigo" aria-hidden="true">
+            <i class="fas fa-cloud-sun-rain"></i>
+          </div>
+          <h3 class="feature-card__name">Weather Advisory</h3>
+          <p class="feature-card__desc">Hyperlocal weather forecasts with farm-specific alerts for rain, frost, heat
+            waves, and storms.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Weather Advisory">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 9. Market Prices -->
+        <article class="feature-card reveal reveal--delay-1" role="listitem">
+          <div class="feature-card__icon-wrap icon--yellow" aria-hidden="true">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="feature-card__name">Market Prices</h3>
+          <p class="feature-card__desc">Access real-time Mandi prices for your crops and discover the best times to sell
+            for maximum profit.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Market Prices">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 10. Government Schemes -->
+        <article class="feature-card reveal reveal--delay-2" role="listitem">
+          <div class="feature-card__icon-wrap icon--red" aria-hidden="true">
+            <i class="fas fa-landmark"></i>
+          </div>
+          <h3 class="feature-card__name">Government Schemes</h3>
+          <p class="feature-card__desc">Discover PM Kisan, crop insurance, and other government subsidies you may be
+            eligible to apply for.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Government Schemes">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 11. Crop Calendar -->
+        <article class="feature-card reveal reveal--delay-3" role="listitem">
+          <div class="feature-card__icon-wrap icon--lime" aria-hidden="true">
+            <i class="fas fa-calendar-alt"></i>
+          </div>
+          <h3 class="feature-card__name">Crop Calendar</h3>
+          <p class="feature-card__desc">Get a personalised seasonal crop calendar with sowing, fertilising, and
+            harvesting schedules.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Crop Calendar">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+        <!-- 12. Smart Notifications -->
+        <article class="feature-card reveal reveal--delay-4" role="listitem">
+          <div class="feature-card__icon-wrap icon--pink" aria-hidden="true">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3 class="feature-card__name">Smart Notifications</h3>
+          <p class="feature-card__desc">Receive timely AI-triggered alerts for disease outbreaks, rainfall, market price
+            changes, and more.</p>
+          <a href="#" class="feature-card__link" aria-label="Learn more about Smart Notifications">
+            Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     HOW IT WORKS SECTION
+════════════════════════════════════════════════════════════ -->
+  <section id="how-it-works" class="how-it-works section" aria-labelledby="how-heading">
+    <div class="container">
+
+      <div class="section__header reveal">
+        <span class="section__eyebrow">
+          <i class="fas fa-route" aria-hidden="true"></i>
+          How It Works
+        </span>
+        <h2 id="how-heading" class="section__title">
+          Four Simple Steps to <span>Smarter Farming</span>
+        </h2>
+        <p class="section__subtitle">
+          Getting started with KrishiMitra AI takes less than two minutes. No technical knowledge required.
+        </p>
+      </div>
+
+      <div class="steps__grid" role="list" aria-label="How KrishiMitra AI works - steps">
+
+        <div class="step-item reveal reveal--delay-1" role="listitem">
+          <div class="step-item__number" aria-hidden="true">
+            <span class="step-item__num-text">STEP</span>
+            <span class="step-item__num-value">01</span>
+            <div class="step-item__icon"><i class="fas fa-user-plus" aria-hidden="true"></i></div>
+          </div>
+          <h3 class="step-item__title">Create Your Profile</h3>
+          <p class="step-item__desc">Register in seconds. Tell us about your farm location, land size, and crops you
+            grow.</p>
+        </div>
+
+        <div class="step-item reveal reveal--delay-2" role="listitem">
+          <div class="step-item__number" aria-hidden="true">
+            <span class="step-item__num-text">STEP</span>
+            <span class="step-item__num-value">02</span>
+            <div class="step-item__icon"><i class="fas fa-hand-pointer" aria-hidden="true"></i></div>
+          </div>
+          <h3 class="step-item__title">Choose an AI Service</h3>
+          <p class="step-item__desc">Select from 12+ AI services — disease detection, chatbot, weather advisory, and
+            more.</p>
+        </div>
+
+        <div class="step-item reveal reveal--delay-3" role="listitem">
+          <div class="step-item__number" aria-hidden="true">
+            <span class="step-item__num-text">STEP</span>
+            <span class="step-item__num-value">03</span>
+            <div class="step-item__icon"><i class="fas fa-brain" aria-hidden="true"></i></div>
+          </div>
+          <h3 class="step-item__title">Get Intelligent Analysis</h3>
+          <p class="step-item__desc">Our AI analyses your data, images, or questions and delivers accurate, personalised
+            results instantly.</p>
+        </div>
+
+        <div class="step-item reveal reveal--delay-4" role="listitem">
+          <div class="step-item__number" aria-hidden="true">
+            <span class="step-item__num-text">STEP</span>
+            <span class="step-item__num-value">04</span>
+            <div class="step-item__icon"><i class="fas fa-check-circle" aria-hidden="true"></i></div>
+          </div>
+          <h3 class="step-item__title">Take Better Decisions</h3>
+          <p class="step-item__desc">Act on AI-powered insights to protect your crops, save costs, and maximise your
+            farming income.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     AI INTELLIGENCE SECTION
+════════════════════════════════════════════════════════════ -->
+  <section id="ai-intelligence" class="ai-intelligence section" aria-labelledby="ai-heading">
+    <div class="container">
+
+      <div class="section__header reveal">
+        <span class="section__eyebrow">
+          <i class="fas fa-microchip" aria-hidden="true"></i>
+          AI Technology
+        </span>
+        <h2 id="ai-heading" class="section__title">
+          Powered by <span>State-of-the-Art AI</span>
+        </h2>
+        <p class="section__subtitle">
+          KrishiMitra AI combines multiple cutting-edge AI technologies to deliver the most accurate and reliable
+          farming guidance.
+        </p>
+      </div>
+
+      <div class="ai-cards__grid" role="list" aria-label="AI Technologies used">
+
+        <article class="ai-card reveal reveal--delay-1" role="listitem">
+          <div class="ai-card__icon-box" aria-hidden="true">
+            <i class="fas fa-eye"></i>
+          </div>
+          <div class="ai-card__content">
+            <span class="ai-card__tech-tag">Computer Vision</span>
+            <h3 class="ai-card__title">Disease &amp; Pest Detection</h3>
+            <p class="ai-card__desc">
+              Our deep learning model analyses crop images with high accuracy to detect over 50 diseases and 30 pest
+              species,
+              providing instant treatment recommendations and severity assessment.
+            </p>
+            <div class="ai-card__tags" aria-label="Technologies used">
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> Deep Learning</span>
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> CNN Model</span>
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> Image Analysis</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="ai-card reveal reveal--delay-2" role="listitem">
+          <div class="ai-card__icon-box" aria-hidden="true">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="ai-card__content">
+            <span class="ai-card__tech-tag">Generative AI</span>
+            <h3 class="ai-card__title">Intelligent Agriculture Chatbot</h3>
+            <p class="ai-card__desc">
+              A powerful LLM-based chatbot that understands natural farming questions in multiple languages and responds
+              with expert-level agricultural guidance, accessible to every farmer.
+            </p>
+            <div class="ai-card__tags" aria-label="Technologies used">
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> Large Language Model</span>
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> Multilingual</span>
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> Context-Aware</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="ai-card reveal reveal--delay-3" role="listitem">
+          <div class="ai-card__icon-box" aria-hidden="true">
+            <i class="fas fa-database"></i>
+          </div>
+          <div class="ai-card__content">
+            <span class="ai-card__tech-tag">RAG Technology</span>
+            <h3 class="ai-card__title">Trusted Agriculture Knowledge</h3>
+            <p class="ai-card__desc">
+              Retrieval-Augmented Generation ensures every AI response is grounded in verified agricultural data from
+              ICAR, Agmarknet, and official government agriculture portals.
+            </p>
+            <div class="ai-card__tags" aria-label="Technologies used">
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> RAG Pipeline</span>
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> Verified Sources</span>
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> Vector Search</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="ai-card reveal reveal--delay-4" role="listitem">
+          <div class="ai-card__icon-box" aria-hidden="true">
+            <i class="fas fa-microphone-alt"></i>
+          </div>
+          <div class="ai-card__content">
+            <span class="ai-card__tech-tag">Voice AI</span>
+            <h3 class="ai-card__title">Talk to KrishiMitra in Your Language</h3>
+            <p class="ai-card__desc">
+              Speak naturally in Hindi, Marathi, or English. Our voice AI transcribes, understands your query,
+              and responds back in audio — making AI accessible even for non-literate farmers.
+            </p>
+            <div class="ai-card__tags" aria-label="Technologies used">
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> Speech-to-Text</span>
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> Text-to-Speech</span>
+              <span class="ai-tag"><i class="fas fa-check" aria-hidden="true"></i> 3 Languages</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     FARMER BENEFITS SECTION
+════════════════════════════════════════════════════════════ -->
+  <section id="benefits" class="benefits section" aria-labelledby="benefits-heading">
+    <div class="container">
+
+      <div class="benefits__layout">
+
+        <!-- Visual / Chart -->
+        <div class="benefits__visual reveal reveal--left">
+          <div class="benefits__visual-card">
+            <h3 class="benefits__visual-title">
+              <i class="fas fa-chart-bar" style="color:var(--primary);margin-right:10px;" aria-hidden="true"></i>
+              Impact on Farming Outcomes
+            </h3>
+            <div class="benefits__visual-graphic" aria-label="Chart showing improvement percentages">
+
+              <div class="benefits__chart-bar" role="group" aria-label="Disease detection improvement">
+                <span class="benefits__chart-label">Disease Detection</span>
+                <div class="benefits__chart-track" aria-hidden="true">
+                  <div class="benefits__chart-fill" data-width="92%" style="width:0%"></div>
+                </div>
+                <span class="benefits__chart-pct" aria-label="92 percent">92%</span>
+              </div>
+
+              <div class="benefits__chart-bar" role="group" aria-label="Crop loss reduction">
+                <span class="benefits__chart-label">Crop Loss Reduction</span>
+                <div class="benefits__chart-track" aria-hidden="true">
+                  <div class="benefits__chart-fill" data-width="78%" style="width:0%"></div>
+                </div>
+                <span class="benefits__chart-pct" aria-label="78 percent">78%</span>
+              </div>
+
+              <div class="benefits__chart-bar" role="group" aria-label="Water savings improvement">
+                <span class="benefits__chart-label">Water Savings</span>
+                <div class="benefits__chart-track" aria-hidden="true">
+                  <div class="benefits__chart-fill" data-width="65%" style="width:0%"></div>
+                </div>
+                <span class="benefits__chart-pct" aria-label="65 percent">65%</span>
+              </div>
+
+              <div class="benefits__chart-bar" role="group" aria-label="Yield improvement">
+                <span class="benefits__chart-label">Yield Improvement</span>
+                <div class="benefits__chart-track" aria-hidden="true">
+                  <div class="benefits__chart-fill" data-width="55%" style="width:0%"></div>
+                </div>
+                <span class="benefits__chart-pct" aria-label="55 percent">55%</span>
+              </div>
+
+              <div class="benefits__chart-bar" role="group" aria-label="Fertilizer efficiency">
+                <span class="benefits__chart-label">Fertilizer Efficiency</span>
+                <div class="benefits__chart-track" aria-hidden="true">
+                  <div class="benefits__chart-fill" data-width="83%" style="width:0%"></div>
+                </div>
+                <span class="benefits__chart-pct" aria-label="83 percent">83%</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefits List -->
+        <div class="benefits__content reveal reveal--right">
+          <div class="section__header" style="text-align:left; margin-bottom:36px;">
+            <span class="section__eyebrow">
+              <i class="fas fa-seedling" aria-hidden="true"></i>
+              Farmer Benefits
+            </span>
+            <h2 id="benefits-heading" class="section__title" style="text-align:left;">
+              Helping Farmers Make <span>Better Decisions</span>
+            </h2>
+          </div>
+
+          <ul class="benefits__list" aria-label="List of farmer benefits" role="list">
+
+            <li class="benefit-item">
+              <div class="benefit-item__icon" aria-hidden="true"><i class="fas fa-search"></i></div>
+              <div class="benefit-item__text">
+                <strong>Detect Diseases Early</strong>
+                <span>Identify crop diseases within seconds using your smartphone camera before they spread.</span>
+              </div>
+            </li>
+
+            <li class="benefit-item">
+              <div class="benefit-item__icon" aria-hidden="true"><i class="fas fa-shield-alt"></i></div>
+              <div class="benefit-item__text">
+                <strong>Reduce Crop Losses</strong>
+                <span>Take timely action with AI recommendations to protect your harvest and income.</span>
+              </div>
+            </li>
+
+            <li class="benefit-item">
+              <div class="benefit-item__icon" aria-hidden="true"><i class="fas fa-vial"></i></div>
+              <div class="benefit-item__text">
+                <strong>Improve Fertilizer Usage</strong>
+                <span>Stop over- or under-applying fertilizers. Get precise dosage based on soil analysis.</span>
+              </div>
+            </li>
+
+            <li class="benefit-item">
+              <div class="benefit-item__icon" aria-hidden="true"><i class="fas fa-tint"></i></div>
+              <div class="benefit-item__text">
+                <strong>Save Water</strong>
+                <span>Smart irrigation advisories prevent water waste and help crops thrive during dry spells.</span>
+              </div>
+            </li>
+
+            <li class="benefit-item">
+              <div class="benefit-item__icon" aria-hidden="true"><i class="fas fa-bell"></i></div>
+              <div class="benefit-item__text">
+                <strong>Get Weather Alerts</strong>
+                <span>Receive critical weather notifications before storms, frost, or heavy rain affects your
+                  farm.</span>
+              </div>
+            </li>
+
+            <li class="benefit-item">
+              <div class="benefit-item__icon" aria-hidden="true"><i class="fas fa-clock"></i></div>
+              <div class="benefit-item__text">
+                <strong>Access Guidance 24/7</strong>
+                <span>The AI advisor is always available — day or night, on any smartphone, in your language.</span>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     LANGUAGE SUPPORT SECTION
+════════════════════════════════════════════════════════════ -->
+  <section id="languages" class="languages section" aria-labelledby="lang-heading">
+    <div class="container">
+
+      <div class="languages__inner">
+
+        <!-- Left Content -->
+        <div class="languages__content reveal reveal--left">
+          <div>
+            <span class="section__eyebrow">
+              <i class="fas fa-globe" aria-hidden="true"></i>
+              Language Support
+            </span>
+            <h2 id="lang-heading" class="section__title" style="text-align:left; margin-top:16px;">
+              Talk to Your AI <span>In Your Language</span>
+            </h2>
+            <p class="languages__message">
+              Language should never be a barrier to modern farming technology.
+              KrishiMitra AI supports three languages to reach every farmer across India.
+            </p>
+            <p class="languages__message" style="margin-top:0; font-weight:500; color:var(--primary);">
+              "Get agriculture guidance in the language you understand."
+            </p>
+          </div>
+
+          <div class="lang-cards" role="list" aria-label="Supported languages">
+
+            <div class="lang-card reveal reveal--delay-1" role="listitem" tabindex="0"
+              aria-label="English language support">
+              <span class="lang-card__flag" aria-hidden="true">🇬🇧</span>
+              <div class="lang-card__info">
+                <div class="lang-card__name">English</div>
+                <div class="lang-card__native">English – International</div>
+              </div>
+              <span class="lang-card__badge"><i class="fas fa-check-circle" aria-hidden="true"></i> Supported</span>
+            </div>
+
+            <div class="lang-card reveal reveal--delay-2" role="listitem" tabindex="0"
+              aria-label="Hindi language support">
+              <span class="lang-card__flag" aria-hidden="true">🇮🇳</span>
+              <div class="lang-card__info">
+                <div class="lang-card__name">हिंदी</div>
+                <div class="lang-card__native">Hindi – भारत की राष्ट्रभाषा</div>
+              </div>
+              <span class="lang-card__badge"><i class="fas fa-check-circle" aria-hidden="true"></i> Supported</span>
+            </div>
+
+            <div class="lang-card reveal reveal--delay-3" role="listitem" tabindex="0"
+              aria-label="Marathi language support">
+              <span class="lang-card__flag" aria-hidden="true">🟠</span>
+              <div class="lang-card__info">
+                <div class="lang-card__name">मराठी</div>
+                <div class="lang-card__native">Marathi – महाराष्ट्र</div>
+              </div>
+              <span class="lang-card__badge"><i class="fas fa-check-circle" aria-hidden="true"></i> Supported</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Showcase -->
+        <div class="languages__visual reveal reveal--right" aria-label="Language showcase panel">
+          <div class="lang-showcase" role="complementary" aria-labelledby="lang-showcase-title">
+            <div class="lang-showcase__icon" aria-hidden="true">
+              <i class="fas fa-comments"></i>
+            </div>
+            <h3 id="lang-showcase-title" class="lang-showcase__title">Ask KrishiMitra AI</h3>
+            <p class="lang-showcase__sub">Same question, three languages</p>
+
+            <div class="lang-showcase__words" aria-label="Example questions in different languages">
+              <div class="lang-word">
+                <span class="lang-word__text">"What disease is on my tomato?"</span>
+                <span class="lang-word__lang">English</span>
+              </div>
+              <div class="lang-word">
+                <span class="lang-word__text">"मेरे टमाटर पर कौन सी बीमारी है?"</span>
+                <span class="lang-word__lang">हिंदी</span>
+              </div>
+              <div class="lang-word">
+                <span class="lang-word__text">"माझ्या टोमॅटोवर कोणता रोग आहे?"</span>
+                <span class="lang-word__lang">मराठी</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     CALL TO ACTION SECTION
+════════════════════════════════════════════════════════════ -->
+  <section id="contact" class="cta-section" aria-labelledby="cta-heading">
+    <div class="container">
+      <div class="cta__inner reveal">
+
+        <span class="cta__eyebrow">
+          <i class="fas fa-rocket" aria-hidden="true"></i>
+          Get Started Today
+        </span>
+
+        <h2 id="cta-heading" class="cta__title">
+          Your Farm. Your Data.<br />
+          <span style="color:var(--green-300);">Your AI Advisor.</span>
+        </h2>
+
+        <p class="cta__desc">
+          Start making smarter farming decisions with KrishiMitra AI.
+          Join thousands of farmers already using AI to protect their crops and increase their income.
+        </p>
+
+        <div class="cta__actions">
+          <a href="pages/register.html" id="cta-register-btn" class="btn btn--white btn--lg"
+            aria-label="Create a free KrishiMitra AI account">
+            <i class="fas fa-user-plus" aria-hidden="true"></i>
+            Create Free Account
+          </a>
+          <button id="cta-chat-btn" class="btn btn--ghost btn--lg" data-action="chat"
+            aria-label="Talk to the AI Advisor">
+            <i class="fas fa-comments" aria-hidden="true"></i>
+            Talk to AI Advisor
+          </button>
+        </div>
+
+        <div class="cta__features" aria-label="Key platform benefits">
+          <div class="cta__feat-item">
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span>No credit card required</span>
+          </div>
+          <div class="cta__feat-item">
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span>Free to get started</span>
+          </div>
+          <div class="cta__feat-item">
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span>Available in 3 languages</span>
+          </div>
+          <div class="cta__feat-item">
+            <i class="fas fa-check-circle" aria-hidden="true"></i>
+            <span>Works on any smartphone</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════ -->
+  <footer id="footer" class="footer" aria-label="Site footer">
+    <div class="container">
+
+      <div class="footer__top">
+
+        <!-- Brand Column -->
+        <div class="footer__brand">
+          <div class="footer__logo" aria-label="KrishiMitra AI">
+            <div class="footer__logo-icon" aria-hidden="true">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <div>
+              <div class="footer__logo-text">KrishiMitra AI</div>
+              <div class="footer__logo-tagline">Intelligent Agriculture Advisor</div>
+            </div>
+          </div>
+
+          <p class="footer__desc">
+            Empowering Indian farmers with Artificial Intelligence. Get crop disease detection,
+            weather advisory, soil analysis, and expert farming guidance — all in one platform.
+          </p>
+
+          <div class="footer__socials" aria-label="Social media links">
+            <a href="#" class="footer__social-btn" aria-label="Follow KrishiMitra AI on Twitter">
+              <i class="fab fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a href="#" class="footer__social-btn" aria-label="Follow KrishiMitra AI on Facebook">
+              <i class="fab fa-facebook-f" aria-hidden="true"></i>
+            </a>
+            <a href="#" class="footer__social-btn" aria-label="Follow KrishiMitra AI on Instagram">
+              <i class="fab fa-instagram" aria-hidden="true"></i>
+            </a>
+            <a href="#" class="footer__social-btn" aria-label="Visit KrishiMitra AI on YouTube">
+              <i class="fab fa-youtube" aria-hidden="true"></i>
+            </a>
+            <a href="#" class="footer__social-btn" aria-label="Follow KrishiMitra AI on LinkedIn">
+              <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <nav class="footer__col" aria-label="Quick links navigation">
+          <h3 class="footer__col-title">Quick Links</h3>
+          <ul class="footer__links" role="list">
+            <li><a href="index.html" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i>
+                Home</a></li>
+            <li><a href="#features" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> AI
+                Features</a></li>
+            <li><a href="#how-it-works" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> How
+                It Works</a></li>
+            <li><a href="#ai-intelligence" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i>
+                About AI</a></li>
+            <li><a href="pages/register.html" class="footer__link"><i class="fas fa-chevron-right"
+                  aria-hidden="true"></i> Get Started</a></li>
+            <li><a href="pages/login.html" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i>
+                Login</a></li>
+          </ul>
+        </nav>
+
+        <!-- AI Features -->
+        <nav class="footer__col" aria-label="AI Features navigation">
+          <h3 class="footer__col-title">AI Features</h3>
+          <ul class="footer__links" role="list">
+            <li><a href="#" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> Disease
+                Detection</a></li>
+            <li><a href="#" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> Pest
+                Detection</a></li>
+            <li><a href="#" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> AI Chatbot</a>
+            </li>
+            <li><a href="#" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> Soil
+                Analysis</a></li>
+            <li><a href="#" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> Weather
+                Advisory</a></li>
+            <li><a href="#" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> Market
+                Prices</a></li>
+          </ul>
+        </nav>
+
+        <!-- Support -->
+        <nav class="footer__col" aria-label="Support and contact navigation">
+          <h3 class="footer__col-title">Support</h3>
+          <ul class="footer__links" role="list">
+            <li>
+              <a href="mailto:support@krishimitra.ai" class="footer__link">
+                <i class="fas fa-envelope" aria-hidden="true"></i>
+                support@krishimitra.ai
+              </a>
+            </li>
+            <li>
+              <a href="tel:+911800-KRISHIMITRA" class="footer__link">
+                <i class="fas fa-phone" aria-hidden="true"></i>
+                1800-KRISHIMITRA
+              </a>
+            </li>
+            <li>
+              <a href="#" class="footer__link">
+                <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                India
+              </a>
+            </li>
+            <li><a href="#" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> Help Centre</a>
+            </li>
+            <li><a href="#" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> FAQs</a></li>
+            <li><a href="#" class="footer__link"><i class="fas fa-chevron-right" aria-hidden="true"></i> Contact Us</a>
+            </li>
+          </ul>
+        </nav>
+
+      </div>
+
+      <!-- Footer Bottom -->
+      <div class="footer__bottom">
+        <p class="footer__copyright">
+          © 2026 <span>KrishiMitra AI</span>. All rights reserved. Made with
+          <i class="fas fa-heart" style="color:#ef4444;margin:0 4px;" aria-label="love"></i>
+          for Indian Farmers.
+        </p>
+        <nav class="footer__legal" aria-label="Legal navigation">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms &amp; Conditions</a>
+          <a href="#">Cookie Policy</a>
+        </nav>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════════════════════
+     SCROLL TO TOP BUTTON
+════════════════════════════════════════════════════════════ -->
+  <button id="scroll-top-btn" class="scroll-top" aria-label="Scroll back to top of page" title="Scroll to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- ─── Scripts ───────────────────────────────────────────── -->
+  <script src="js/landing.js" defer></script>
+
+</body>
+
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Smart Irrigation Advisory – Optimize crop water management using real-time soil moisture and meteorological weather forecasts with KrishiMitra AI." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Smart Irrigation Recommendation – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+</head>
+<body class="km-app-body">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED SIDEBAR CONTAINER (components.js Injected)
+════════════════════════════════════════════════════════════ -->
+<div id="sidebar-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     APP LAYOUT WRAPPER
+════════════════════════════════════════════════════════════ -->
+<div class="km-app-wrapper">
+  <div class="km-app-main" id="dashboard-main">
+
+    <!-- ─────────────────────────────────────────────────────────
+         SHARED TOPBAR CONTAINER (components.js Injected)
+    ──────────────────────────────────────────────────────────── -->
+    <div id="navbar-container"></div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         MAIN CONTENT AREA
+    ──────────────────────────────────────────────────────────── -->
+    <main class="km-page-content" aria-label="Smart Irrigation Recommendation Dashboard">
+
+      <!-- Page Header -->
+      <header class="title-badge-wrap">
+        <h1 class="topbar__page-name" style="font-size:1.4rem;font-weight:800;margin:0;">Smart Irrigation Recommendation</h1>
+        <span class="ai-badge" aria-label="AI Technology Badge">Powered by AI</span>
+      </header>
+
+      <!-- Informational Banner -->
+      <section class="welcome-banner" style="padding: 16px 24px; border-radius: var(--radius-md); margin-bottom: 8px; background: linear-gradient(135deg, #0d3d22 0%, #155e34 100%);" aria-label="Info Banner">
+        <div class="welcome-banner__content" style="display:flex; align-items:center; gap:16px;">
+          <div style="font-size: 1.8rem; color: var(--green-300); display: flex; gap: 8px;" aria-hidden="true">
+            <i class="fas fa-tint"></i>
+            <i class="fas fa-cloud-sun" style="font-size: 1.2rem; align-self: flex-end;"></i>
+          </div>
+          <div>
+            <h3 style="font-family:var(--font-display); font-size:0.95rem; font-weight:700; color:var(--white); margin:0 0 2px;">Water Your Crops Smarter</h3>
+            <p style="font-size:0.8rem; color:rgba(255,255,255,0.72); margin:0;">
+              KrishiMitra AI combines crop characteristics, soil moisture thresholds, and real-time rain forecasts to optimize watering schedules.
+              <span style="font-weight:600; color:#fff;">Always verify actual field status before applying full irrigation.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Layout Grid: Two-Column Form -->
+      <div class="nutrient-grid-layout">
+
+        <!-- LEFT COLUMN: Crop Info & Soil Moisture Details -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+
+          <!-- Card 1: Crop details -->
+          <section class="dash-card" aria-labelledby="crop-info-heading">
+            <div class="dash-card__header">
+              <h2 id="crop-info-heading" class="dash-card__title">
+                <i class="fas fa-leaf" aria-hidden="true"></i>
+                Crop &amp; Field Details
+              </h2>
+            </div>
+            <div class="dash-card__body">
+              <form id="irrigation-recommendation-form" novalidate aria-label="Smart irrigation inputs form">
+
+                <!-- Crop, soil, stage -->
+                <div class="form-row" style="margin-bottom: 14px;">
+                  <div class="form-group">
+                    <label class="form-label" for="crop-type-select">Crop Type <span style="color:#ef4444;">*</span></label>
+                    <div class="input-wrapper">
+                      <select id="crop-type-select" name="crop" class="form-select no-icon" aria-required="true" aria-label="Select crop type">
+                        <option value="" disabled selected>Select crop type</option>
+                        <option value="cotton">Cotton</option>
+                        <option value="tomato">Tomato</option>
+                        <option value="wheat">Wheat</option>
+                        <option value="rice">Rice</option>
+                        <option value="onion">Onion</option>
+                        <option value="soybean">Soybean</option>
+                        <option value="sugarcane">Sugarcane</option>
+                        <option value="maize">Maize</option>
+                        <option value="other">Other Crop</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="soil-type-select">Soil Type <span style="color:#ef4444;">*</span></label>
+                    <div class="input-wrapper">
+                      <select id="soil-type-select" name="soil" class="form-select no-icon" aria-required="true" aria-label="Select soil type">
+                        <option value="" disabled selected>Select soil type</option>
+                        <option value="black">Black Soil</option>
+                        <option value="red">Red Soil</option>
+                        <option value="alluvial">Alluvial Soil</option>
+                        <option value="sandy">Sandy Soil</option>
+                        <option value="clay">Clay Soil</option>
+                        <option value="loamy">Loamy Soil</option>
+                        <option value="other">Other Type</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 14px;">
+                  <label class="form-label" for="growth-stage-select">Plant Growth Stage <span style="color:#ef4444;">*</span></label>
+                  <div class="input-wrapper">
+                    <select id="growth-stage-select" name="stage" class="form-select no-icon" aria-required="true" aria-label="Select growth stage">
+                      <option value="" disabled selected>Select growth stage</option>
+                      <option value="seedling">Seedling</option>
+                      <option value="vegetative">Vegetative</option>
+                      <option value="flowering">Flowering</option>
+                      <option value="fruiting">Fruiting</option>
+                      <option value="maturity">Maturity</option>
+                      <option value="harvest">Harvest Ready</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- State & District location values (required) -->
+                <div class="form-row" style="margin-bottom: 18px;">
+                  <div class="form-group">
+                    <label class="form-label" for="irr-state">State <span style="color:#ef4444;">*</span></label>
+                    <input type="text" id="irr-state" class="form-input no-icon" placeholder="e.g. Maharashtra" aria-required="true" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="irr-district">District <span style="color:#ef4444;">*</span></label>
+                    <input type="text" id="irr-district" class="form-input no-icon" placeholder="e.g. Nashik" aria-required="true" />
+                  </div>
+                </div>
+
+                <hr style="border:0; border-top:1px solid var(--dash-border); margin:20px 0;" aria-hidden="true" />
+
+                <!-- Soil Moisture Selection -->
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                  <h3 class="form-label" style="font-size:0.9rem; font-weight:700; margin:0;">Current Soil Moisture</h3>
+                  <label class="remember-me" for="no-moisture-sensor" style="gap:6px;">
+                    <input type="checkbox" id="no-moisture-sensor" class="remember-me__checkbox" />
+                    <span class="remember-me__label" style="font-size:0.76rem; font-weight:600;">No moisture sensor</span>
+                  </label>
+                </div>
+
+                <!-- Sensor Checkbox alert warning banner -->
+                <div id="no-sensor-helper-msg" style="display: none; padding:12px; background:var(--green-50); border:1px solid var(--green-200); border-radius:var(--radius-md); margin-bottom:14px;">
+                  <p style="font-size:0.78rem; color:var(--primary); line-height:1.4; margin:0;">
+                    <i class="fas fa-info-circle" aria-hidden="true"></i> No sensor? KrishiMitra will estimate moisture index using regional weather data and soil categories.
+                  </p>
+                </div>
+
+                <!-- Input area wrapper -->
+                <div id="moisture-inputs-panel-box">
+                  <div class="moisture-option-group" role="group" aria-label="Select soil moisture dry/wet description buttons">
+                    <button type="button" class="moisture-option-btn" data-level="dry" aria-label="Soil condition is Dry">Dry</button>
+                    <button type="button" class="moisture-option-btn" data-level="mod_dry" aria-label="Soil condition is Moderately Dry">Mod. Dry</button>
+                    <button type="button" class="moisture-option-btn" data-level="mod" aria-label="Soil condition is Moderate">Moderate</button>
+                    <button type="button" class="moisture-option-btn" data-level="moist" aria-label="Soil condition is Moist">Moist</button>
+                    <button type="button" class="moisture-option-btn" data-level="wet" aria-label="Soil condition is Saturated or Wet">Wet</button>
+                  </div>
+
+                  <div class="form-group" style="margin-bottom: 12px;">
+                    <label class="form-label" for="moisture-percentage">Numeric Soil Moisture Percentage (%)</label>
+                    <input type="number" id="moisture-percentage" class="form-input no-icon" placeholder="Optional: 0 to 100" min="0" max="100" />
+                  </div>
+                </div>
+
+                <!-- Submit button -->
+                <button
+                  type="submit"
+                  id="irrigation-submit-btn"
+                  class="km-btn km-btn--primary"
+                  style="width: 100%; display: flex; justify-content: center; font-size: 1rem; font-weight: 700; padding: 14px; margin-top:16px;"
+                  disabled
+                  aria-label="Generate smart watering guidance recommendations with AI"
+                >
+                  <i class="fas fa-tint" aria-hidden="true"></i>
+                  Get AI Irrigation Recommendation
+                </button>
+
+              </form>
+            </div>
+          </section>
+
+          <!-- Weather Overview card side columns -->
+          <section class="dash-card" aria-labelledby="weather-info-heading">
+            <div class="dash-card__header">
+              <h2 id="weather-info-heading" class="dash-card__title">
+                <i class="fas fa-cloud-sun-rain" aria-hidden="true"></i>
+                Regional Weather Summary
+              </h2>
+              <span style="font-size: 0.68rem; color:var(--text-light); font-weight: 600;">Last Updated: 10:30 AM</span>
+            </div>
+            <div class="dash-card__body" style="padding:16px 20px;">
+              <!-- Mock Weather Indicators -->
+              <div class="info-box-grid" style="margin-bottom:16px;">
+                <div class="info-box">
+                  <span class="info-box__label"><i class="fas fa-thermometer-half" aria-hidden="true" style="color:#ea580c;margin-right:4px;"></i>Temperature</span>
+                  <span id="res-weather-temp" class="info-box__value">29°C</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label"><i class="fas fa-tint" aria-hidden="true" style="color:#2563eb;margin-right:4px;"></i>Humidity</span>
+                  <span id="res-weather-humidity" class="info-box__value">68%</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label"><i class="fas fa-cloud-showers-heavy" aria-hidden="true" style="color:#0284c7;margin-right:4px;"></i>Rainfall</span>
+                  <span id="res-weather-rain" class="info-box__value">0 mm</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label"><i class="fas fa-wind" aria-hidden="true" style="color:#64748b;margin-right:4px;"></i>Wind Speed</span>
+                  <span id="res-weather-wind" class="info-box__value">12 km/h</span>
+                </div>
+              </div>
+
+              <!-- 3-day forecast details -->
+              <h4 style="font-family:var(--font-display); font-size:0.8rem; font-weight:700; color:var(--text-primary); margin-bottom:10px;">3-Day Rainfall Forecast (Mock API)</h4>
+              <div class="forecast-preview-grid" role="list">
+                <div class="forecast-preview-card" role="listitem">
+                  <span class="forecast-preview-card__date">Today</span>
+                  <span class="forecast-preview-card__icon" aria-hidden="true">🌤️</span>
+                  <span class="forecast-preview-card__temp">29°C</span>
+                  <span class="forecast-preview-card__rain"><i class="fas fa-tint"></i> <span id="res-fore-today">20%</span></span>
+                </div>
+                <div class="forecast-preview-card" role="listitem">
+                  <span class="forecast-preview-card__date">Tomorrow</span>
+                  <span class="forecast-preview-card__icon" aria-hidden="true">🌧️</span>
+                  <span class="forecast-preview-card__temp">25°C</span>
+                  <span class="forecast-preview-card__rain"><i class="fas fa-tint"></i> <span id="res-fore-tomorrow">75%</span></span>
+                </div>
+                <div class="forecast-preview-card" role="listitem">
+                  <span class="forecast-preview-card__date">Day After</span>
+                  <span class="forecast-preview-card__icon" aria-hidden="true">☁️</span>
+                  <span class="forecast-preview-card__temp">27°C</span>
+                  <span class="forecast-preview-card__rain"><i class="fas fa-tint"></i> <span id="res-fore-dayafter">45%</span></span>
+                </div>
+              </div>
+
+              <div style="margin-top:16px; text-align:right;">
+                <button type="button" class="km-btn km-btn--outline km-btn--sm" onclick="window.location.href='weather.html'" aria-label="Navigate to detailed weather dashboard page">
+                  View Detailed Weather <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Output Viewport (Dynamic) -->
+        <section id="irrigation-results-viewport" aria-live="polite" aria-relevant="all">
+
+          <!-- 1. EMPTY STATE (Default) -->
+          <div id="irrigation-empty-state" class="km-card" style="min-height: 580px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div class="km-empty-state">
+              <i class="fas fa-water" aria-hidden="true" style="color:var(--primary);"></i>
+              <h3>No Irrigation Recommendation Generated Yet</h3>
+              <p>Complete crop data entries on the left panel to trigger the AI-powered smart watering diagnostic report.</p>
+            </div>
+          </div>
+
+          <!-- 2. LOADING STATE -->
+          <div id="irrigation-analysis-loader" class="km-card analysis-loader" style="min-height: 580px;">
+            <div class="ai-pulse-spinner">
+              <div class="ai-pulse-ring" aria-hidden="true"></div>
+              <div class="ai-pulse-icon" aria-hidden="true">
+                <i class="fas fa-water"></i>
+              </div>
+            </div>
+            <h3 class="analysis-loader__title">KrishiMitra AI is calculating irrigation limits...</h3>
+            <p class="analysis-loader__desc">Evaluating local weather forecasts, crop stage thresholds, and computing soil saturation indices.</p>
+          </div>
+
+          <!-- 3. RESULTS VIEWS (Shown after mock processing) -->
+          <div id="irrigation-result-section" style="display: none;">
+            <div class="dash-card" style="display: flex; flex-direction: column; gap: 20px; padding: 24px;">
+
+              <!-- Header banner -->
+              <div class="welcome-banner" style="padding: 24px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #072a30 0%, #0c434c 100%);">
+                <div class="welcome-banner__content">
+                  <span class="crop-status-pill crop-status-pill--healthy" style="margin-bottom:10px; font-size:0.75rem; padding:4px 12px;">
+                    Irrigation Advisory Ready
+                  </span>
+                  <h3 class="welcome-banner__greeting" style="font-size: 1.45rem; font-weight: 800; margin-bottom: 4px;">
+                    Water Management Analysis
+                  </h3>
+                  <p class="welcome-banner__subtitle" style="font-size: 0.88rem; margin: 0; opacity: 0.9;">
+                    AI analyzed weather forecasts and soil metrics to calculate irrigation requirements.
+                  </p>
+                </div>
+              </div>
+
+              <!-- General indicators details -->
+              <div class="info-box-grid">
+                <div class="info-box">
+                  <span class="info-box__label">Selected Crop</span>
+                  <span id="res-crop" class="info-box__value">Cotton</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label">Soil Type</span>
+                  <span id="res-soil" class="info-box__value">Black Soil</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label">Growth Stage</span>
+                  <span id="res-stage" class="info-box__value">Vegetative</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label">Weather State</span>
+                  <span id="res-weather" class="info-box__value">Partly Cloudy</span>
+                </div>
+              </div>
+
+              <!-- Dynamic weather alert alert banner box -->
+              <div id="res-advisory-box" class="advisory-alert-box advisory-alert-box--rain" role="alert">
+                <div class="advisory-alert-box__icon" aria-hidden="true">
+                  <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="advisory-alert-box__content">
+                  <h4 id="res-advisory-title" class="advisory-alert-box__title">Rain Alert</h4>
+                  <p id="res-advisory-desc" class="advisory-alert-box__desc">Rain is expected tomorrow. Consider checking field moisture before irrigation.</p>
+                </div>
+              </div>
+
+              <!-- Recommendation decision highlights -->
+              <div class="dash-card" style="padding: 20px; border-left: 4px solid var(--primary); background: var(--gray-50);">
+                <div style="display:flex; align-items:center; gap:16px;">
+                  <span style="font-size:2.2rem;" aria-hidden="true">
+                    <i id="res-decision-icon" class="fas fa-cloud-rain" style="color:#3b82f6;"></i>
+                  </span>
+                  <div>
+                    <span class="ai-badge" style="background:var(--green-100); color:var(--primary);">AI Decision</span>
+                    <h4 id="res-decision-badge" style="font-family:var(--font-display); font-size:1.2rem; font-weight:800; color:var(--text-primary); margin:4px 0 2px;">
+                      Delay Irrigation
+                    </h4>
+                    <span id="res-decision-status" class="severity-tag severity-tag--moderate" style="margin-bottom:6px; display:inline-block;">Water Not Required Immediately</span>
+                    <p id="res-decision-msg" style="margin:0; font-size:0.86rem; color:var(--text-secondary); line-height:1.5;">
+                      Rain is expected soon. Consider checking field moisture before irrigating.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Soil Moisture Status meter slider bar -->
+              <div>
+                <h4 class="dash-section-title" style="margin-bottom:10px; font-size: 0.9rem;">Illustrative Soil Moisture Status</h4>
+                <div class="moisture-slider-container">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                    <span style="font-size:0.82rem; font-weight:700; color:var(--text-primary);">Moisture Percentage: <strong id="res-moisture-val" style="color:var(--primary);">55%</strong></span>
+                    <span id="res-moisture-status" class="severity-tag severity-tag--low" style="font-size:0.72rem; padding:2px 8px; background:var(--green-100); color:var(--green-700);">Moderate</span>
+                  </div>
+                  <!-- Progress bar slider track -->
+                  <div class="confidence-track" style="width:100%; height:8px; border-radius:8px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                    <div id="res-moisture-bar" class="confidence-fill" style="width:55%; height:100%; border-radius:8px; background:var(--gradient-primary);"></div>
+                  </div>
+                  <div class="moisture-slider-labels" aria-hidden="true">
+                    <span>Dry</span>
+                    <span>Optimal</span>
+                    <span>Wet</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Weather impacts -->
+              <div>
+                <h4 class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Weather Impact on Irrigation</h4>
+                <div id="res-weather-impacts-grid" class="weather-impact-grid" role="list">
+                  <!-- Injected by JS -->
+                </div>
+              </div>
+
+              <!-- Next Check & Guidance details -->
+              <div class="result-grid-panels">
+                <div class="info-box">
+                  <span class="info-box__label">Recommended Next Action</span>
+                  <span id="res-guide-action" style="font-size:0.82rem; color:var(--text-secondary); line-height:1.45; font-weight:500;">Check soil moisture again after expected rainfall.</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label">Next Check Timing</span>
+                  <span id="res-guide-timing" class="info-box__value">Tomorrow evening</span>
+                </div>
+              </div>
+
+              <!-- Water management tips -->
+              <div>
+                <h4 class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Water Management Best Practices</h4>
+                <div class="bullet-list" role="list" aria-label="Irrigation tips">
+                  <div class="bullet-item" role="listitem">
+                    <i class="fas fa-check-circle" aria-hidden="true"></i>
+                    <span><strong>Check Soil Moisture:</strong> Inspect actual field conditions before applying full water cycles.</span>
+                  </div>
+                  <div class="bullet-item" role="listitem">
+                    <i class="fas fa-check-circle" aria-hidden="true"></i>
+                    <span><strong>Consider Rainfall:</strong> Adjust watering schedules whenever meaningful precipitation is predicted.</span>
+                  </div>
+                  <div class="bullet-item" role="listitem">
+                    <i class="fas fa-check-circle" aria-hidden="true"></i>
+                    <span><strong>Irrigate at Appropriate Times:</strong> Water during early mornings or evenings to minimize soil evaporation.</span>
+                  </div>
+                  <div class="bullet-item" role="listitem">
+                    <i class="fas fa-check-circle" aria-hidden="true"></i>
+                    <span><strong>Avoid Overwatering:</strong> Saturation restricts plant root oxygen levels and contributes to disease risks.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Highlighted AI recommendation banner box -->
+              <div class="ai-recommendation-box">
+                <div class="ai-recommendation-box__header">
+                  <i class="fas fa-robot" aria-hidden="true"></i>
+                  <span>KrishiMitra AI Recommendation Summary</span>
+                </div>
+                <p id="ai-irrigation-recommendation-text" class="ai-recommendation-box__desc">
+                  Based on mock data inputs, immediate irrigation may not be necessary. Monitor soil moisture and expected rainfall values.
+                </p>
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                  <button type="button" class="km-btn km-btn--outline km-btn--sm" onclick="window.location.href='chatbot.html?topic=Irrigation'" aria-label="Ask chatbot regarding irrigation schedules">
+                    <i class="fas fa-comments" aria-hidden="true"></i> Ask AI About Irrigation
+                  </button>
+                  <button type="button" class="km-btn km-btn--outline km-btn--sm" onclick="window.location.href='weather.html'" aria-label="Go to weather advisory page">
+                    <i class="fas fa-cloud-sun" aria-hidden="true"></i> View Weather Forecast
+                  </button>
+                  <button type="button" id="btn-irr-expert" class="km-btn km-btn--outline km-btn--sm" aria-label="Book expert advisor consultation">
+                    <i class="fas fa-user-tie" aria-hidden="true"></i> Get Expert Guidance
+                  </button>
+                </div>
+              </div>
+
+              <!-- Disclaimer -->
+              <p style="font-size:0.7rem; color: var(--text-light); line-height: 1.45; text-align: center; margin: 4px 0 0;">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true" style="margin-right:3px;"></i>
+                <strong>Disclaimer:</strong> AI-generated watering models are demo projections. Adjust irrigation thresholds based on crop type, soil moisture, and actual weather observations.
+              </p>
+
+              <hr style="border: 0; border-top: 1px solid var(--dash-border); margin: 4px 0;" aria-hidden="true" />
+
+              <!-- Bottom controls buttons -->
+              <div class="actions-wrap">
+                <button type="button" id="btn-irr-another" class="km-btn km-btn--outline" aria-label="Reset forms to generate a new scheduling recommendation">
+                  <i class="fas fa-redo-alt" aria-hidden="true"></i> Generate New Recommendation
+                </button>
+                <button type="button" id="btn-irr-save" class="km-btn km-btn--primary" aria-label="Save this watering recommendation log to profile history">
+                  <i class="fas fa-save" aria-hidden="true"></i> Save Recommendation
+                </button>
+                <button type="button" id="btn-irr-download" class="km-btn km-btn--ghost" style="color:var(--text-primary); border:1px solid var(--gray-300);" aria-label="Download irrigation report summary">
+                  <i class="fas fa-file-pdf" aria-hidden="true"></i> Download Report
+                </button>
+              </div>
+
+            </div><!-- /dash-card -->
+          </div><!-- /irrigation-result-section -->
+
+        </section><!-- /irrigation-results-viewport -->
+
+      </div><!-- /nutrient-grid-layout -->
+
+      <!-- Recent logs grid list -->
+      <section class="analysis-card" aria-labelledby="history-table-title" style="margin-top: 24px;">
+        <div class="analysis-card__header">
+          <h2 id="history-table-title" class="dash-section-title">Recent Irrigation Recommendations</h2>
+          <a href="history.html" class="dash-section-link" aria-label="Go to historical diagnostic list">
+            View History <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <div class="analysis-table-wrap">
+          <table class="analysis-table" aria-label="Recent irrigation logs list">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Crop</th>
+                <th scope="col">Soil Moisture</th>
+                <th scope="col">Weather Forecast</th>
+                <th scope="col">Recommendation</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="recent-irrigation-tbody">
+              <!-- Injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Bottom padding -->
+      <div style="height:24px;" aria-hidden="true"></div>
+
+    </main>
+  </div><!-- /km-app-main -->
+</div><!-- /km-app-wrapper -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED BOTTOM CHATBOT FLOATING CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="chatbot-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED FOOTER CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="footer-container"></div>
+
+<!-- Global Components Loader Script -->
+<script src="../js/components.js"></script>
+
+<!-- PDF Export Engine -->
+<script src="../js/pdf-generator.js"></script>
+
+<!-- Irrigation specific script -->
+<script src="../js/irrigation.js"></script>
+
+</body>
+</html>

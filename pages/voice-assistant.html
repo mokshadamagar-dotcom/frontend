@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Voice Assistant – Speak naturally in Marathi, Hindi, or English to get instant agricultural advice and soil care guidance with KrishiMitra AI." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Voice Assistant – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+</head>
+<body class="km-app-body">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED SIDEBAR CONTAINER (components.js Injected)
+════════════════════════════════════════════════════════════ -->
+<div id="sidebar-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     APP LAYOUT WRAPPER
+════════════════════════════════════════════════════════════ -->
+<div class="km-app-wrapper">
+  <div class="km-app-main" id="dashboard-main">
+
+    <!-- ─────────────────────────────────────────────────────────
+         SHARED TOPBAR CONTAINER (components.js Injected)
+    ──────────────────────────────────────────────────────────── -->
+    <div id="navbar-container"></div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         MAIN CONTENT AREA
+    ──────────────────────────────────────────────────────────── -->
+    <main class="km-page-content" aria-label="AI Voice Assistant Dashboard">
+
+      <!-- Page Header -->
+      <header class="title-badge-wrap">
+        <h1 class="topbar__page-name" style="font-size:1.4rem;font-weight:800;margin:0;">AI Voice Assistant</h1>
+        <span class="ai-badge" aria-label="Voice AI Badge">Powered by Voice AI</span>
+      </header>
+
+      <!-- Hero Banner -->
+      <section class="welcome-banner" style="padding: 16px 24px; border-radius: var(--radius-md); margin-bottom: 8px; background: linear-gradient(135deg, #0d3d22 0%, #155e34 100%);" aria-label="Information Banner">
+        <div class="welcome-banner__content" style="display:flex; align-items:center; gap:16px;">
+          <div style="font-size: 1.8rem; color: var(--green-300); display: flex; gap: 8px;" aria-hidden="true">
+            <i class="fas fa-microphone"></i>
+            <i class="fas fa-volume-up" style="font-size: 1.2rem; align-self: flex-end;"></i>
+          </div>
+          <div>
+            <h3 style="font-family:var(--font-display); font-size:0.95rem; font-weight:700; color:var(--white); margin:0 0 2px;">Ask KrishiMitra AI by Voice</h3>
+            <p style="font-size:0.8rem; color:rgba(255,255,255,0.72); margin:0;">
+              Speak your farming question naturally in Marathi, Hindi, or English and receive instant voice response guides.
+              <span style="font-weight:600; color:#fff;">No typing required. Just speak your question.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Layout Grid: Two-Column Voice Layout -->
+      <div class="nutrient-grid-layout">
+
+        <!-- LEFT COLUMN: Segmented Languages, Microphone, & Transcripts -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+
+          <!-- Card: Segmented Language Cards -->
+          <section class="dash-card" aria-labelledby="language-heading">
+            <div class="dash-card__header">
+              <h2 id="language-heading" class="dash-card__title">
+                <i class="fas fa-language" aria-hidden="true"></i>
+                Choose Your Language
+              </h2>
+            </div>
+            <div class="dash-card__body">
+              <div class="lang-radio-group" role="radiogroup" aria-label="Select speech language">
+                <div class="lang-radio-card active" data-lang="mr" role="radio" aria-checked="true" tabindex="0">
+                  <span>मराठी</span>
+                  <span class="lang-radio-card__subtitle">Marathi</span>
+                </div>
+                <div class="lang-radio-card" data-lang="hi" role="radio" aria-checked="false" tabindex="0">
+                  <span>हिन्दी</span>
+                  <span class="lang-radio-card__subtitle">Hindi</span>
+                </div>
+                <div class="lang-radio-card" data-lang="en" role="radio" aria-checked="false" tabindex="0">
+                  <span>English</span>
+                  <span class="lang-radio-card__subtitle">English</span>
+                </div>
+              </div>
+              <span id="selected-lang-label" class="crop-status-pill crop-status-pill--healthy" style="font-size:0.75rem; padding:4px 10px; display:inline-block; margin-top:4px;">Selected Language: Marathi</span>
+            </div>
+          </section>
+
+          <!-- Card: Big circular microphone recording card -->
+          <section class="dash-card" aria-labelledby="voice-input-heading">
+            <div class="dash-card__header">
+              <h2 id="voice-input-heading" class="dash-card__title">
+                <i class="fas fa-microphone" aria-hidden="true"></i>
+                Ask Your Question
+              </h2>
+            </div>
+            <div class="dash-card__body">
+              <!-- Web Speech API Browser Warning Fallback -->
+              <div id="voice-fallback-msg" class="treatment-item" style="border-left:3px solid #dc2626; display:none; margin-bottom:14px; background:#fef2f2; padding:12px 16px;">
+                <div class="treatment-item__num" style="background:#fee2e2; color:#dc2626;" aria-hidden="true"><i class="fas fa-exclamation-circle"></i></div>
+                <div class="treatment-item__text" style="padding:0;">
+                  <strong style="color:#dc2626; font-size:0.78rem;">Browser Not Supported</strong>
+                  <p style="margin:2px 0 0; font-size:0.78rem; color:var(--text-secondary);">Voice recognition is not supported in this browser. Please use a supported browser (e.g. Chrome) or type your question instead.</p>
+                </div>
+              </div>
+
+              <!-- Microphone visualizer layout -->
+              <div class="mic-container">
+                <p id="visualizer-status-text" style="font-size:0.88rem; font-weight:700; color:var(--text-secondary); margin:0;">Ready to listen</p>
+
+                <div class="mic-btn-wrap">
+                  <button type="button" id="mic-record-btn" class="mic-btn" aria-label="Start voice recording">
+                    <i class="fas fa-microphone" aria-hidden="true"></i>
+                  </button>
+                  <div class="mic-pulse-ring" aria-hidden="true"></div>
+                </div>
+
+                <div class="audio-wave-container" aria-hidden="true">
+                  <div class="audio-wave-bar"></div>
+                  <div class="audio-wave-bar"></div>
+                  <div class="audio-wave-bar"></div>
+                  <div class="audio-wave-bar"></div>
+                  <div class="audio-wave-bar"></div>
+                </div>
+
+                <span id="visualizer-duration-text" style="font-size:0.8rem; font-weight:700; font-family:monospace; color:var(--text-light);" aria-label="Voice recording duration">00:00</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Card: Editable Recognized Transcript textarea -->
+          <section class="dash-card" aria-labelledby="transcript-heading">
+            <div class="dash-card__header">
+              <h2 id="transcript-heading" class="dash-card__title">
+                <i class="fas fa-file-alt" aria-hidden="true"></i>
+                Speech-to-Text Recognized Question
+              </h2>
+            </div>
+            <div class="dash-card__body">
+              <form id="voice-input-form" novalidate aria-label="Submit recognized text form">
+                <div class="form-group" style="margin-bottom:12px;">
+                  <label class="form-label" for="recognized-transcript-input">Recognized Text (Feel free to edit if needed)</label>
+                  <textarea
+                    id="recognized-transcript-input"
+                    class="form-textarea"
+                    placeholder="Recognized words will appear here... Or you can type directly."
+                    rows="3"
+                    style="font-size:0.9rem;"
+                    aria-label="Edit speech transcript"
+                  ></textarea>
+                </div>
+
+                <!-- Action controls buttons -->
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                  <button type="submit" id="voice-query-submit-btn" class="km-btn km-btn--primary" style="flex:1;" disabled aria-label="Submit voice question to AI">
+                    <i class="fas fa-paper-plane" aria-hidden="true"></i> Ask AI
+                  </button>
+                  <button type="button" id="voice-query-clear-btn" class="km-btn km-btn--outline" aria-label="Clear recognized text input">
+                    Clear
+                  </button>
+                </div>
+              </form>
+            </div>
+          </section>
+
+          <!-- Quick Try questions suggestions buttons -->
+          <section class="dash-card" aria-labelledby="try-heading">
+            <div class="dash-card__header">
+              <h2 id="try-heading" class="dash-card__title">
+                <i class="fas fa-lightbulb" aria-hidden="true"></i>
+                Try Asking
+              </h2>
+            </div>
+            <div class="dash-card__body" style="display:flex; flex-direction:column; gap:8px;">
+              <button type="button" class="try-q-btn km-btn km-btn--ghost" data-question="माझ्या कापसाच्या पिकाला पाणी कधी द्यावे?" style="justify-content:flex-start; text-align:left; font-size:0.8rem; padding:8px 12px; border:1px solid var(--gray-200); border-radius:var(--radius-md);" aria-label="Try question: When should I irrigate my cotton crop in Marathi">
+                💡 "माझ्या कापसाच्या पिकाला पाणी कधी द्यावे?"
+              </button>
+              <button type="button" class="try-q-btn km-btn km-btn--ghost" data-question="मेरी फसल के पत्ते पीले क्यों हो रहे हैं?" style="justify-content:flex-start; text-align:left; font-size:0.8rem; padding:8px 12px; border:1px solid var(--gray-200); border-radius:var(--radius-md);" aria-label="Try question: Why are my crop leaves turning yellow in Hindi">
+                💡 "मेरी फसल के पत्ते पीले क्यों हो रहे हैं?"
+              </button>
+              <button type="button" class="try-q-btn km-btn km-btn--ghost" data-question="How can I improve my soil health?" style="justify-content:flex-start; text-align:left; font-size:0.8rem; padding:8px 12px; border:1px solid var(--gray-200); border-radius:var(--radius-md);" aria-label="Try question: How can I improve my soil health in English">
+                💡 "How can I improve my soil health?"
+              </button>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Output viewports, chats, flows, & quick links -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+
+          <!-- 1. EMPTY STATE -->
+          <div id="voice-empty-state" class="km-card" style="min-height: 520px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div class="km-empty-state">
+              <i class="fas fa-volume-up" aria-hidden="true" style="color:var(--primary);"></i>
+              <h3>No Voice Question Asked Yet</h3>
+              <p>Select your language, click the mic icon, and speak your query. Your voice responses will appear here.</p>
+            </div>
+          </div>
+
+          <!-- 2. AI MULTI-STEP LOADING PROCESSING STATE -->
+          <div id="voice-loader-sec" class="km-card" style="min-height: 520px; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 24px;">
+            <div class="ai-pulse-spinner">
+              <div class="ai-pulse-ring" aria-hidden="true"></div>
+              <div class="ai-pulse-icon" aria-hidden="true">
+                <i class="fas fa-sync fa-spin"></i>
+              </div>
+            </div>
+            <h3 class="analysis-loader__title" style="margin:0;">KrishiMitra AI is thinking...</h3>
+            <p class="analysis-loader__desc" style="margin:0 0 10px;">Please wait while AI generates your answer response.</p>
+
+            <!-- Loading checkmarks list -->
+            <div class="advisory-loading-steps" role="presentation">
+              <div id="step-voice" class="advisory-loading-step">
+                <span>Your Voice</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+              <div id="step-stt" class="advisory-loading-step">
+                <span>Speech-to-Text</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+              <div id="step-rag" class="advisory-loading-step">
+                <span>RAG Search</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+              <div id="step-ai" class="advisory-loading-step">
+                <span>AI Answer</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+              <div id="step-speech" class="advisory-loading-step">
+                <span>Speech</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. MAIN AI VOICE RESPONSE PORT (Initially Hidden) -->
+          <div id="voice-result-section" style="display: none;">
+            <div class="dash-card" style="display: flex; flex-direction: column; gap: 20px; padding: 24px;">
+
+              <!-- Overview greeting banner -->
+              <div class="welcome-banner" style="padding: 24px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #102a3a 0%, #173d54 100%);">
+                <div class="welcome-banner__content">
+                  <span class="crop-status-pill crop-status-pill--healthy" style="margin-bottom:10px; font-size:0.75rem; padding:4px 12px;">
+                    Response Ready
+                  </span>
+                  <h3 class="welcome-banner__greeting" style="font-size: 1.45rem; font-weight: 800; margin-bottom: 4px;">
+                    AI Voice Response
+                  </h3>
+                  <p class="welcome-banner__subtitle" style="font-size: 0.88rem; margin: 0; opacity: 0.9;">
+                    Voice request resolved successfully. Speech synthesis output generated below.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Active speech synthesis playback panel controls -->
+              <div id="tts-status-indicator" class="tts-controls-panel" style="display:none;" aria-live="assertive">
+                <div style="flex:1; display:flex; align-items:center; gap:8px;">
+                  <i class="fas fa-volume-up fa-beat" style="color:var(--primary);" aria-hidden="true"></i>
+                  <span id="tts-status-label" style="font-size:0.8rem; font-weight:700; color:var(--text-primary);">🔊 Speaking AI Response...</span>
+                </div>
+                <button type="button" id="btn-tts-stop" class="tts-controls-panel__btn" style="color:#dc2626;" aria-label="Cancel active voice speaking">
+                  <i class="fas fa-stop" aria-hidden="true"></i> Stop
+                </button>
+              </div>
+
+              <!-- Conversational chat message bubbles window -->
+              <section aria-labelledby="chat-bubbles-heading">
+                <h4 id="chat-bubbles-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Voice Conversation Log</h4>
+                <div id="voice-conversation-container" class="voice-chat-box" role="log" aria-label="Chat messages logs stream">
+                  <!-- Injected dynamically by voice-assistant.js -->
+                </div>
+              </section>
+
+              <!-- Safe disclaimers notes -->
+              <p style="font-size:0.7rem; color: var(--text-light); line-height: 1.45; text-align: center; margin: 4px 0 0;">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true" style="margin-right:3px;"></i>
+                <strong>Safety Disclaimer:</strong> AI-generated guidance. For precise agricultural decisions, consider verified local agricultural information, field observations, recent soil reports, and qualified agricultural guidance.
+              </p>
+
+            </div><!-- /dash-card -->
+          </div><!-- /voice-result-section -->
+
+          <!-- Card: AI + RAG architecture flow visualization -->
+          <section class="dash-card" aria-labelledby="rag-flow-heading">
+            <div class="dash-card__header">
+              <h2 id="rag-flow-heading" class="dash-card__title">
+                <i class="fas fa-sitemap" aria-hidden="true"></i>
+                How KrishiMitra AI Answers (RAG Pipeline)
+              </h2>
+            </div>
+            <div class="dash-card__body">
+              <div class="rag-sources-grid" style="grid-template-columns: 1fr; gap:12px;" role="presentation">
+                <div class="rag-source-card" style="padding:12px 14px;">
+                  <div class="rag-source-card__icon" style="background:#e0f2fe; color:#0284c7;"><i class="fas fa-wave-square"></i></div>
+                  <div class="rag-source-card__content">
+                    <span class="rag-source-card__meta" style="color:#0284c7;">Future RAG Integration Flow</span>
+                    <h5 class="rag-source-card__title" style="font-size:0.83rem; margin-bottom:2px;">Your Voice ➔ Speech-to-Text ➔ RAG Search ➔ AI Answer ➔ Speech</h5>
+                    <p class="rag-source-card__desc" style="font-size:0.75rem;">KrishiMitra AI integrates speech waveforms into verified texts, matching query keywords against official ICAR guides and research documents in the vector store before generating text-to-speech audio.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tips for better questions lists -->
+          <section class="dash-card" aria-labelledby="tips-heading">
+            <div class="dash-card__header">
+              <h2 id="tips-heading" class="dash-card__title">
+                <i class="fas fa-info-circle" aria-hidden="true"></i>
+                Tips for Better Voice Questions
+              </h2>
+            </div>
+            <div class="dash-card__body" style="padding:16px 20px;">
+              <div class="bullet-list" role="list">
+                <div class="bullet-item" role="listitem">
+                  <i class="fas fa-check-circle" style="color:var(--primary);" aria-hidden="true"></i>
+                  <span>Speak clearly and at a normal pace near the microphone.</span>
+                </div>
+                <div class="bullet-item" role="listitem">
+                  <i class="fas fa-check-circle" style="color:var(--primary);" aria-hidden="true"></i>
+                  <span>Ask one query question at a time.</span>
+                </div>
+                <div class="bullet-item" role="listitem">
+                  <i class="fas fa-check-circle" style="color:var(--primary);" aria-hidden="true"></i>
+                  <span>Include your target crop name when possible (e.g. Cotton, Tomato).</span>
+                </div>
+                <div class="bullet-item" role="listitem">
+                  <i class="fas fa-check-circle" style="color:var(--primary);" aria-hidden="true"></i>
+                  <span>Mention your location or district for better weather context.</span>
+                </div>
+                <div class="bullet-item" role="listitem">
+                  <i class="fas fa-check-circle" style="color:var(--primary);" aria-hidden="true"></i>
+                  <span>Use the language you are most comfortable with.</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+      </div><!-- /nutrient-grid-layout -->
+
+      <!-- Quick Actions Redirect Modules Cards Grid (6 pages links) -->
+      <section aria-labelledby="quick-actions-heading" style="margin-top:24px;">
+        <h3 id="quick-actions-heading" class="dash-section-title" style="margin-bottom:12px;">Quick Action Shortcuts</h3>
+        <div class="status-overview-grid" role="list">
+          <div class="status-overview-card" role="listitem" onclick="window.location.href='crop-disease.html'" style="cursor:pointer;">
+            <div class="status-overview-card__header">
+              <div class="status-overview-card__icon status-overview-card__icon--blue" aria-hidden="true"><i class="fas fa-microscope"></i></div>
+              <span class="status-overview-card__title">Disease Detection</span>
+            </div>
+            <p class="status-overview-card__desc" style="font-size:0.78rem;">Describe a crop disease symptoms verbally or upload leaf photo.</p>
+          </div>
+          <div class="status-overview-card" role="listitem" onclick="window.location.href='pest-detection.html'" style="cursor:pointer;">
+            <div class="status-overview-card__header">
+              <div class="status-overview-card__icon status-overview-card__icon--orange" aria-hidden="true"><i class="fas fa-bug"></i></div>
+              <span class="status-overview-card__title">Pest Detection</span>
+            </div>
+            <p class="status-overview-card__desc" style="font-size:0.78rem;">Identify insect pests verbally or upload crop pests images.</p>
+          </div>
+          <div class="status-overview-card" role="listitem" onclick="window.location.href='fertilizer.html'" style="cursor:pointer;">
+            <div class="status-overview-card__header">
+              <div class="status-overview-card__icon status-overview-card__icon--teal" aria-hidden="true"><i class="fas fa-vial"></i></div>
+              <span class="status-overview-card__title">Fertilizer Plans</span>
+            </div>
+            <p class="status-overview-card__desc" style="font-size:0.78rem;">Ask verbal recommendations about custom nutrient management plans.</p>
+          </div>
+          <div class="status-overview-card" role="listitem" onclick="window.location.href='irrigation.html'" style="cursor:pointer;">
+            <div class="status-overview-card__header">
+              <div class="status-overview-card__icon status-overview-card__icon--purple" aria-hidden="true"><i class="fas fa-tint"></i></div>
+              <span class="status-overview-card__title">Irrigation Needs</span>
+            </div>
+            <p class="status-overview-card__desc" style="font-size:0.78rem;">Verbally ask irrigation times and rain-expected schedules.</p>
+          </div>
+          <div class="status-overview-card" role="listitem" onclick="window.location.href='crop-advisory.html'" style="cursor:pointer;">
+            <div class="status-overview-card__header">
+              <div class="status-overview-card__icon status-overview-card__icon--green" aria-hidden="true"><i class="fas fa-brain"></i></div>
+              <span class="status-overview-card__title">Complete Advisory</span>
+            </div>
+            <p class="status-overview-card__desc" style="font-size:0.78rem;">Get compiled daily, weekly, or seasonal crop guidance lists.</p>
+          </div>
+          <div class="status-overview-card" role="listitem" onclick="window.location.href='soil-analysis.html'" style="cursor:pointer;">
+            <div class="status-overview-card__header">
+              <div class="status-overview-card__icon status-overview-card__icon--teal" aria-hidden="true"><i class="fas fa-flask"></i></div>
+              <span class="status-overview-card__title">Soil Health Reports</span>
+            </div>
+            <p class="status-overview-card__desc" style="font-size:0.78rem;">Upload laboratory reports PDFs and extract parameters values.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent voice logs table preview -->
+      <section class="analysis-card" aria-labelledby="history-table-title" style="margin-top: 24px;">
+        <div class="analysis-card__header">
+          <h2 id="history-table-title" class="dash-section-title">Recent Voice Conversations</h2>
+          <a href="history.html" class="dash-section-link" aria-label="Go to historical diagnostic list">
+            View History <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <div class="analysis-table-wrap">
+          <table class="analysis-table" aria-label="Recent voice queries table list">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Language</th>
+                <th scope="col">Recognized Speech Question</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="recent-voice-tbody">
+              <!-- Injected by voice-assistant.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Bottom padding spacing -->
+      <div style="height:24px;" aria-hidden="true"></div>
+
+    </main>
+  </div><!-- /km-app-main -->
+</div><!-- /km-app-wrapper -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED BOTTOM CHATBOT FLOATING CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="chatbot-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED FOOTER CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="footer-container"></div>
+
+<!-- Global Components Loader Script -->
+<script src="../js/components.js"></script>
+
+<!-- Voice assistant logic script -->
+<script src="../js/voice-assistant.js"></script>
+
+</body>
+</html>

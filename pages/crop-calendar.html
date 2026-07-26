@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Crop Calendar – Plan your sowing and harvesting seasons based on your district in Maharashtra. KrishiMitra AI." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Crop Calendar – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+
+  <style>
+    .cc-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .cc-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .cc-filter-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .cc-filter-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      align-items: end;
+    }
+    .cc-seasons-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .cc-season-btn {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .cc-season-btn:hover {
+      border-color: var(--primary-light);
+      transform: translateY(-2px);
+    }
+    .cc-season-btn.active {
+      background: #f0fdf4;
+      border-color: #22c55e;
+      color: #166534;
+      box-shadow: 0 4px 12px rgba(34,197,94,0.15);
+    }
+    .cc-season-btn.active i {
+      color: #22c55e;
+    }
+    .cc-season-btn i {
+      font-size: 1.5rem;
+      color: var(--text-light);
+    }
+    .cc-season-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      font-family: var(--font-display);
+    }
+    .cc-season-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .cc-crops-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    .cc-crop-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    .cc-crop-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(26,107,60,0.12);
+      border-color: #86efac;
+    }
+    .cc-crop-header {
+      padding: 20px;
+      color: var(--white);
+      position: relative;
+    }
+    .cc-crop-header--kharif {
+      background: linear-gradient(135deg, #15803d, #22c55e);
+    }
+    .cc-crop-header--rabi {
+      background: linear-gradient(135deg, #1d4ed8, #3b82f6);
+    }
+    .cc-crop-header--zaid {
+      background: linear-gradient(135deg, #b45309, #f59e0b);
+    }
+    .cc-crop-emoji {
+      font-size: 2.2rem;
+      position: absolute;
+      right: 20px;
+      top: 20px;
+    }
+    .cc-crop-name {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin: 0 0 4px;
+    }
+    .cc-crop-subtitle {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+    .cc-crop-body {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .cc-timeline-box {
+      display: flex;
+      justify-content: space-between;
+      background: #f8fafc;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 0.8rem;
+    }
+    .cc-timeline-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .cc-timeline-item span {
+      font-size: 0.65rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .cc-timeline-item strong {
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+    .cc-detail-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+    .cc-detail-row i {
+      width: 16px;
+      color: var(--primary);
+    }
+    .cc-tips-box {
+      background: #f0fdf4;
+      border-left: 4px solid #22c55e;
+      padding: 10px 14px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.78rem;
+      color: #14532d;
+      line-height: 1.45;
+    }
+    @media (max-width: 640px) {
+      .cc-seasons-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="km-app-body">
+
+<div id="sidebar-container"></div>
+
+<div class="km-app-wrapper">
+  <div class="km-app-main" id="dashboard-main">
+
+    <div id="navbar-container"></div>
+
+    <main class="km-page-content" aria-label="Crop Calendar">
+      <div class="cc-container">
+
+        <!-- Header -->
+        <header class="cc-header">
+          <div>
+            <h1 class="topbar__page-name" style="font-size:1.6rem; font-weight:800; margin:0; font-family:'Poppins',sans-serif;">Crop Sowing Calendar</h1>
+            <p style="font-size:0.85rem; color:var(--text-secondary); margin:4px 0 0;">
+              Plan your farming season. Select your district to discover the best sowing windows and harvesting timelines.
+            </p>
+          </div>
+          <span class="km-badge km-badge--green" style="font-size:0.75rem; padding:6px 14px;">
+            <i class="fas fa-calendar" aria-hidden="true" style="margin-right:4px;"></i> Agriculture Calendar
+          </span>
+        </header>
+
+        <!-- Filters -->
+        <section class="cc-filter-card">
+          <div class="cc-filter-grid">
+            <div class="form-group">
+                <label class="form-label" for="cc-district-select">Select Your District</label>
+                <select id="cc-district-select" class="form-select no-icon" style="width:100%;">
+                  <option value="" disabled selected>Select District</option>
+                </select>
+              </div>
+
+            <div class="form-group" style="grid-column: span 2;">
+              <label class="form-label">Select Farming Season</label>
+              <div class="cc-seasons-row">
+                <button type="button" class="cc-season-btn active" data-season="kharif">
+                  <i class="fas fa-cloud-showers-heavy"></i>
+                  <span class="cc-season-title">Kharif (खरीप)</span>
+                  <span class="cc-season-desc">June – Oct</span>
+                </button>
+                <button type="button" class="cc-season-btn" data-season="rabi">
+                  <i class="fas fa-snowflake"></i>
+                  <span class="cc-season-title">Rabi (रब्बी)</span>
+                  <span class="cc-season-desc">Oct – March</span>
+                </button>
+                <button type="button" class="cc-season-btn" data-season="zaid">
+                  <i class="fas fa-sun"></i>
+                  <span class="cc-season-title">Zaid (उन्हाळी)</span>
+                  <span class="cc-season-desc">March – June</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Crop Cards Display Area -->
+        <section>
+          <h3 id="calendar-results-title" style="font-family:'Poppins',sans-serif; font-size:1.15rem; font-weight:700; color:var(--text-primary); margin-bottom:16px;">
+            Recommended Crops for Nagpur in Kharif Season
+          </h3>
+          <div class="cc-crops-grid" id="cc-crops-grid">
+            <!-- Dynamic crop cards injected by JS -->
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div id="chatbot-container"></div>
+<div id="footer-container"></div>
+
+<!-- Scripts -->
+<script src="../js/components.js"></script>
+<script src="../js/crop-calendar.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Fertilizer Recommendation – Get soil nutrient analysis and organic crop fertilizer suggestions with KrishiMitra AI." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Fertilizer Recommendation – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+</head>
+<body class="km-app-body">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED SIDEBAR CONTAINER (components.js Injected)
+════════════════════════════════════════════════════════════ -->
+<div id="sidebar-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     APP LAYOUT WRAPPER
+════════════════════════════════════════════════════════════ -->
+<div class="km-app-wrapper">
+  <div class="km-app-main" id="dashboard-main">
+
+    <!-- ─────────────────────────────────────────────────────────
+         SHARED TOPBAR CONTAINER (components.js Injected)
+    ──────────────────────────────────────────────────────────── -->
+    <div id="navbar-container"></div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         MAIN CONTENT AREA
+    ──────────────────────────────────────────────────────────── -->
+    <main class="km-page-content" aria-label="AI Fertilizer Recommendation Dashboard">
+
+      <!-- Page Header -->
+      <header class="title-badge-wrap">
+        <h1 class="topbar__page-name" style="font-size:1.4rem;font-weight:800;margin:0;">AI Fertilizer Recommendation</h1>
+        <span class="ai-badge" aria-label="AI Technology Badge">Powered by AI</span>
+      </header>
+
+      <!-- Soil Report Shortcut Card -->
+      <section class="soil-report-shortcut" aria-labelledby="soil-report-shortcut-title">
+        <div class="soil-report-shortcut__content">
+          <h3 id="soil-report-shortcut-title" class="soil-report-shortcut__title">
+            <i class="fas fa-file-invoice" aria-hidden="true"></i>
+            Have a Soil Test Report?
+          </h3>
+          <p class="soil-report-shortcut__desc">
+            Upload your soil test PDF report and let KrishiMitra AI automatically extract nutrient parameters to generate precise suggestions.
+          </p>
+        </div>
+        <button
+          type="button"
+          class="soil-report-shortcut__btn"
+          onclick="window.location.href='pdf-analysis.html'"
+          aria-label="Upload and analyze soil test PDF report"
+        >
+          Analyze Soil Report <i class="fas fa-arrow-right" aria-hidden="true" style="margin-left:5px;"></i>
+        </button>
+      </section>
+
+      <!-- Informational Banner -->
+      <section class="welcome-banner" style="padding: 16px 24px; border-radius: var(--radius-md); margin-bottom: 8px; background: linear-gradient(135deg, #0d3d22 0%, #155e34 100%);" aria-label="Info Banner">
+        <div class="welcome-banner__content" style="display:flex; align-items:center; gap:16px;">
+          <div style="font-size: 1.8rem; color: var(--green-300); display: flex; gap: 8px;" aria-hidden="true">
+            <i class="fas fa-leaf"></i>
+            <i class="fas fa-flask" style="font-size: 1.2rem; align-self: flex-end;"></i>
+          </div>
+          <div>
+            <h3 style="font-family:var(--font-display); font-size:0.95rem; font-weight:700; color:var(--white); margin:0 0 2px;">Feed Your Crop Smarter</h3>
+            <p style="font-size:0.8rem; color:rgba(255,255,255,0.72); margin:0;">
+              Balanced nutrient management helps improve crop yields, avoids soil degradation, and reduces pesticide runoff.
+              <span style="font-weight:600; color:#fff;">For best results, enter recent soil test specifications below.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Layout Grid: Two-Column Form -->
+      <div class="nutrient-grid-layout">
+
+        <!-- LEFT COLUMN: Crop Details and Soil parameters -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+
+          <!-- Card 1: Crop details -->
+          <section class="dash-card" aria-labelledby="crop-info-heading">
+            <div class="dash-card__header">
+              <h2 id="crop-info-heading" class="dash-card__title">
+                <i class="fas fa-seedling" aria-hidden="true"></i>
+                Crop &amp; Environment Information
+              </h2>
+            </div>
+            <div class="dash-card__body">
+              <form id="fertilizer-recommendation-form" novalidate aria-label="Fertilizer recommendation inputs form">
+
+                <!-- Crop and soil -->
+                <div class="form-row" style="margin-bottom: 14px;">
+                  <div class="form-group">
+                    <label class="form-label" for="crop-type-select">Crop Type <span style="color:#ef4444;">*</span></label>
+                    <div class="input-wrapper">
+                      <select id="crop-type-select" name="crop" class="form-select no-icon" aria-required="true" aria-label="Select crop type">
+                        <option value="" disabled selected>Select crop type</option>
+                        <option value="cotton">Cotton</option>
+                        <option value="tomato">Tomato</option>
+                        <option value="wheat">Wheat</option>
+                        <option value="rice">Rice</option>
+                        <option value="onion">Onion</option>
+                        <option value="soybean">Soybean</option>
+                        <option value="sugarcane">Sugarcane</option>
+                        <option value="maize">Maize</option>
+                        <option value="other">Other Crop</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="soil-type-select">Soil Type <span style="color:#ef4444;">*</span></label>
+                    <div class="input-wrapper">
+                      <select id="soil-type-select" name="soil" class="form-select no-icon" aria-required="true" aria-label="Select soil type">
+                        <option value="" disabled selected>Select soil type</option>
+                        <option value="black">Black Soil</option>
+                        <option value="red">Red Soil</option>
+                        <option value="alluvial">Alluvial Soil</option>
+                        <option value="sandy">Sandy Soil</option>
+                        <option value="clay">Clay Soil</option>
+                        <option value="loamy">Loamy Soil</option>
+                        <option value="other">Other Type</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Growth Stage & Season -->
+                <div class="form-row" style="margin-bottom: 14px;">
+                  <div class="form-group">
+                    <label class="form-label" for="growth-stage-select">Growth Stage <span style="color:#ef4444;">*</span></label>
+                    <div class="input-wrapper">
+                      <select id="growth-stage-select" name="stage" class="form-select no-icon" aria-required="true" aria-label="Select growth stage">
+                        <option value="" disabled selected>Select growth stage</option>
+                        <option value="seedling">Seedling</option>
+                        <option value="vegetative">Vegetative</option>
+                        <option value="flowering">Flowering</option>
+                        <option value="fruiting">Fruiting</option>
+                        <option value="maturity">Maturity</option>
+                        <option value="harvest">Harvest Ready</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="season-select">Season <span style="color:#ef4444;">*</span></label>
+                    <div class="input-wrapper">
+                      <select id="season-select" name="season" class="form-select no-icon" aria-required="true" aria-label="Select season">
+                        <option value="" disabled selected>Select season</option>
+                        <option value="kharif">Kharif</option>
+                        <option value="rabi">Rabi</option>
+                        <option value="summer">Summer</option>
+                        <option value="other">Other Season</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- State & District -->
+                <div class="form-row" style="margin-bottom: 14px;">
+                  <div class="form-group">
+                    <label class="form-label" for="fer-state">State</label>
+                    <input type="text" id="fer-state" class="form-input no-icon" placeholder="e.g. Maharashtra" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="fer-district">District</label>
+                    <input type="text" id="fer-district" class="form-input no-icon" placeholder="e.g. Nashik" />
+                  </div>
+                </div>
+
+                <hr style="border:0; border-top:1px solid var(--dash-border); margin:20px 0;" aria-hidden="true" />
+
+                <!-- NPK Soil nutrient section -->
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                  <h3 class="form-label" style="font-size:0.9rem; font-weight:700; margin:0;">Soil Nutrient Parameters (Optional)</h3>
+                  <label class="remember-me" for="no-soil-report" style="gap:6px;">
+                    <input type="checkbox" id="no-soil-report" class="remember-me__checkbox" />
+                    <span class="remember-me__label" style="font-size:0.76rem; font-weight:600;">No soil report</span>
+                  </label>
+                </div>
+
+                <!-- Helper alert message -->
+                <div id="no-report-helper-msg" style="display: none; padding:12px; background:var(--green-50); border:1px solid var(--green-200); border-radius:var(--radius-md); margin-bottom:14px;">
+                  <p style="font-size:0.78rem; color:var(--primary); line-height:1.4; margin:0;">
+                    <i class="fas fa-info-circle" aria-hidden="true"></i> No problem! KrishiMitra will provide crop guidance, though soil-test values guarantee higher recommendation accuracy.
+                  </p>
+                </div>
+
+                <!-- Nutrient Inputs Grid -->
+                <div id="soil-nutrient-inputs-box">
+                  <div class="form-row" style="margin-bottom: 12px;">
+                    <div class="form-group">
+                      <label class="form-label" for="nutrient-n">Nitrogen (N) <span style="font-size:0.72rem;font-weight:normal;color:var(--text-light);">kg/ha</span></label>
+                      <input type="number" id="nutrient-n" class="form-input no-icon" placeholder="e.g. 45" min="0" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="nutrient-p">Phosphorus (P) <span style="font-size:0.72rem;font-weight:normal;color:var(--text-light);">kg/ha</span></label>
+                      <input type="number" id="nutrient-p" class="form-input no-icon" placeholder="e.g. 30" min="0" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="nutrient-k">Potassium (K) <span style="font-size:0.72rem;font-weight:normal;color:var(--text-light);">kg/ha</span></label>
+                      <input type="number" id="nutrient-k" class="form-input no-icon" placeholder="e.g. 50" min="0" />
+                    </div>
+                  </div>
+
+                  <div class="form-row" style="margin-bottom: 12px;">
+                    <div class="form-group">
+                      <label class="form-label" for="nutrient-ph">Soil pH Scale</label>
+                      <input type="number" id="nutrient-ph" class="form-input no-icon" placeholder="e.g. 6.5" min="0" max="14" step="0.1" />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="nutrient-carbon">Organic Carbon <span style="font-size:0.72rem;font-weight:normal;color:var(--text-light);">%</span></label>
+                      <input type="number" id="nutrient-carbon" class="form-input no-icon" placeholder="e.g. 0.45" min="0" max="10" step="0.01" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Generate Submit Button -->
+                <button
+                  type="submit"
+                  id="fertilizer-submit-btn"
+                  class="km-btn km-btn--primary"
+                  style="width: 100%; display: flex; justify-content: center; font-size: 1rem; font-weight: 700; padding: 14px; margin-top:16px;"
+                  disabled
+                  aria-label="Generate fertilizer recommendations with AI"
+                >
+                  <i class="fas fa-magic" aria-hidden="true"></i>
+                  Generate AI Recommendation
+                </button>
+
+              </form>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Output Viewport (Dynamic) -->
+        <section id="fertilizer-results-viewport" aria-live="polite" aria-relevant="all">
+
+          <!-- 1. EMPTY STATE (Default) -->
+          <div id="fertilizer-empty-state" class="km-card" style="min-height: 540px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div class="km-empty-state">
+              <i class="fas fa-flask" aria-hidden="true" style="color:var(--primary);"></i>
+              <h3>No Fertilizer Recommendation Generated Yet</h3>
+              <p>Complete the Crop &amp; Environment form on the left column to receive a personalized AI nutrient assessment report.</p>
+            </div>
+          </div>
+
+          <!-- 2. LOADING STATE -->
+          <div id="fertilizer-analysis-loader" class="km-card analysis-loader" style="min-height: 540px;">
+            <div class="ai-pulse-spinner">
+              <div class="ai-pulse-ring" aria-hidden="true"></div>
+              <div class="ai-pulse-icon" aria-hidden="true">
+                <i class="fas fa-flask"></i>
+              </div>
+            </div>
+            <h3 class="analysis-loader__title">KrishiMitra AI is compiling recommendations...</h3>
+            <p class="analysis-loader__desc">Evaluating soil nutrient constraints, matching growth stage demands, and preparing organic soil alternatives.</p>
+          </div>
+
+          <!-- 3. DETAILED RESULTS DISPLAY -->
+          <div id="fertilizer-result-section" style="display: none;">
+            <div class="dash-card" style="display: flex; flex-direction: column; gap: 20px; padding: 24px;">
+
+              <!-- Header Overview Banner -->
+              <div class="welcome-banner" style="padding: 24px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #10343a 0%, #1e4d56 100%);">
+                <div class="welcome-banner__content">
+                  <span class="crop-status-pill crop-status-pill--warning" style="margin-bottom:10px; font-size:0.75rem; padding:4px 12px;">
+                    Nutrients Need Attention
+                  </span>
+                  <h3 class="welcome-banner__greeting" style="font-size: 1.45rem; font-weight: 800; margin-bottom: 4px;">
+                    AI Fertilizer Recommendations
+                  </h3>
+                  <p class="welcome-banner__subtitle" style="font-size: 0.88rem; margin: 0; opacity: 0.9;">
+                    Customized nitrogen deficiency adjustment suggestions based on soil NPK values.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Basic details row indicators -->
+              <div class="info-box-grid">
+                <div class="info-box">
+                  <span class="info-box__label">Selected Crop</span>
+                  <span id="res-crop" class="info-box__value">Cotton</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label">Soil Type</span>
+                  <span id="res-soil" class="info-box__value">Black Soil</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label">Growth Stage</span>
+                  <span id="res-stage" class="info-box__value">Vegetative</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label">Season Category</span>
+                  <span id="res-season" class="info-box__value">Kharif</span>
+                </div>
+              </div>
+
+              <!-- Nutrient Health score meter -->
+              <div>
+                <h4 class="dash-section-title" style="margin-bottom:10px; font-size: 0.9rem;">Nutrient Health Score (Mock AI Evaluation)</h4>
+                <div class="health-score-container">
+                  <div class="health-score-circle-wrap">
+                    <span id="res-health-score">72</span><span style="font-size:0.6rem;color:var(--text-light);position:absolute;bottom:8px;">/100</span>
+                  </div>
+                  <div class="health-score-bar-wrap">
+                    <p id="res-health-status-text" style="font-size:0.85rem; font-weight:700; color:var(--text-primary); margin-bottom:6px;">Your crop's nutrient profile requires attention.</p>
+                    <div class="confidence-track" style="width:100%; height:8px; border-radius:8px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                      <div id="res-health-score-bar" class="confidence-fill" style="width: 72%; height:100%; border-radius:8px; background:var(--gradient-primary);"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- NPK Card Lists -->
+              <div>
+                <h4 class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">NPK Soil Status</h4>
+                <div class="npk-cards-wrap" role="list">
+                  <!-- Nitrogen -->
+                  <div class="npk-card npk-card--n" role="listitem">
+                    <div class="npk-card__header">
+                      <span>Nitrogen (N)</span>
+                      <span id="res-n-status" class="npk-card__status npk-card__status--deficient">Needs Attention</span>
+                    </div>
+                    <div class="npk-card__symbol npk-card__symbol--n" aria-hidden="true">N</div>
+                    <p id="res-n-desc" class="npk-card__desc">Nitrogen is important for leaf vegetative growth and green chlorophyll.</p>
+                  </div>
+                  <!-- Phosphorus -->
+                  <div class="npk-card npk-card--p" role="listitem">
+                    <div class="npk-card__header">
+                      <span>Phosphorus (P)</span>
+                      <span id="res-p-status" class="npk-card__status npk-card__status--adequate">Adequate</span>
+                    </div>
+                    <div class="npk-card__symbol npk-card__symbol--p" aria-hidden="true">P</div>
+                    <p id="res-p-desc" class="npk-card__desc">Phosphorus is crucial for seedling root extension and flower setting.</p>
+                  </div>
+                  <!-- Potassium -->
+                  <div class="npk-card npk-card--k" role="listitem">
+                    <div class="npk-card__header">
+                      <span>Potassium (K)</span>
+                      <span id="res-k-status" class="npk-card__status npk-card__status--adequate">Adequate</span>
+                    </div>
+                    <div class="npk-card__symbol npk-card__symbol--k" aria-hidden="true">K</div>
+                    <p id="res-k-desc" class="npk-card__desc">Potassium is essential for plant water absorption and stem structural rigidity.</p>
+                  </div>
+                </div>
+              </div>
+
+              <hr style="border: 0; border-top: 1px solid var(--dash-border); margin: 6px 0;" aria-hidden="true" />
+
+              <!-- Recommended fertilizer details -->
+              <div>
+                <h4 class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Recommended Fertilizer Guidance</h4>
+                <div class="treatment-list">
+                  <div class="treatment-item" style="border-left:3px solid var(--primary);">
+                    <div class="treatment-item__num" aria-hidden="true"><i class="fas fa-vial"></i></div>
+                    <div class="treatment-item__text" style="padding:0;">
+                      <strong style="font-size:0.75rem; text-transform:uppercase; color:var(--primary); display:block; margin-bottom:2px;">Fertilizer Category Focus</strong>
+                      <span id="res-guidance-cat" style="font-size:0.86rem; color:var(--text-secondary);">Nitrogen-focused fertilizer</span>
+                    </div>
+                  </div>
+                  <div class="treatment-item" style="border-left:3px solid var(--primary);">
+                    <div class="treatment-item__num" aria-hidden="true"><i class="fas fa-hand-holding-water"></i></div>
+                    <div class="treatment-item__text" style="padding:0;">
+                      <strong style="font-size:0.75rem; text-transform:uppercase; color:var(--primary); display:block; margin-bottom:2px;">Application Method</strong>
+                      <span id="res-guidance-method" style="font-size:0.86rem; color:var(--text-secondary);">Follow soil-test-based and crop-specific recommendations.</span>
+                    </div>
+                  </div>
+                  <div class="treatment-item" style="border-left:3px solid var(--primary);">
+                    <div class="treatment-item__num" aria-hidden="true"><i class="fas fa-clock"></i></div>
+                    <div class="treatment-item__text" style="padding:0;">
+                      <strong style="font-size:0.75rem; text-transform:uppercase; color:var(--primary); display:block; margin-bottom:2px;">Application Timing</strong>
+                      <span id="res-guidance-timing" style="font-size:0.86rem; color:var(--text-secondary);">Based on crop growth stage and local agricultural guidance.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Organic alternatives -->
+              <div>
+                <h4 class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Organic Alternatives</h4>
+                <div id="res-organic-alternatives-grid" class="organic-grid" role="list">
+                  <!-- Injected by JS -->
+                </div>
+              </div>
+
+              <!-- Application Best Practices -->
+              <div>
+                <h4 class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Smart Nutrient Practices</h4>
+                <div id="res-best-practices-list" class="bullet-list" role="list">
+                  <!-- Injected by JS -->
+                </div>
+              </div>
+
+              <!-- AI Box highlighted Advisory Banner -->
+              <div class="ai-recommendation-box">
+                <div class="ai-recommendation-box__header">
+                  <i class="fas fa-robot" aria-hidden="true"></i>
+                  <span>KrishiMitra AI Recommendation Summary</span>
+                </div>
+                <p class="ai-recommendation-box__desc">
+                  Focus on balanced nutrient management. Avoid excessive Nitrogen as it leads to weak stems. Always follow soil test summaries, approved product safety labels, and local agricultural guides.
+                </p>
+                <div style="display:flex; gap:12px; flex-wrap:wrap;">
+                  <button type="button" class="km-btn km-btn--outline km-btn--sm" onclick="window.location.href='chatbot.html?topic=Fertilizer'" aria-label="Query chatbot regarding fertilizer advice">
+                    <i class="fas fa-comments" aria-hidden="true"></i> Ask AI About Fertilizer
+                  </button>
+                  <button type="button" class="km-btn km-btn--outline km-btn--sm" onclick="window.location.href='pdf-analysis.html'" aria-label="Navigate to soil report analyzer page">
+                    <i class="fas fa-file-invoice" aria-hidden="true"></i> Analyze Soil Report
+                  </button>
+                  <button type="button" id="btn-fer-expert" class="km-btn km-btn--outline km-btn--sm" aria-label="Connect to a farm expert">
+                    <i class="fas fa-user-tie" aria-hidden="true"></i> Get Expert Guidance
+                  </button>
+                </div>
+              </div>
+
+              <!-- Disclaimer -->
+              <p style="font-size:0.7rem; color: var(--text-light); line-height: 1.45; text-align: center; margin: 4px 0 0;">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true" style="margin-right:3px;"></i>
+                <strong>Disclaimer:</strong> AI recommendations are educational guidance. For exact dosage applications, consult local extension agents or agricultural officers.
+              </p>
+
+              <hr style="border: 0; border-top: 1px solid var(--dash-border); margin: 4px 0;" aria-hidden="true" />
+
+              <!-- Bottom Action Controls -->
+              <div class="actions-wrap">
+                <button type="button" id="btn-fer-another" class="km-btn km-btn--outline" aria-label="Reset form to enter new parameters">
+                  <i class="fas fa-redo-alt" aria-hidden="true"></i> Generate New Recommendation
+                </button>
+                <button type="button" id="btn-fer-save" class="km-btn km-btn--primary" aria-label="Save this recommendation output to history profile">
+                  <i class="fas fa-save" aria-hidden="true"></i> Save Recommendation
+                </button>
+                <button type="button" id="btn-fer-download" class="km-btn km-btn--ghost" style="color:var(--text-primary); border:1px solid var(--gray-300);" aria-label="Download PDF report summary">
+                  <i class="fas fa-file-pdf" aria-hidden="true"></i> Download Report
+                </button>
+              </div>
+
+            </div><!-- /dash-card -->
+          </div><!-- /fertilizer-result-section -->
+
+        </section><!-- /fertilizer-results-viewport -->
+
+      </div><!-- /nutrient-grid-layout -->
+
+      <!-- Recent logs table -->
+      <section class="analysis-card" aria-labelledby="history-table-title" style="margin-top: 24px;">
+        <div class="analysis-card__header">
+          <h2 id="history-table-title" class="dash-section-title">Recent Fertilizer Recommendations</h2>
+          <a href="history.html" class="dash-section-link" aria-label="Go to historical diagnostic list">
+            View History <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <div class="analysis-table-wrap">
+          <table class="analysis-table" aria-label="History logs table">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Crop</th>
+                <th scope="col">Growth Stage</th>
+                <th scope="col">Nutrient Status</th>
+                <th scope="col">Recommendation Status</th>
+              </tr>
+            </thead>
+            <tbody id="recent-fertilizers-tbody">
+              <!-- Injected by JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Bottom padding -->
+      <div style="height:24px;" aria-hidden="true"></div>
+
+    </main>
+  </div><!-- /km-app-main -->
+</div><!-- /km-app-wrapper -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED BOTTOM CHATBOT FLOATING CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="chatbot-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED FOOTER CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="footer-container"></div>
+
+<!-- Global Components Loader Script -->
+<script src="../js/components.js"></script>
+
+<!-- PDF Export Engine -->
+<script src="../js/pdf-generator.js"></script>
+
+<!-- Fertilizer specific script -->
+<script src="../js/fertilizer.js"></script>
+
+</body>
+</html>

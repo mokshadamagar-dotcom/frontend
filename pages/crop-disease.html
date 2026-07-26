@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Crop Disease Detection – Upload crop images to detect plant disease and pest symptoms with KrishiMitra AI." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Crop Disease Detection – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets: core → components → dashboard/app layout -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+</head>
+<body class="km-app-body">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED SIDEBAR CONTAINER (Injected by components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="sidebar-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     APP LAYOUT WRAPPER
+════════════════════════════════════════════════════════════ -->
+<div class="km-app-wrapper">
+  <div class="km-app-main" id="dashboard-main">
+
+    <!-- ─────────────────────────────────────────────────────────
+         SHARED TOPBAR CONTAINER (Injected by components.js)
+    ──────────────────────────────────────────────────────────── -->
+    <div id="navbar-container"></div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         MAIN CONTENT AREA
+    ──────────────────────────────────────────────────────────── -->
+    <main class="km-page-content" aria-label="Crop disease detection interface">
+
+      <!-- Page Header -->
+      <header class="title-badge-wrap">
+        <h1 class="topbar__page-name" style="font-size:1.4rem;font-weight:800;margin:0;">AI Crop Disease Detection</h1>
+        <span class="ai-badge" aria-label="AI Technology Badge">Powered by AI</span>
+      </header>
+
+      <!-- Layout Grid: Two-Column (Left: Input & Upload / Right: Analysis Results or Empty State) -->
+      <div class="crop-disease-container">
+
+        <!-- LEFT PANEL: Image Upload & Crop Details Form -->
+        <section class="dash-card" aria-labelledby="upload-card-title">
+          <div class="dash-card__header">
+            <h2 id="upload-card-title" class="dash-card__title">
+              <i class="fas fa-camera" aria-hidden="true"></i>
+              Upload Your Crop Image
+            </h2>
+          </div>
+
+          <div class="dash-card__body">
+            <form id="disease-detection-form" novalidate aria-label="Crop disease upload form">
+
+              <!-- Drag & Drop Upload Zone -->
+              <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label" for="crop-file-input">Crop Leaf Image</label>
+
+                <!-- Upload zone acting as interactive element -->
+                <div id="upload-zone" class="upload-zone" role="button" tabindex="0" aria-label="Upload crop image. Drag and drop file here, or click to browse files.">
+                  <div id="upload-placeholder" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                    <i class="fas fa-cloud-upload-alt upload-zone__icon" aria-hidden="true"></i>
+                    <span class="upload-zone__title">Drag &amp; Drop crop image here</span>
+                    <span class="upload-zone__desc">Supports: JPG, JPEG, PNG, WEBP<br />Max file size: 10 MB</span>
+                    <button type="button" class="upload-zone__browse-btn" aria-hidden="true">Browse Device</button>
+                  </div>
+
+                  <!-- Image Preview Box (Hidden by default) -->
+                  <div id="preview-box" class="preview-container" style="display: none; width: 100%;">
+                    <div class="preview-image-wrap">
+                      <img id="preview-img" class="preview-image" src="" alt="Selected crop leaf preview" />
+                    </div>
+                    <div class="preview-details">
+                      <div class="preview-meta">
+                        <span id="preview-filename" class="preview-filename">crop-leaf.jpg</span>
+                        <span id="preview-filesize" class="preview-filesize">2.4 MB</span>
+                      </div>
+                      <div class="preview-actions">
+                        <button type="button" id="change-image-btn" class="km-btn km-btn--outline km-btn--sm" aria-label="Change selected image">Change</button>
+                        <button type="button" id="remove-preview-btn" class="preview-btn--remove" aria-label="Remove selected image">
+                          <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Real Hidden Input File -->
+                <input
+                  type="file"
+                  id="crop-file-input"
+                  name="crop_image"
+                  accept="image/jpeg, image/jpg, image/png, image/webp"
+                  style="display: none;"
+                  aria-required="true"
+                />
+              </div>
+
+              <!-- Crop Details Dropdowns -->
+              <div class="form-row" style="margin-bottom: 16px;">
+                <!-- Crop Type -->
+                <div class="form-group">
+                  <label class="form-label" for="crop-type-select">Crop Type (Optional)</label>
+                  <div class="input-wrapper">
+                    <select id="crop-type-select" name="crop_type" class="form-select no-icon" aria-label="Select crop type">
+                      <option value="" selected>Select crop type</option>
+                      <option value="cotton">Cotton</option>
+                      <option value="tomato">Tomato</option>
+                      <option value="wheat">Wheat</option>
+                      <option value="rice">Rice</option>
+                      <option value="onion">Onion</option>
+                      <option value="soybean">Soybean</option>
+                      <option value="sugarcane">Sugarcane</option>
+                      <option value="other">Other Crop</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Growth Stage -->
+                <div class="form-group">
+                  <label class="form-label" for="growth-stage-select">Plant Growth Stage (Optional)</label>
+                  <div class="input-wrapper">
+                    <select id="growth-stage-select" name="growth_stage" class="form-select no-icon" aria-label="Select growth stage">
+                      <option value="" selected>Select growth stage</option>
+                      <option value="seedling">Seedling</option>
+                      <option value="vegetative">Vegetative</option>
+                      <option value="flowering">Flowering</option>
+                      <option value="fruiting">Fruiting</option>
+                      <option value="harvest">Harvest Ready</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Location Details -->
+              <div class="form-row" style="margin-bottom: 12px;">
+                <!-- State -->
+                <div class="form-group">
+                  <label class="form-label" for="state-input">State</label>
+                  <input type="text" id="state-input" class="form-input no-icon" placeholder="e.g. Maharashtra" />
+                </div>
+                <!-- District -->
+                <div class="form-group">
+                  <label class="form-label" for="district-input">District</label>
+                  <input type="text" id="district-input" class="form-input no-icon" placeholder="e.g. Nashik" />
+                </div>
+              </div>
+
+              <!-- Help Text -->
+              <div style="margin-bottom: 24px;">
+                <p class="form-hint" style="color: var(--text-light); line-height: 1.4;">
+                  <i class="fas fa-info-circle" aria-hidden="true" style="color: var(--primary); margin-right: 5px;"></i>
+                  Providing crop type, growth stage, and location can help improve future AI diagnosis recommendations.
+                </p>
+              </div>
+
+              <!-- Analyze Button -->
+              <button
+                type="submit"
+                id="analyze-submit-btn"
+                class="km-btn km-btn--primary"
+                style="width: 100%; display: flex; justify-content: center; font-size: 1rem; font-weight: 700; padding: 14px;"
+                disabled
+                aria-label="Analyze crop image with AI"
+              >
+                <i class="fas fa-brain" aria-hidden="true"></i>
+                Analyze Crop with AI
+              </button>
+
+            </form>
+          </div>
+        </section>
+
+        <!-- RIGHT PANEL: Result Viewport (Dynamic) -->
+        <section id="results-viewport" aria-live="polite" aria-relevant="all">
+
+          <!-- 1. EMPTY STATE (Default: Visible before selection) -->
+          <div id="analysis-empty-state" class="km-card" style="min-height: 480px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div class="km-empty-state">
+              <i class="fas fa-leaf" aria-hidden="true"></i>
+              <h3>No Crop Image Analyzed Yet</h3>
+              <p>Upload a clear crop leaf image in the left panel to trigger the AI-powered health diagnosis assessment.</p>
+            </div>
+          </div>
+
+          <!-- 2. AI PROCESSING LOADER (Hidden by default) -->
+          <div id="analysis-loader" class="km-card analysis-loader" style="min-height: 480px;">
+            <div class="ai-pulse-spinner">
+              <div class="ai-pulse-ring" aria-hidden="true"></div>
+              <div class="ai-pulse-icon" aria-hidden="true">
+                <i class="fas fa-brain"></i>
+              </div>
+            </div>
+            <h3 class="analysis-loader__title">KrishiMitra AI is analyzing your crop...</h3>
+            <p class="analysis-loader__desc">Detecting plant diseases, assessing symptoms, and determining possible organic treatments.</p>
+          </div>
+
+          <!-- 3. AI ANALYSIS RESULT SECTION (Hidden by default) -->
+          <div id="analysis-result-section" style="display: none;">
+            <div class="dash-card" style="display: flex; flex-direction: column; gap: 20px; padding: 24px;">
+
+              <!-- Header Overview -->
+              <div class="welcome-banner" style="padding: 24px; border-radius: var(--radius-lg);">
+                <div class="welcome-banner__content">
+                  <span class="crop-status-pill crop-status-pill--warning" style="margin-bottom:10px;font-size:0.75rem;padding:4px 12px;" id="res-status-badge">
+                    Needs Attention
+                  </span>
+                  <h3 class="welcome-banner__greeting" style="font-size: 1.50rem; font-weight: 800; margin-bottom: 4px;">
+                    Leaf Spot Detected
+                  </h3>
+                  <p class="welcome-banner__subtitle" style="font-size: 0.88rem; margin: 0; opacity: 0.9;">
+                    AI identified moderate infection patterns in your uploaded leaf image.
+                  </p>
+                </div>
+                <div class="welcome-banner__weather" style="padding:14px 20px; min-width:130px; background: rgba(255,255,255,0.12);">
+                  <span style="font-size:0.7rem;text-transform:uppercase;color:rgba(255,255,255,0.7);display:block;margin-bottom:2px;font-weight:700;">Confidence</span>
+                  <div class="welcome-banner__temp" id="res-confidence" style="font-size: 1.9rem; font-weight: 900; margin: 0;">92%</div>
+                  <!-- Progress Indicator -->
+                  <div class="confidence-track" style="width: 100%; height: 5px; background: rgba(255,255,255,0.2); border-radius: 5px; margin-top: 6px; overflow: hidden;" aria-hidden="true">
+                    <div id="res-confidence-bar" class="confidence-fill" style="width: 92%; height: 100%; background: #86efac; border-radius: 5px;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Disease Grid Stats -->
+              <div class="info-box-grid">
+                <div class="info-box">
+                  <span class="info-box__label">Crop Category</span>
+                  <span id="res-crop" class="info-box__value">Cotton</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label">Diagnosis</span>
+                  <span id="res-disease" class="info-box__value">Leaf Spot</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label">Severity Level</span>
+                  <span id="res-severity" class="severity-tag severity-tag--moderate">Moderate</span>
+                </div>
+                <div class="info-box">
+                  <span class="info-box__label">AI Status</span>
+                  <span class="info-box__value" style="color:var(--gold);">Needs Attention</span>
+                </div>
+              </div>
+
+              <!-- Two-Column Result Details -->
+              <div class="result-grid-panels">
+                <!-- Symptoms panel -->
+                <div>
+                  <h4 class="dash-section-title" style="margin-bottom:12px; font-size: 0.92rem;">Detected Symptoms</h4>
+                  <div id="res-symptoms-list" class="bullet-list" role="list">
+                    <!-- Populated by JS -->
+                  </div>
+                </div>
+
+                <!-- Possible causes panel -->
+                <div>
+                  <h4 class="dash-section-title" style="margin-bottom:12px; font-size: 0.92rem;">Possible Causes</h4>
+                  <div id="res-causes-list" class="bullet-list" role="list">
+                    <!-- Populated by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <hr style="border: 0; border-top: 1px solid var(--dash-border); margin: 6px 0;" aria-hidden="true" />
+
+              <!-- Recommended Treatment -->
+              <div>
+                <h4 class="dash-section-title" style="margin-bottom:12px; font-size: 0.92rem;">Recommended Treatment Advisory</h4>
+                <div id="res-treatment-list" class="treatment-list" role="list">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- Prevention Tips -->
+              <div>
+                <h4 class="dash-section-title" style="margin-bottom:12px; font-size: 0.92rem;">Prevention Tips</h4>
+                <div id="res-prevention-list" class="prevention-grid" role="list">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <!-- AI Box Banner Recommendation -->
+              <div class="ai-recommendation-box">
+                <div class="ai-recommendation-box__header">
+                  <i class="fas fa-robot" aria-hidden="true"></i>
+                  <span>KrishiMitra AI Recommendation</span>
+                </div>
+                <p class="ai-recommendation-box__desc">
+                  Monitor the affected crop closely over the next few days. If symptoms spread rapidly across your field, consult a local agricultural extension officer for diagnostic verification and precise chemical guidelines.
+                </p>
+                <button type="button" id="btn-get-expert" class="km-btn km-btn--outline km-btn--sm" style="width:fit-content;align-self:flex-start;">
+                  <i class="fas fa-user-tie" aria-hidden="true"></i> Get Expert Guidance
+                </button>
+              </div>
+
+              <!-- Disclaimer -->
+              <p style="font-size:0.7rem; color: var(--text-light); line-height: 1.4; text-align: center; margin: 4px 0 0;">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true" style="margin-right:3px;"></i>
+                <strong>Disclaimer:</strong> AI-generated diagnosis results are for informational demo purposes. Always refer to local agriculture guides and label specifications before treatments.
+              </p>
+
+              <hr style="border: 0; border-top: 1px solid var(--dash-border); margin: 6px 0;" aria-hidden="true" />
+
+              <!-- Primary Action Controls -->
+              <div class="actions-wrap">
+                <button type="button" id="btn-analyze-another" class="km-btn km-btn--outline" aria-label="Prune current analysis and scan another crop image">
+                  <i class="fas fa-redo-alt" aria-hidden="true"></i> Analyze Another Image
+                </button>
+                <button type="button" id="btn-save-history" class="km-btn km-btn--primary" aria-label="Save this diagnostic result to history record">
+                  <i class="fas fa-save" aria-hidden="true"></i> Save to History
+                </button>
+                <button type="button" id="btn-download-report" class="km-btn km-btn--ghost" style="color:var(--text-primary);border:1px solid var(--gray-300);" aria-label="Generate and download PDF crop advisory report">
+                  <i class="fas fa-file-pdf" aria-hidden="true"></i> Download Report
+                </button>
+                <button type="button" id="btn-ask-chat" class="km-btn km-btn--ghost" style="color:var(--text-primary);border:1px solid var(--gray-300);" aria-label="Query KrishiMitra Chatbot regarding this diagnosed disease">
+                  <i class="fas fa-comments" aria-hidden="true"></i> Ask AI Chatbot
+                </button>
+              </div>
+
+            </div><!-- /dash-card -->
+          </div><!-- /analysis-result-section -->
+
+        </section><!-- /results-viewport -->
+
+      </div><!-- /crop-disease-container -->
+
+      <!-- Recent Crop Disease Analyses Grid Table -->
+      <section class="analysis-card" aria-labelledby="history-table-title" style="margin-top: 24px;">
+        <div class="analysis-card__header">
+          <h2 id="history-table-title" class="dash-section-title">Recent Disease Analyses</h2>
+          <a href="history.html" class="dash-section-link" aria-label="View entire plant analysis logs">
+            View Full History <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <div class="analysis-table-wrap">
+          <table class="analysis-table" aria-label="Historical disease analyses log">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Crop</th>
+                <th scope="col">Detected Condition</th>
+                <th scope="col">Confidence</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="recent-analyses-tbody">
+              <!-- Mock elements generated by crop-disease.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Extra spacing bottom -->
+      <div style="height:24px;" aria-hidden="true"></div>
+
+    </main>
+  </div><!-- /km-app-main -->
+</div><!-- /km-app-wrapper -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED BOTTOM CHATBOT FLOATING CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="chatbot-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED FOOTER CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="footer-container"></div>
+
+<!-- Global Components Loader Script -->
+<script src="../js/components.js"></script>
+
+<!-- PDF Export Engine -->
+<script src="../js/pdf-generator.js"></script>
+
+<!-- Crop Disease specific logic -->
+<script src="../js/crop-disease.js"></script>
+
+</body>
+</html>

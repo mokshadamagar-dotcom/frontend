@@ -1,0 +1,826 @@
+/* ============================================================
+   KrishiMitra AI – pest-detection.css
+   Pest Radar Dashboard stylesheet
+   ============================================================ */
+
+/* Layout structure */
+.pest-radar-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .pest-radar-grid {
+    grid-template-columns: 380px 1fr;
+    align-items: start;
+  }
+}
+
+/* Upload Dropzone styling */
+.upload-zone {
+  position: relative;
+  border: 2px dashed #bbf7d0;
+  background: #f0fdf4;
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.upload-zone:hover, .upload-zone.dragover {
+  border-color: #22c55e;
+  background: #dcfce7;
+  transform: scale(1.01);
+}
+
+.upload-zone__icon {
+  font-size: 2.5rem;
+  color: #16a34a;
+  margin-bottom: 12px;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.upload-zone__title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #14532d;
+  margin-bottom: 4px;
+}
+
+.upload-zone__desc {
+  font-size: 0.78rem;
+  color: #4b5563;
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.upload-zone__browse-btn {
+  background: #ffffff;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+}
+
+.upload-zone__browse-btn:hover {
+  background: #16a34a;
+  color: #ffffff;
+  border-color: #16a34a;
+}
+
+/* Image preview box styling */
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.preview-image-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: 1px solid #e5e7eb;
+  background: #000;
+}
+
+.preview-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.preview-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.preview-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.preview-filename {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #374151;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.preview-filesize {
+  font-size: 0.72rem;
+  color: #6b7280;
+}
+
+.preview-btn--remove {
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.preview-btn--remove:hover {
+  background: #fca5a5;
+  transform: scale(1.05);
+}
+
+/* Dynamic steps loading animation */
+.analysis-loader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.ai-pulse-spinner {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 24px;
+}
+
+.ai-pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(22, 163, 74, 0.15);
+  animation: pulseRing 1.8s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+}
+
+.ai-pulse-icon {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #16a34a;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 10px rgba(22,163,74,0.3);
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.25); opacity: 0.3; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.analysis-loader__steps {
+  width: 100%;
+  max-width: 300px;
+  text-align: left;
+  margin: 24px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.analysis-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: #6b7280;
+  transition: all 0.3s ease;
+}
+
+.analysis-step.active {
+  color: #111827;
+  font-weight: 600;
+}
+
+.analysis-step.completed {
+  color: #16a34a;
+}
+
+.analysis-step__icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background: #f3f4f6;
+  font-size: 0.72rem;
+  transition: all 0.3s ease;
+}
+
+.analysis-step.active .analysis-step__icon {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.analysis-step.completed .analysis-step__icon {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+/* Result Card styling */
+.result-header-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: linear-gradient(135deg, #14532d, #064e3b);
+  color: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(20,83,45,0.15);
+}
+
+@media (min-width: 640px) {
+  .result-header-card {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.result-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.result-pest-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.result-pest-subtitle {
+  font-size: 0.88rem;
+  color: #dcfce7;
+}
+
+.result-stat-badge {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.result-stat-badge__label {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  color: #a7f3d0;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  display: block;
+}
+
+.result-stat-badge__value {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #ffffff;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Severity Indicator */
+.severity-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.severity--low { background: #dcfce7; color: #166534; }
+.severity--moderate { background: #fef3c7; color: #92400e; }
+.severity--high { background: #fee2e2; color: #991b1b; }
+.severity--critical { background: #fca5a5; color: #7f1d1d; }
+
+/* Progress bar confidence score style */
+.confidence-box {
+  margin-top: 12px;
+}
+
+.confidence-bar {
+  height: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.confidence-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ade80, #22c55e);
+  border-radius: 999px;
+  transition: width 1s ease-out;
+}
+
+/* Expanding panels / details styling */
+.pest-expandable-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  transition: all 0.22s ease;
+}
+
+.pest-expandable-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.pest-expandable-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  cursor: pointer;
+  background: #f8fafc;
+  user-select: none;
+}
+
+.pest-expandable-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pest-expandable-title i {
+  color: #16a34a;
+  font-size: 1rem;
+}
+
+.pest-expandable-toggle {
+  font-size: 0.8rem;
+  color: #64748b;
+  transition: transform 0.22s ease;
+}
+
+.pest-expandable-card.open .pest-expandable-toggle {
+  transform: rotate(180deg);
+}
+
+.pest-expandable-content {
+  display: none;
+  padding: 20px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 0.88rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.pest-expandable-card.open .pest-expandable-content {
+  display: block;
+}
+
+/* Bullet list override for premium visual */
+.pest-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pest-bullet-list li {
+  position: relative;
+  padding-left: 24px;
+}
+
+.pest-bullet-list li::before {
+  content: '\f058';
+  font-family: 'Font Awesome 6 Free';
+  font-weight: 900;
+  position: absolute;
+  left: 0;
+  top: 1px;
+  color: #16a34a;
+  font-size: 0.9rem;
+}
+
+/* Pest risk score card styles */
+.risk-score-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  background: #fcfdfc;
+  border: 1px solid #e2ebd5;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.risk-gauge-box {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin-bottom: 12px;
+}
+
+.risk-gauge-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.risk-value {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1e293b;
+  line-height: 1;
+}
+
+.risk-max {
+  font-size: 0.72rem;
+  color: #64748b;
+  display: block;
+  margin-top: 2px;
+}
+
+.risk-gauge-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.risk-label--low { color: #16a34a; }
+.risk-label--moderate { color: #d97706; }
+.risk-label--high { color: #dc2626; }
+.risk-label--critical { color: #991b1b; }
+
+/* Control advisory recommendations styling */
+.control-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.control-tab-btn {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.control-tab-btn.active {
+  background: #16a34a;
+  color: #ffffff;
+  border-color: #16a34a;
+  box-shadow: 0 4px 10px rgba(22,163,74,0.15);
+}
+
+.control-content-panel {
+  display: none;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.control-content-panel.active {
+  display: block;
+}
+
+.chemical-alert-box {
+  background: #fffbeb;
+  border-left: 4px solid #d97706;
+  padding: 12px 16px;
+  border-radius: 0 8px 8px 0;
+  font-size: 0.78rem;
+  color: #78350f;
+  margin-top: 14px;
+  line-height: 1.45;
+}
+
+.chemical-alert-box i {
+  margin-right: 6px;
+  color: #d97706;
+}
+
+/* Integrated Crop Advisory, Chatbot and Voice Row buttons */
+.integration-card-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.integration-btn-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.integration-btn-card:hover {
+  transform: translateY(-2px);
+  border-color: #16a34a;
+  box-shadow: 0 8px 20px rgba(22,163,74,0.06);
+}
+
+.integration-btn-card__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.15rem;
+  flex-shrink: 0;
+}
+
+.icon-bg--green { background: #dcfce7; color: #16a34a; }
+.icon-bg--blue { background: #dbeafe; color: #2563eb; }
+.icon-bg--purple { background: #f3e8ff; color: #7c3aed; }
+
+.integration-btn-card__texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.integration-btn-card__title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.integration-btn-card__desc {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Pest Radar Map section styling */
+.pest-map-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 24px;
+}
+
+.pest-map-visual {
+  position: relative;
+  height: 250px;
+  background-color: #e2e8f0;
+  background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+  overflow: hidden;
+}
+
+.map-radar-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  height: 180px;
+  border: 1.5px solid rgba(22,163,74,0.2);
+  border-radius: 50%;
+}
+
+.map-radar-circle--2 { width: 320px; }
+.map-radar-circle--3 { width: 460px; }
+
+.map-radar-sweep {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: conic-gradient(from 0deg, rgba(22,163,74,0.15) 0deg, rgba(22,163,74,0) 120deg);
+  animation: radarSweep 8s linear infinite;
+  transform-origin: center;
+  pointer-events: none;
+}
+
+@keyframes radarSweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.pest-outbreak-hotspot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.pest-outbreak-hotspot:hover {
+  transform: scale(1.3);
+  z-index: 10;
+}
+
+.hotspot--high {
+  background: #dc2626;
+  box-shadow: 0 0 0 4px rgba(220,38,38,0.25), 0 0 10px #dc2626;
+  animation: pulseHotspot 2s infinite;
+}
+
+.hotspot--moderate {
+  background: #ea580c;
+  box-shadow: 0 0 0 4px rgba(234,88,12,0.25), 0 0 10px #ea580c;
+  animation: pulseHotspot 2s infinite;
+}
+
+.hotspot--low {
+  background: #16a34a;
+  box-shadow: 0 0 0 4px rgba(22,163,74,0.25);
+}
+
+@keyframes pulseHotspot {
+  0% { transform: scale(1); box-shadow: 0 0 0 0px rgba(220,38,38,0.5); }
+  70% { transform: scale(1.1); box-shadow: 0 0 0 8px rgba(220,38,38,0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0px rgba(220,38,38,0); }
+}
+
+.map-tooltip-overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: rgba(15,23,42,0.9);
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255,255,255,0.1);
+  max-width: 200px;
+}
+
+/* Local pest risk info & weather widgets */
+.local-risk-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+@media (min-width: 640px) {
+  .local-risk-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.local-risk-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.local-risk-box__header {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 8px;
+  letter-spacing: 0.04em;
+}
+
+.local-risk-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  color: #334155;
+  padding: 6px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.local-risk-stat-row:last-child {
+  border-bottom: none;
+}
+
+.local-risk-stat-row strong {
+  color: #0f172a;
+}
+
+/* AI Smart Alert style */
+.ai-smart-alert {
+  background: #fef2f2;
+  border: 1px solid #fee2e2;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  border-left: 5px solid #ef4444;
+}
+
+.ai-smart-alert__icon {
+  font-size: 1.5rem;
+  color: #dc2626;
+  flex-shrink: 0;
+}
+
+.ai-smart-alert__title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #991b1b;
+  margin-bottom: 4px;
+}
+
+.ai-smart-alert__desc {
+  font-size: 0.78rem;
+  color: #7f1d1d;
+  line-height: 1.45;
+}
+
+.ai-smart-alert__action {
+  background: #991b1b;
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.ai-smart-alert__action:hover {
+  background: #7f1d1d;
+}

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings & Profile – KrishiMitra AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+  <style>
+    :root {
+      --bg: #0a0f1e;
+      --surface: #1e293b;
+      --border: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --green: #22c55e;
+      --radius: 16px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      background:linear-gradient(135deg, var(--bg) 0%, #0f172a 60%, #0d1a12 100%);
+      min-height:100vh;color:var(--text);font-family:'Inter',sans-serif;
+    }
+
+    /* TOPNAV */
+    .st-topnav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 28px;background:rgba(15,23,42,0.96);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+      position:sticky;top:0;z-index:100;
+    }
+    .st-topnav__logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);}
+    .st-topnav__logo-icon{
+      width:36px;height:36px;border-radius:9px;
+      background:linear-gradient(135deg,var(--green),#16a34a);
+      display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;
+    }
+    .st-topnav__logo span{font-weight:700;}
+    .st-topnav__back{
+      display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;
+      background:rgba(34,197,94,0.1);color:var(--green);text-decoration:none;
+      font-size:0.82rem;font-weight:600;border:1px solid rgba(34,197,94,0.25);
+      transition:all .2s;
+    }
+    .st-topnav__back:hover{background:rgba(34,197,94,0.2);}
+
+    /* MAIN */
+    .st-main{
+      max-width:960px;margin:0 auto;padding:40px 24px 80px;
+      display:grid;grid-template-columns:260px 1fr;gap:32px;
+    }
+    @media(max-width:800px){.st-main{grid-template-columns:1fr;}}
+
+    /* SIDEBAR */
+    .st-sidebar{display:flex;flex-direction:column;gap:8px;}
+    .st-tab{
+      padding:14px 18px;border-radius:12px;font-size:0.9rem;font-weight:600;
+      color:var(--muted);background:transparent;border:none;text-align:left;
+      cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .2s;
+      font-family:'Inter',sans-serif;
+    }
+    .st-tab:hover{background:rgba(30,41,59,0.5);color:var(--text);}
+    .st-tab.active{
+      background:rgba(34,197,94,0.15);color:var(--green);
+      border:1px solid rgba(34,197,94,0.25);
+    }
+    .st-tab i{font-size:18px;width:24px;text-align:center;}
+
+    /* CONTENT PANEL */
+    .st-panel{display:none;animation:fadeIn .3s ease;}
+    .st-panel.active{display:block;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+    .st-card{
+      background:rgba(30,41,59,0.7);border:1px solid var(--border);
+      border-radius:var(--radius);padding:32px;backdrop-filter:blur(10px);
+      box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    }
+    .st-card__header{margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px;}
+    .st-card__title{font-size:1.4rem;font-weight:700;color:#fff;font-family:'Poppins',sans-serif;}
+    .st-card__sub{font-size:0.88rem;color:var(--muted);margin-top:6px;}
+
+    /* FORM GROUPS */
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+    @media(max-width:600px){.form-grid{grid-template-columns:1fr;}}
+    .form-group{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+    .form-group label{font-size:0.85rem;font-weight:600;color:var(--text);}
+    .form-input{
+      background:rgba(15,23,42,0.6);border:1px solid var(--border);
+      padding:14px 16px;border-radius:10px;color:#fff;font-size:0.9rem;
+      font-family:'Inter',sans-serif;transition:all .2s;outline:none;
+      width:100%;
+    }
+    .form-input:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(34,197,94,0.15);}
+    .form-input::placeholder{color:var(--muted);}
+
+    /* AVATAR UPLOAD */
+    .avatar-upload{display:flex;align-items:center;gap:20px;margin-bottom:28px;}
+    .avatar-preview{
+      width:80px;height:80px;border-radius:50%;background:rgba(34,197,94,0.15);
+      border:2px dashed rgba(34,197,94,0.4);display:flex;align-items:center;
+      justify-content:center;font-size:32px;color:var(--green);overflow:hidden;
+    }
+    .avatar-btn{
+      padding:10px 16px;border-radius:8px;background:var(--surface);
+      border:1px solid var(--border);color:var(--text);font-size:0.85rem;
+      cursor:pointer;font-weight:600;transition:all .2s;
+    }
+    .avatar-btn:hover{border-color:var(--green);color:var(--green);}
+
+    /* SAVE BUTTON */
+    .save-btn{
+      background:linear-gradient(135deg,var(--green),#16a34a);
+      color:#fff;border:none;padding:14px 28px;border-radius:10px;
+      font-size:0.95rem;font-weight:600;cursor:pointer;display:inline-flex;
+      align-items:center;gap:8px;transition:all .2s;box-shadow:0 4px 14px rgba(34,197,94,0.3);
+      font-family:'Inter',sans-serif;
+    }
+    .save-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(34,197,94,0.4);}
+    .save-btn:active{transform:translateY(0);}
+
+    /* LANG SELECTOR */
+    .lang-card{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:16px 20px;border:1px solid var(--border);border-radius:12px;
+      background:rgba(15,23,42,0.4);margin-bottom:16px;cursor:pointer;
+      transition:all .2s;
+    }
+    .lang-card:hover{border-color:rgba(34,197,94,0.4);background:rgba(34,197,94,0.05);}
+    .lang-card.active{border-color:var(--green);background:rgba(34,197,94,0.1);}
+    .lang-info{display:flex;align-items:center;gap:14px;}
+    .lang-icon{
+      width:40px;height:40px;border-radius:10px;background:rgba(30,41,59,0.8);
+      display:flex;align-items:center;justify-content:center;font-size:18px;
+    }
+    .lang-card.active .lang-icon{background:var(--green);color:#fff;}
+    .lang-name{font-weight:600;font-size:1rem;}
+    .lang-sub{font-size:0.75rem;color:var(--muted);}
+    .lang-check{color:var(--green);font-size:20px;display:none;}
+    .lang-card.active .lang-check{display:block;}
+
+    /* TOAST */
+    #settings-toast{
+      position:fixed;bottom:24px;right:24px;z-index:999;
+      background:#22c55e;color:#fff;padding:14px 20px;border-radius:10px;
+      font-size:14px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,0.3);
+      display:flex;align-items:center;gap:10px;
+      transform:translateY(100px);opacity:0;transition:all .3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #settings-toast.show{transform:translateY(0);opacity:1;}
+  </style>
+</head>
+<body>
+
+<nav class="st-topnav" role="navigation">
+  <a href="dashboard.html" class="st-topnav__logo">
+    <div class="st-topnav__logo-icon"><i class="fas fa-seedling"></i></div>
+    <span>KrishiMitra AI</span>
+  </a>
+  <a href="dashboard.html" class="st-topnav__back">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+  </a>
+</nav>
+
+<main class="st-main">
+  <!-- SIDEBAR -->
+  <aside class="st-sidebar">
+    <button class="st-tab active" data-target="profile-panel">
+      <i class="fas fa-user"></i> Personal Info
+    </button>
+    <button class="st-tab" data-target="farm-panel">
+      <i class="fas fa-tractor"></i> Farm Details
+    </button>
+    <button class="st-tab" data-target="lang-panel">
+      <i class="fas fa-language"></i> Language Preference
+    </button>
+    <button class="st-tab" data-target="sec-panel">
+      <i class="fas fa-shield-alt"></i> Security
+    </button>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="st-content">
+    
+    <!-- PROFILE PANEL -->
+    <div class="st-panel active" id="profile-panel">
+      <div class="st-card">
+        <div class="st-card__header">
+          <h2 class="st-card__title">Personal Information</h2>
+          <p class="st-card__sub">Update your personal details and contact info.</p>
+        </div>
+        <div class="avatar-upload">
+          <div class="avatar-preview"><i class="fas fa-user-tie"></i></div>
+          <div>
+            <button class="avatar-btn"><i class="fas fa-camera"></i> Change Photo</button>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:6px;">JPG, PNG up to 2MB</div>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" class="form-input" id="pf-name" placeholder="E.g. Ramesh Patil" />
+          </div>
+          <div class="form-group">
+            <label>Mobile Number</label>
+            <input type="tel" class="form-input" id="pf-mobile" placeholder="+91 00000 00000" disabled style="opacity:0.7;" title="Mobile number cannot be changed" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address (Optional)</label>
+          <input type="email" class="form-input" id="pf-email" placeholder="farmer@example.com" />
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>State</label>
+            <select class="form-input" id="pf-state">
+              <option value="Maharashtra">Maharashtra</option>
+              <option value="Gujarat">Gujarat</option>
+              <option value="Karnataka">Karnataka</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>District</label>
+            <input type="text" class="form-input" id="pf-district" placeholder="E.g. Pune" />
+          </div>
+        </div>
+        <button class="save-btn" onclick="saveProfile()"><i class="fas fa-save"></i> Save Changes</button>
+      </div>
+    </div>
+
+    <!-- FARM PANEL -->
+    <div class="st-panel" id="farm-panel">
+      <div class="st-card">
+        <div class="st-card__header">
+          <h2 class="st-card__title">Farm Details</h2>
+          <p class="st-card__sub">Help AI give better recommendations by detailing your farm.</p>
+        </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Total Land Area (Acres)</label>
+            <input type="number" class="form-input" id="fm-area" placeholder="E.g. 5" />
+          </div>
+          <div class="form-group">
+            <label>Soil Type</label>
+            <select class="form-input" id="fm-soil">
+              <option value="Black Cotton Soil">Black Cotton Soil</option>
+              <option value="Red Soil">Red Soil</option>
+              <option value="Alluvial Soil">Alluvial Soil</option>
+              <option value="Laterite Soil">Laterite Soil</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Primary Crops Grown</label>
+          <input type="text" class="form-input" id="fm-crops" placeholder="E.g. Cotton, Soybean, Wheat" />
+        </div>
+        <div class="form-group">
+          <label>Irrigation Method</label>
+          <select class="form-input" id="fm-irrigation">
+            <option value="Rainfed">Rainfed (No irrigation)</option>
+            <option value="Drip Irrigation">Drip Irrigation</option>
+            <option value="Sprinkler">Sprinkler</option>
+            <option value="Flood Irrigation">Flood Irrigation</option>
+          </select>
+        </div>
+        <button class="save-btn" onclick="saveFarm()"><i class="fas fa-save"></i> Save Farm Data</button>
+      </div>
+    </div>
+
+    <!-- LANGUAGE PANEL -->
+    <div class="st-panel" id="lang-panel">
+      <div class="st-card">
+        <div class="st-card__header">
+          <h2 class="st-card__title">Language Preference</h2>
+          <p class="st-card__sub">Choose the language for KrishiMitra AI app and voice assistant.</p>
+        </div>
+        
+        <div class="lang-card active" data-lang="en" onclick="selectLang('en')">
+          <div class="lang-info">
+            <div class="lang-icon">A</div>
+            <div>
+              <div class="lang-name">English</div>
+              <div class="lang-sub">System Default</div>
+            </div>
+          </div>
+          <i class="fas fa-check-circle lang-check"></i>
+        </div>
+
+        <div class="lang-card" data-lang="hi" onclick="selectLang('hi')">
+          <div class="lang-info">
+            <div class="lang-icon">अ</div>
+            <div>
+              <div class="lang-name">हिंदी (Hindi)</div>
+              <div class="lang-sub">हिंदी में अनुवाद</div>
+            </div>
+          </div>
+          <i class="fas fa-check-circle lang-check"></i>
+        </div>
+
+        <div class="lang-card" data-lang="mr" onclick="selectLang('mr')">
+          <div class="lang-info">
+            <div class="lang-icon">अ</div>
+            <div>
+              <div class="lang-name">मराठी (Marathi)</div>
+              <div class="lang-sub">मराठीत भाषांतर</div>
+            </div>
+          </div>
+          <i class="fas fa-check-circle lang-check"></i>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECURITY PANEL -->
+    <div class="st-panel" id="sec-panel">
+      <div class="st-card">
+        <div class="st-card__header">
+          <h2 class="st-card__title">Security Settings</h2>
+          <p class="st-card__sub">Update your password and manage account security.</p>
+        </div>
+        <div class="form-group">
+          <label>Current Password</label>
+          <input type="password" class="form-input" placeholder="Enter current password" />
+        </div>
+        <div class="form-group">
+          <label>New Password</label>
+          <input type="password" class="form-input" placeholder="Enter new password" />
+        </div>
+        <div class="form-group">
+          <label>Confirm New Password</label>
+          <input type="password" class="form-input" placeholder="Confirm new password" />
+        </div>
+        <button class="save-btn" onclick="saveSecurity()"><i class="fas fa-lock"></i> Update Password</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div id="settings-toast"><i class="fas fa-check-circle"></i> <span>Saved successfully!</span></div>
+
+<!-- ─── Language System ─── -->
+<script src="../js/language.js"></script>
+
+<script>
+'use strict';
+
+// Tab switching
+document.querySelectorAll('.st-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.st-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.st-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.target).classList.add('active');
+  });
+});
+
+// Load user data
+const USER_KEY = 'km_user';
+let user = { name: '', mobile: '', state: 'Maharashtra', district: '' };
+
+function loadData() {
+  const raw = localStorage.getItem(USER_KEY) || sessionStorage.getItem(USER_KEY);
+  if (raw) {
+    try { user = { ...user, ...JSON.parse(raw) }; } catch (e) {}
+  }
+  
+  // Profile
+  document.getElementById('pf-name').value = user.name || '';
+  document.getElementById('pf-mobile').value = user.mobile || '';
+  document.getElementById('pf-state').value = user.state || 'Maharashtra';
+  document.getElementById('pf-district').value = user.district || '';
+
+  // Farm
+  document.getElementById('fm-area').value = localStorage.getItem('km_farm_area') || '';
+  document.getElementById('fm-soil').value = localStorage.getItem('km_farm_soil') || 'Black Cotton Soil';
+  document.getElementById('fm-crops').value = localStorage.getItem('km_farm_crops') || '';
+  document.getElementById('fm-irrigation').value = localStorage.getItem('km_farm_irrigation') || 'Rainfed';
+
+  // Language
+  const lang = localStorage.getItem('km_language') || 'en';
+  document.querySelectorAll('.lang-card').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.lang-card[data-lang="${lang}"]`)?.classList.add('active');
+}
+
+function saveProfile() {
+  user.name = document.getElementById('pf-name').value;
+  user.state = document.getElementById('pf-state').value;
+  user.district = document.getElementById('pf-district').value;
+  localStorage.setItem(USER_KEY, JSON.stringify(user));
+  showToast('Profile information saved successfully!');
+}
+
+function saveFarm() {
+  localStorage.setItem('km_farm_area', document.getElementById('fm-area').value);
+  localStorage.setItem('km_farm_soil', document.getElementById('fm-soil').value);
+  localStorage.setItem('km_farm_crops', document.getElementById('fm-crops').value);
+  localStorage.setItem('km_farm_irrigation', document.getElementById('fm-irrigation').value);
+  showToast('Farm details saved! AI recommendations updated.');
+}
+
+function saveSecurity() {
+  showToast('Password updated successfully!');
+}
+
+function selectLang(lang) {
+  document.querySelectorAll('.lang-card').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.lang-card[data-lang="${lang}"]`).classList.add('active');
+  localStorage.setItem('km_language', lang);
+  if (window.KM_Lang) window.KM_Lang.applyLanguage(lang);
+  showToast('Language preference updated!');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('settings-toast');
+  t.querySelector('span').textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+loadData();
+</script>
+</body>
+</html>

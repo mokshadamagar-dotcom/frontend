@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KrishiMitra AI Weather Intelligence Dashboard – Real-time weather advisory, 7-day forecasts, and AI-powered farming recommendations for Indian farmers." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Weather Intelligence – KrishiMitra AI</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="stylesheet" href="../css/weather.css" />
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+</head>
+<body class="km-app-body">
+
+<!-- Shared Sidebar -->
+<div id="sidebar-container"></div>
+
+<div class="km-app-wrapper">
+  <div class="km-app-main">
+
+    <!-- Shared Navbar -->
+    <div id="navbar-container"></div>
+
+    <main class="km-page-content" aria-label="Weather Intelligence Dashboard">
+
+      <!-- Page Header -->
+      <div class="page-header" style="margin-bottom:20px;">
+        <div>
+          <h1 class="topbar__page-name" style="font-size:1.4rem;font-weight:800;margin:0;">Weather Intelligence</h1>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin:4px 0 0;">AI-powered weather analysis & farming advisories · <em>Demo Data</em></p>
+        </div>
+        <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+          <span class="ai-badge">AI Advisory</span>
+          <!-- Location selector -->
+          <div class="weather-location-pill" id="weather-location-display" aria-label="Current location">
+            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+            <span id="location-text-label">Nagpur, Maharashtra</span>
+            <button type="button" id="location-change-btn" class="km-btn km-btn--ghost km-btn--sm" style="padding:4px 8px; font-size:0.72rem; margin-left:6px;" aria-label="Change location">
+              <i class="fas fa-pencil-alt" aria-hidden="true"></i> Change
+            </button>
+          </div>
+          <!-- Refresh button -->
+          <button type="button" id="weather-refresh-btn" class="km-btn km-btn--outline km-btn--sm" aria-label="Refresh weather data">
+            <i class="fas fa-sync-alt" aria-hidden="true"></i> Refresh
+          </button>
+        </div>
+      </div>
+
+      <!-- Location Change Modal -->
+      <div id="location-modal-overlay" class="modal-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="location-modal-title">
+        <div class="km-modal" style="max-width:460px;">
+          <div class="km-modal__header">
+            <h3 id="location-modal-title" class="km-modal__title"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Change Location</h3>
+            <button type="button" class="modal-close-btn" id="location-modal-close" aria-label="Close location modal">
+              <i class="fas fa-times" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="km-modal__body" style="display:flex; flex-direction:column; gap:16px;">
+            <div class="form-field">
+              <label class="form-label" for="location-search-input">Search City or District</label>
+              <input type="text" id="location-search-input" class="form-input" placeholder="E.g. Pune, Nashik, Aurangabad..." aria-label="Search location" />
+            </div>
+            <div>
+              <p style="font-size:0.78rem; font-weight:700; color:var(--text-secondary); margin:0 0 10px;">Maharashtra Cities (Demo)</p>
+              <div class="location-quick-grid" id="location-quick-grid">
+                <!-- Injected by weather.js -->
+              </div>
+            </div>
+            <p style="font-size:0.7rem; color:var(--text-light); margin:0;">
+              <i class="fas fa-info-circle" aria-hidden="true"></i> All weather data is demo/mock data for demonstration purposes.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────────────────────
+           SECTION 1 – Hero Current Conditions Row
+      ───────────────────────────────────────────────── -->
+      <section class="weather-hero-section" aria-label="Current weather conditions">
+        <!-- Current Conditions Card (Animated gradient background) -->
+        <div class="weather-main-card" id="weather-main-card">
+          <!-- Top: Location + time -->
+          <div class="weather-main-card__top">
+            <div>
+              <span class="weather-main-card__location" id="wmc-location">Nagpur, Maharashtra</span>
+              <span class="weather-main-card__updated" id="wmc-updated">Last updated: Just now</span>
+            </div>
+            <div class="weather-condition-badge" id="wmc-condition-badge">
+              <i class="fas fa-sun" aria-hidden="true" id="wmc-icon"></i>
+              <span id="wmc-condition-text">Sunny</span>
+            </div>
+          </div>
+
+          <!-- Center: Temperature + Icon -->
+          <div class="weather-main-card__center">
+            <div class="weather-temp-display">
+              <span class="weather-temp-value" id="wmc-temp">34</span>
+              <span class="weather-temp-unit">°C</span>
+            </div>
+            <div class="weather-main-card__icon-big" id="wmc-big-icon" aria-hidden="true">☀️</div>
+          </div>
+
+          <!-- Bottom: Feels like + Hi/Lo -->
+          <div class="weather-main-card__bottom">
+            <div class="weather-stat-pill">
+              <i class="fas fa-thermometer-half" aria-hidden="true"></i>
+              Feels like <span id="wmc-feels-like">38°C</span>
+            </div>
+            <div class="weather-stat-pill">
+              <i class="fas fa-arrow-up" aria-hidden="true"></i>
+              Hi: <span id="wmc-high">36°C</span>
+            </div>
+            <div class="weather-stat-pill">
+              <i class="fas fa-arrow-down" aria-hidden="true"></i>
+              Lo: <span id="wmc-low">26°C</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Conditions Stats Grid -->
+        <div class="weather-conditions-grid">
+          <!-- Humidity -->
+          <div class="weather-stat-card" aria-label="Humidity">
+            <div class="weather-stat-card__icon humidity">
+              <i class="fas fa-tint" aria-hidden="true"></i>
+            </div>
+            <span class="weather-stat-card__label">Humidity</span>
+            <span class="weather-stat-card__val" id="stat-humidity">68%</span>
+            <div class="weather-mini-bar">
+              <div class="weather-mini-bar__fill" id="stat-humidity-bar" style="width:68%; background:linear-gradient(90deg,#3b82f6,#60a5fa);"></div>
+            </div>
+          </div>
+          <!-- Wind -->
+          <div class="weather-stat-card" aria-label="Wind speed">
+            <div class="weather-stat-card__icon wind">
+              <i class="fas fa-wind" aria-hidden="true"></i>
+            </div>
+            <span class="weather-stat-card__label">Wind Speed</span>
+            <span class="weather-stat-card__val" id="stat-wind">18 km/h</span>
+            <span style="font-size:0.68rem; color:var(--text-light);" id="stat-wind-dir">NW Direction</span>
+          </div>
+          <!-- UV Index -->
+          <div class="weather-stat-card" aria-label="UV Index">
+            <div class="weather-stat-card__icon uv">
+              <i class="fas fa-sun" aria-hidden="true"></i>
+            </div>
+            <span class="weather-stat-card__label">UV Index</span>
+            <span class="weather-stat-card__val" id="stat-uv">8</span>
+            <span class="weather-badge" id="stat-uv-label" style="background:#fef3c7; color:#92400e;">Very High</span>
+          </div>
+          <!-- Visibility -->
+          <div class="weather-stat-card" aria-label="Visibility">
+            <div class="weather-stat-card__icon visibility">
+              <i class="fas fa-eye" aria-hidden="true"></i>
+            </div>
+            <span class="weather-stat-card__label">Visibility</span>
+            <span class="weather-stat-card__val" id="stat-visibility">10 km</span>
+            <span class="weather-badge" style="background:#dcfce7; color:#166534;">Clear</span>
+          </div>
+          <!-- Dew Point -->
+          <div class="weather-stat-card" aria-label="Dew point">
+            <div class="weather-stat-card__icon dew">
+              <i class="fas fa-water" aria-hidden="true"></i>
+            </div>
+            <span class="weather-stat-card__label">Dew Point</span>
+            <span class="weather-stat-card__val" id="stat-dew">24°C</span>
+          </div>
+          <!-- Pressure -->
+          <div class="weather-stat-card" aria-label="Air pressure">
+            <div class="weather-stat-card__icon pressure">
+              <i class="fas fa-compress-arrows-alt" aria-hidden="true"></i>
+            </div>
+            <span class="weather-stat-card__label">Pressure</span>
+            <span class="weather-stat-card__val" id="stat-pressure">1012 hPa</span>
+          </div>
+          <!-- Rainfall -->
+          <div class="weather-stat-card" aria-label="Rainfall today">
+            <div class="weather-stat-card__icon rain">
+              <i class="fas fa-cloud-rain" aria-hidden="true"></i>
+            </div>
+            <span class="weather-stat-card__label">Rainfall Today</span>
+            <span class="weather-stat-card__val" id="stat-rainfall">0 mm</span>
+          </div>
+          <!-- Sunrise / Sunset -->
+          <div class="weather-stat-card" aria-label="Sunrise and sunset times">
+            <div class="weather-stat-card__icon sun-times">
+              <i class="fas fa-sunrise" aria-hidden="true"></i>
+            </div>
+            <span class="weather-stat-card__label">Sunrise / Sunset</span>
+            <span class="weather-stat-card__val" style="font-size:0.78rem;" id="stat-sun-times">06:12 / 19:28</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────────────────
+           SECTION 2 – Alerts Banner
+      ───────────────────────────────────────────────── -->
+      <section id="weather-alerts-section" aria-label="Weather alerts" style="margin-top:18px;">
+        <!-- Alerts injected by weather.js -->
+      </section>
+
+      <!-- ─────────────────────────────────────────────────
+           SECTION 3 – Hourly Forecast Carousel
+      ───────────────────────────────────────────────── -->
+      <section class="weather-section-card" aria-label="Hourly weather forecast" style="margin-top:18px;">
+        <div class="weather-section-card__header">
+          <h2 class="weather-section-card__title">
+            <i class="fas fa-clock" aria-hidden="true"></i> 24-Hour Forecast
+          </h2>
+          <span class="demo-data-badge">Demo Data</span>
+        </div>
+        <div class="weather-hourly-scroll" id="weather-hourly-scroll" role="list" aria-label="Hourly forecast list">
+          <!-- Injected by weather.js -->
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────────────────
+           SECTION 4 – 7-Day Forecast Table
+      ───────────────────────────────────────────────── -->
+      <section class="weather-section-card" aria-label="7-day weather forecast" style="margin-top:18px;">
+        <div class="weather-section-card__header">
+          <h2 class="weather-section-card__title">
+            <i class="fas fa-calendar-week" aria-hidden="true"></i> 7-Day Forecast
+          </h2>
+          <span class="demo-data-badge">Demo Data</span>
+        </div>
+        <div class="weather-7day-grid" id="weather-7day-grid" role="list" aria-label="7-day forecast list">
+          <!-- Injected by weather.js -->
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────────────────
+           SECTION 5 – Dual Row: Rainfall Insights + AI Advisory
+      ───────────────────────────────────────────────── -->
+      <div class="weather-dual-row" style="margin-top:18px;">
+
+        <!-- Rainfall Insights Panel -->
+        <section class="weather-section-card" aria-label="Rainfall insights">
+          <div class="weather-section-card__header">
+            <h2 class="weather-section-card__title">
+              <i class="fas fa-cloud-rain" aria-hidden="true"></i> Rainfall Insights
+            </h2>
+            <span class="demo-data-badge">Demo Data</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:14px;">
+
+            <!-- Weekly Rainfall Chart (CSS bar chart) -->
+            <div>
+              <p style="font-size:0.72rem; font-weight:700; color:var(--text-secondary); text-transform:uppercase; margin:0 0 10px;">Weekly Rainfall (mm)</p>
+              <div class="weather-rain-chart" id="weather-rain-chart" aria-label="Weekly rainfall bar chart">
+                <!-- Injected by weather.js -->
+              </div>
+            </div>
+
+            <!-- Cumulative / Stats row -->
+            <div class="weather-rain-stats-row">
+              <div class="weather-rain-stat">
+                <span class="weather-rain-stat__val" id="rain-monthly-total">42 mm</span>
+                <span class="weather-rain-stat__label">This Month</span>
+              </div>
+              <div class="weather-rain-stat">
+                <span class="weather-rain-stat__val" id="rain-normal">58 mm</span>
+                <span class="weather-rain-stat__label">Normal</span>
+              </div>
+              <div class="weather-rain-stat">
+                <span class="weather-rain-stat__val" id="rain-departure" style="color:#ef4444;">-27%</span>
+                <span class="weather-rain-stat__label">Departure</span>
+              </div>
+              <div class="weather-rain-stat">
+                <span class="weather-rain-stat__val" id="rain-next-7">8 mm</span>
+                <span class="weather-rain-stat__label">Next 7 Days</span>
+              </div>
+            </div>
+
+            <!-- Monsoon progress bar -->
+            <div>
+              <p style="font-size:0.72rem; font-weight:700; color:var(--text-secondary); margin:0 0 6px;">Monsoon Progress 2025</p>
+              <div class="weather-mini-bar" style="height:12px; border-radius:6px;">
+                <div class="weather-mini-bar__fill" id="monsoon-progress-bar" style="width:62%; background:linear-gradient(90deg,#3b82f6,#60a5fa);"></div>
+              </div>
+              <p style="font-size:0.7rem; color:var(--text-light); margin:4px 0 0;">62% of normal season rainfall received</p>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- AI Weather Advisory Panel -->
+        <section class="weather-section-card" aria-label="AI weather advisory for farming">
+          <div class="weather-section-card__header">
+            <h2 class="weather-section-card__title">
+              <i class="fas fa-robot" aria-hidden="true"></i> AI Farming Advisory
+            </h2>
+            <span class="ai-badge" style="font-size:0.65rem;">AI Generated</span>
+          </div>
+          <div id="weather-ai-advisory-content" style="display:flex; flex-direction:column; gap:14px;">
+            <!-- Injected by weather.js -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ─────────────────────────────────────────────────
+           SECTION 6 – Farm Activity Risk Matrix
+      ───────────────────────────────────────────────── -->
+      <section class="weather-section-card" aria-label="Farm activity suitability based on weather" style="margin-top:18px;">
+        <div class="weather-section-card__header">
+          <h2 class="weather-section-card__title">
+            <i class="fas fa-tasks" aria-hidden="true"></i> Farm Activity Suitability Today
+          </h2>
+          <span class="demo-data-badge">AI Analysis</span>
+        </div>
+        <div class="weather-activity-grid" id="weather-activity-grid" aria-label="Farm activity suitability grid">
+          <!-- Injected by weather.js -->
+        </div>
+      </section>
+
+      <!-- ─────────────────────────────────────────────────
+           SECTION 7 – Irrigation & Spraying Integration
+      ───────────────────────────────────────────────── -->
+      <div class="weather-dual-row" style="margin-top:18px;">
+
+        <!-- Irrigation Timing Panel -->
+        <section class="weather-section-card" aria-label="AI irrigation timing recommendation">
+          <div class="weather-section-card__header">
+            <h2 class="weather-section-card__title">
+              <i class="fas fa-tint" aria-hidden="true"></i> Irrigation Timing
+            </h2>
+            <a href="irrigation.html" class="km-btn km-btn--ghost km-btn--sm" aria-label="View full irrigation module">Full Module <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+          </div>
+          <div id="weather-irrigation-panel" style="display:flex; flex-direction:column; gap:12px;">
+            <!-- Injected by weather.js -->
+          </div>
+        </section>
+
+        <!-- Spray Window Panel -->
+        <section class="weather-section-card" aria-label="Pesticide and spray window advisory">
+          <div class="weather-section-card__header">
+            <h2 class="weather-section-card__title">
+              <i class="fas fa-spray-can" aria-hidden="true"></i> Spray Windows
+            </h2>
+            <span class="demo-data-badge">Wind-based</span>
+          </div>
+          <div id="weather-spray-panel" style="display:flex; flex-direction:column; gap:12px;">
+            <!-- Injected by weather.js -->
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ─────────────────────────────────────────────────
+           SECTION 8 – Historical Comparison (Mini Stats)
+      ───────────────────────────────────────────────── -->
+      <section class="weather-section-card" aria-label="Historical weather comparison" style="margin-top:18px;">
+        <div class="weather-section-card__header">
+          <h2 class="weather-section-card__title">
+            <i class="fas fa-chart-line" aria-hidden="true"></i> Historical Comparison
+          </h2>
+          <span class="demo-data-badge">Demo Data</span>
+        </div>
+        <div class="weather-historical-grid" id="weather-historical-grid">
+          <!-- Injected by weather.js -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- Shared Chatbot FAB -->
+<div id="chatbot-container"></div>
+
+<!-- Shared Footer -->
+<div id="footer-container"></div>
+
+<script src="../js/components.js"></script>
+<script src="../js/weather.js"></script>
+</body>
+</html>

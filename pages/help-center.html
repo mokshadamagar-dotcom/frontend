@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Help Center – KrishiMitra AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+  <style>
+    :root {
+      --hc-green:  #22c55e;
+      --hc-green2: #16a34a;
+      --hc-dark:   #0f172a;
+      --hc-card:   #1e293b;
+      --hc-border: #334155;
+      --hc-text:   #f1f5f9;
+      --hc-muted:  #94a3b8;
+      --hc-radius: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body.help-body {
+      background: linear-gradient(135deg, #0a0f1e 0%, #0f172a 50%, #0d1a12 100%);
+      min-height: 100vh;
+      color: var(--hc-text);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── TOP NAV ─────────────────────────────────────────── */
+    .help-topnav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 32px;
+      background: rgba(15,23,42,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--hc-border);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .help-topnav__logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; color: var(--hc-text);
+    }
+    .help-topnav__logo-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; color: #fff;
+    }
+    .help-topnav__brand { font-size: 1rem; font-weight: 700; }
+    .help-topnav__back {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 18px; border-radius: 8px;
+      background: rgba(34,197,94,0.12); color: var(--hc-green);
+      text-decoration: none; font-size: 0.875rem; font-weight: 600;
+      border: 1px solid rgba(34,197,94,0.3);
+      transition: all .2s;
+    }
+    .help-topnav__back:hover { background: rgba(34,197,94,0.2); }
+
+    /* ── HERO ─────────────────────────────────────────────── */
+    .help-hero {
+      text-align: center;
+      padding: 64px 24px 48px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.12) 0%, transparent 70%);
+    }
+    .help-hero__icon {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; color: #fff; margin: 0 auto 20px;
+      box-shadow: 0 0 40px rgba(34,197,94,0.4);
+    }
+    .help-hero h1 {
+      font-size: 2.4rem; font-weight: 800; color: #fff;
+      margin-bottom: 12px; font-family: 'Poppins', sans-serif;
+    }
+    .help-hero p {
+      font-size: 1.05rem; color: var(--hc-muted); max-width: 540px; margin: 0 auto 28px;
+    }
+
+    /* ── SEARCH ───────────────────────────────────────────── */
+    .help-search-wrap {
+      max-width: 480px; margin: 0 auto;
+      display: flex; gap: 0;
+      background: rgba(30,41,59,0.9);
+      border: 1px solid var(--hc-border);
+      border-radius: 50px; overflow: hidden;
+    }
+    .help-search-wrap i {
+      padding: 0 16px; color: var(--hc-muted); display: flex; align-items: center;
+    }
+    .help-search-input {
+      flex: 1; padding: 14px 0; background: transparent;
+      border: none; outline: none; color: var(--hc-text);
+      font-size: 0.95rem; font-family: 'Inter', sans-serif;
+    }
+    .help-search-input::placeholder { color: var(--hc-muted); }
+
+    /* ── MAIN LAYOUT ──────────────────────────────────────── */
+    .help-main {
+      max-width: 1100px; margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── CONTACT CARD ─────────────────────────────────────── */
+    .help-contact-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 768px) {
+      .help-contact-grid { grid-template-columns: 1fr; }
+      .help-hero h1 { font-size: 1.7rem; }
+    }
+
+    .contact-card {
+      background: rgba(30,41,59,0.7);
+      border: 1px solid var(--hc-border);
+      border-radius: var(--hc-radius);
+      padding: 28px 24px; text-align: center;
+      transition: transform .2s, border-color .2s;
+      text-decoration: none; color: var(--hc-text);
+      display: block;
+    }
+    .contact-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--hc-green);
+    }
+    .contact-card__icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; margin: 0 auto 14px;
+    }
+    .contact-card__icon--phone  { background: rgba(34,197,94,0.15);  color: #22c55e; }
+    .contact-card__icon--whatsapp{ background: rgba(37,211,102,0.15); color: #25d366; }
+    .contact-card__icon--email  { background: rgba(59,130,246,0.15);  color: #60a5fa; }
+    .contact-card__title { font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+    .contact-card__sub   { font-size: 0.82rem; color: var(--hc-muted); margin-bottom: 10px; }
+    .contact-card__value { font-size: 1.05rem; font-weight: 600; color: var(--hc-green); }
+    .contact-card__hours { font-size: 0.78rem; color: var(--hc-muted); margin-top: 6px; }
+
+    /* ── FAQ SECTION ──────────────────────────────────────── */
+    .help-section-title {
+      font-size: 1.4rem; font-weight: 700; color: #fff;
+      margin-bottom: 6px; display: flex; align-items: center; gap: 10px;
+    }
+    .help-section-title i { color: var(--hc-green); }
+    .help-section-sub {
+      font-size: 0.88rem; color: var(--hc-muted); margin-bottom: 24px;
+    }
+
+    .faq-categories {
+      display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .faq-cat-btn {
+      padding: 8px 18px; border-radius: 50px; font-size: 0.82rem; font-weight: 600;
+      border: 1px solid var(--hc-border); background: rgba(30,41,59,0.7);
+      color: var(--hc-muted); cursor: pointer; transition: all .2s;
+    }
+    .faq-cat-btn.active, .faq-cat-btn:hover {
+      background: rgba(34,197,94,0.15);
+      border-color: var(--hc-green); color: var(--hc-green);
+    }
+
+    .faq-list { display: flex; flex-direction: column; gap: 12px; }
+
+    .faq-item {
+      background: rgba(30,41,59,0.6);
+      border: 1px solid var(--hc-border);
+      border-radius: 12px; overflow: hidden;
+      transition: border-color .2s;
+    }
+    .faq-item.open { border-color: rgba(34,197,94,0.4); }
+
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 20px; cursor: pointer; user-select: none;
+      font-weight: 600; font-size: 0.95rem; color: var(--hc-text);
+    }
+    .faq-question i { color: var(--hc-muted); transition: transform .3s; flex-shrink: 0; margin-left: 12px; }
+    .faq-item.open .faq-question i { transform: rotate(180deg); color: var(--hc-green); }
+
+    .faq-answer {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s ease, padding .3s;
+      padding: 0 20px;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 400px;
+      padding: 0 20px 18px;
+    }
+    .faq-answer p {
+      font-size: 0.9rem; color: var(--hc-muted); line-height: 1.7;
+    }
+    .faq-answer a { color: var(--hc-green); }
+
+    /* ── QUICK LINKS ──────────────────────────────────────── */
+    .quicklinks-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px; margin-top: 48px;
+    }
+    .quicklink-card {
+      background: rgba(30,41,59,0.6); border: 1px solid var(--hc-border);
+      border-radius: 12px; padding: 20px 18px;
+      display: flex; align-items: center; gap: 14px;
+      text-decoration: none; color: var(--hc-text);
+      transition: all .2s;
+    }
+    .quicklink-card:hover {
+      border-color: var(--hc-green);
+      background: rgba(34,197,94,0.08);
+      transform: translateY(-2px);
+    }
+    .quicklink-card__icon {
+      width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .quicklink-card__title { font-weight: 600; font-size: 0.88rem; }
+    .quicklink-card__sub   { font-size: 0.78rem; color: var(--hc-muted); margin-top: 2px; }
+  </style>
+</head>
+<body class="help-body">
+
+<!-- TOP NAV -->
+<nav class="help-topnav" role="navigation" aria-label="Help center navigation">
+  <a href="dashboard.html" class="help-topnav__logo" aria-label="KrishiMitra AI Dashboard">
+    <div class="help-topnav__logo-icon"><i class="fas fa-seedling"></i></div>
+    <span class="help-topnav__brand">KrishiMitra AI</span>
+  </a>
+  <a href="dashboard.html" class="help-topnav__back" id="help-back-btn">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+  </a>
+</nav>
+
+<!-- HERO -->
+<section class="help-hero" aria-labelledby="help-hero-heading">
+  <div class="help-hero__icon" aria-hidden="true">
+    <i class="fas fa-life-ring"></i>
+  </div>
+  <h1 id="help-hero-heading">How can we help you?</h1>
+  <p>Find answers, contact support, or explore our quick guides for using KrishiMitra AI.</p>
+  <div class="help-search-wrap" role="search" aria-label="Search help articles">
+    <i class="fas fa-search" aria-hidden="true"></i>
+    <input type="text" class="help-search-input" id="faq-search"
+           placeholder="Search for help (e.g. 'voice assistant', 'PDF download'…)"
+           aria-label="Search FAQ" autocomplete="off" />
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="help-main" aria-label="Help center content">
+
+  <!-- CONTACT CARDS -->
+  <section aria-labelledby="contact-heading" style="margin-bottom:48px;">
+    <h2 id="contact-heading" class="help-section-title">
+      <i class="fas fa-headset"></i> Contact Support
+    </h2>
+    <p class="help-section-sub">Reach our agricultural advisory team directly</p>
+
+    <div class="help-contact-grid">
+      <!-- Phone -->
+      <a href="tel:+918830598209" class="contact-card" id="contact-phone-card" aria-label="Call support">
+        <div class="contact-card__icon contact-card__icon--phone">
+          <i class="fas fa-phone"></i>
+        </div>
+        <div class="contact-card__title">Call Us</div>
+        <div class="contact-card__sub">Talk to our agricultural experts</div>
+        <div class="contact-card__value">+91 88305 98209</div>
+        <div class="contact-card__hours">Mon–Sat, 9 AM – 6 PM IST</div>
+      </a>
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/918830598209?text=Hello%20KrishiMitra%20AI%20Support"
+         target="_blank" rel="noopener" class="contact-card" id="contact-whatsapp-card" aria-label="WhatsApp support">
+        <div class="contact-card__icon contact-card__icon--whatsapp">
+          <i class="fab fa-whatsapp"></i>
+        </div>
+        <div class="contact-card__title">WhatsApp</div>
+        <div class="contact-card__sub">Quick chat with our team</div>
+        <div class="contact-card__value">+91 88305 98209</div>
+        <div class="contact-card__hours">Available 24/7 for messages</div>
+      </a>
+
+      <!-- Email -->
+      <a href="mailto:support@krishimitra.ai" class="contact-card" id="contact-email-card" aria-label="Email support">
+        <div class="contact-card__icon contact-card__icon--email">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <div class="contact-card__title">Email Support</div>
+        <div class="contact-card__sub">Get detailed written guidance</div>
+        <div class="contact-card__value">support@krishimitra.ai</div>
+        <div class="contact-card__hours">Response within 24 hours</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section aria-labelledby="faq-heading">
+    <h2 id="faq-heading" class="help-section-title">
+      <i class="fas fa-question-circle"></i> Frequently Asked Questions
+    </h2>
+    <p class="help-section-sub">Find answers to common questions about KrishiMitra AI features</p>
+
+    <!-- Category Filter -->
+    <div class="faq-categories" role="group" aria-label="FAQ categories">
+      <button class="faq-cat-btn active" data-cat="all"        id="cat-all">All</button>
+      <button class="faq-cat-btn"        data-cat="general"    id="cat-general">General</button>
+      <button class="faq-cat-btn"        data-cat="ai"         id="cat-ai">AI Features</button>
+      <button class="faq-cat-btn"        data-cat="voice"      id="cat-voice">Voice Assistant</button>
+      <button class="faq-cat-btn"        data-cat="pdf"        id="cat-pdf">PDF & Reports</button>
+      <button class="faq-cat-btn"        data-cat="account"    id="cat-account">Account</button>
+      <button class="faq-cat-btn"        data-cat="schemes"    id="cat-schemes">Govt Schemes</button>
+    </div>
+
+    <div class="faq-list" id="faq-list" role="list" aria-label="FAQ items">
+      <!-- Populated by JS -->
+    </div>
+  </section>
+
+  <!-- QUICK LINKS -->
+  <section aria-labelledby="quicklinks-heading" style="margin-top:56px;">
+    <h2 id="quicklinks-heading" class="help-section-title">
+      <i class="fas fa-link"></i> Quick Links
+    </h2>
+    <p class="help-section-sub">Jump directly to the feature you need</p>
+
+    <div class="quicklinks-grid">
+      <a href="crop-disease.html" class="quicklink-card" aria-label="Crop Disease Detection">
+        <div class="quicklink-card__icon" style="background:rgba(34,197,94,0.15);color:#22c55e;">
+          <i class="fas fa-microscope"></i>
+        </div>
+        <div>
+          <div class="quicklink-card__title">Crop Disease Detection</div>
+          <div class="quicklink-card__sub">Upload crop photo</div>
+        </div>
+      </a>
+      <a href="pest-detection.html" class="quicklink-card" aria-label="Pest Radar">
+        <div class="quicklink-card__icon" style="background:rgba(249,115,22,0.15);color:#f97316;">
+          <i class="fas fa-bug"></i>
+        </div>
+        <div>
+          <div class="quicklink-card__title">Pest Radar</div>
+          <div class="quicklink-card__sub">AI pest identification</div>
+        </div>
+      </a>
+      <a href="fertilizer.html" class="quicklink-card" aria-label="Fertilizer Recommendation">
+        <div class="quicklink-card__icon" style="background:rgba(20,184,166,0.15);color:#14b8a6;">
+          <i class="fas fa-vial"></i>
+        </div>
+        <div>
+          <div class="quicklink-card__title">Fertilizer Recommendation</div>
+          <div class="quicklink-card__sub">NPK dosage guide</div>
+        </div>
+      </a>
+      <a href="irrigation.html" class="quicklink-card" aria-label="Irrigation Advisory">
+        <div class="quicklink-card__icon" style="background:rgba(59,130,246,0.15);color:#60a5fa;">
+          <i class="fas fa-tint"></i>
+        </div>
+        <div>
+          <div class="quicklink-card__title">Irrigation Advisory</div>
+          <div class="quicklink-card__sub">Smart watering schedule</div>
+        </div>
+      </a>
+      <a href="voice-assistant.html" class="quicklink-card" aria-label="Voice Assistant">
+        <div class="quicklink-card__icon" style="background:rgba(168,85,247,0.15);color:#a855f7;">
+          <i class="fas fa-microphone"></i>
+        </div>
+        <div>
+          <div class="quicklink-card__title">Voice Assistant</div>
+          <div class="quicklink-card__sub">Ask in Hindi/Marathi</div>
+        </div>
+      </a>
+      <a href="chatbot.html" class="quicklink-card" aria-label="AI Chatbot">
+        <div class="quicklink-card__icon" style="background:rgba(34,197,94,0.15);color:#22c55e;">
+          <i class="fas fa-comments"></i>
+        </div>
+        <div>
+          <div class="quicklink-card__title">AI Chatbot</div>
+          <div class="quicklink-card__sub">Text-based farming Q&A</div>
+        </div>
+      </a>
+      <a href="soil-analysis.html" class="quicklink-card" aria-label="Soil Analysis">
+        <div class="quicklink-card__icon" style="background:rgba(161,98,7,0.15);color:#d97706;">
+          <i class="fas fa-flask"></i>
+        </div>
+        <div>
+          <div class="quicklink-card__title">Soil Analysis</div>
+          <div class="quicklink-card__sub">Upload soil report PDF</div>
+        </div>
+      </a>
+      <a href="government-schemes.html" class="quicklink-card" aria-label="Government Schemes">
+        <div class="quicklink-card__icon" style="background:rgba(99,102,241,0.15);color:#818cf8;">
+          <i class="fas fa-landmark"></i>
+        </div>
+        <div>
+          <div class="quicklink-card__title">Government Schemes</div>
+          <div class="quicklink-card__sub">PM-KISAN, PMFBY etc.</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<script>
+'use strict';
+
+/* ── FAQ DATA ─────────────────────────────────────────────── */
+const FAQ_DATA = [
+  {
+    cat: 'general',
+    q: 'What is KrishiMitra AI?',
+    a: 'KrishiMitra AI is an intelligent agriculture advisory platform powered by Artificial Intelligence. It helps Indian farmers with crop disease detection, pest identification, fertilizer recommendations, irrigation planning, and much more – all in Hindi, Marathi, and English.'
+  },
+  {
+    cat: 'general',
+    q: 'Is KrishiMitra AI free to use?',
+    a: 'Yes! KrishiMitra AI is currently free for all farmers. Our goal is to make AI-powered agricultural guidance accessible to every farmer in India. Register with your mobile number and start using all features instantly.'
+  },
+  {
+    cat: 'general',
+    q: 'Which languages does KrishiMitra AI support?',
+    a: 'KrishiMitra AI fully supports English (English), Hindi (हिंदी), and Marathi (मराठी). You can change the language at any time using the language selector in the top navigation bar. The Voice Assistant also understands spoken Hindi and Marathi.'
+  },
+  {
+    cat: 'ai',
+    q: 'How does Crop Disease Detection work?',
+    a: 'Simply open "Crop Disease Detection" and upload a clear photo of your affected crop leaf or plant. Our AI analyzes the image and detects possible diseases with confidence scores and treatment recommendations. For best results, ensure the photo is well-lit and shows the affected area clearly.'
+  },
+  {
+    cat: 'ai',
+    q: 'How accurate is the AI analysis?',
+    a: 'Our AI models achieve 85–95% accuracy on common Indian crop diseases and pests. However, AI analysis should be used as a first-level advisory tool. Always confirm critical decisions with your local Agricultural Officer or Krishi Vigyan Kendra (KVK).'
+  },
+  {
+    cat: 'ai',
+    q: 'What crops does KrishiMitra AI support?',
+    a: 'KrishiMitra AI supports all major Indian crops including Cotton, Wheat, Rice, Tomato, Onion, Soybean, Groundnut, Sugarcane, Maize, Jowar, Bajra, Chickpea, and many more. The AI models are specially trained on Indian crop varieties.'
+  },
+  {
+    cat: 'ai',
+    q: 'How does the Fertilizer Recommendation work?',
+    a: 'Fill in your crop type, soil type, growth stage, and soil NPK values (from your soil health card or lab report). The AI calculates the optimal fertilizer doses and schedule based on ICAR recommendations and your specific crop requirements.'
+  },
+  {
+    cat: 'voice',
+    q: 'How do I use the Voice Assistant?',
+    a: 'Open the Voice Assistant page and click the microphone button. Speak your farming question clearly in Hindi, Marathi, or English. The system will transcribe your voice, process your question using AI, and read the answer back to you in your selected language.'
+  },
+  {
+    cat: 'voice',
+    q: 'The microphone is not working. What should I do?',
+    a: 'Make sure you have granted microphone permission to the browser. In Chrome, click the camera/mic icon in the address bar. If using Safari on iPhone, go to Settings → Safari → Microphone and allow access. Also ensure you are using a supported browser (Chrome, Edge, or Firefox recommended).'
+  },
+  {
+    cat: 'voice',
+    q: 'Which languages can I speak to the Voice Assistant?',
+    a: 'You can speak in English, Hindi (हिंदी), or Marathi (मराठी). Select your preferred language from the language selector before starting the voice session. The assistant will also respond in the same language you selected.'
+  },
+  {
+    cat: 'pdf',
+    q: 'How do I download a PDF report?',
+    a: 'After completing any analysis (fertilizer, irrigation, pest detection, disease detection, soil analysis, or crop advisory), look for the "Download PDF" button in the results section. Click it to generate and download a professional branded PDF report instantly. No internet required for the download.'
+  },
+  {
+    cat: 'pdf',
+    q: 'Why is my PDF download not working?',
+    a: 'PDF generation requires the jsPDF library to load from CDN. Ensure you have an active internet connection for the first download. If the problem persists, try refreshing the page and running the analysis again before downloading. Also check if your browser is blocking pop-ups or downloads.'
+  },
+  {
+    cat: 'pdf',
+    q: 'Can I share the PDF report with my agricultural officer?',
+    a: 'Absolutely! The PDF report is designed to be shared with agricultural officers, bank managers (for loan applications), or insurance agents (for crop insurance claims). It includes KrishiMitra AI branding, analysis results, and treatment recommendations.'
+  },
+  {
+    cat: 'account',
+    q: 'How do I register on KrishiMitra AI?',
+    a: 'Click "Register" on the login page or home page. Fill in your name, mobile number, state, district, and farm details. No email required – just your mobile number. Your data is stored securely and never shared without your consent.'
+  },
+  {
+    cat: 'account',
+    q: 'How do I change my language preference permanently?',
+    a: 'Go to Settings (click the gear icon in the sidebar) and change your preferred language. It will be saved to your profile and applied automatically every time you log in. You can also change it temporarily using the language selector in the top navigation bar.'
+  },
+  {
+    cat: 'account',
+    q: 'I forgot my password. How do I reset it?',
+    a: 'On the login page, click "Forgot Password". Enter your registered mobile number and you will receive an OTP. Use the OTP to reset your password. If you need additional help, contact our support at +91 88305 98209.'
+  },
+  {
+    cat: 'schemes',
+    q: 'What government schemes are listed on KrishiMitra AI?',
+    a: 'KrishiMitra AI lists all major central and state government schemes including PM-KISAN Samman Nidhi, Pradhan Mantri Fasal Bima Yojana (PMFBY), Soil Health Card Scheme, Kisan Credit Card, PM Kusum Yojana, SMAM, e-NAM, and Maharashtra-specific schemes like Namo Shetkari Mahasanman Nidhi.'
+  },
+  {
+    cat: 'schemes',
+    q: 'How do I apply for PM-KISAN through KrishiMitra AI?',
+    a: 'KrishiMitra AI shows you scheme details, eligibility criteria, and required documents. The actual application must be done at your nearest Common Service Centre (CSC) or on the official PM-KISAN portal (pmkisan.gov.in). Our platform guides you through the process step by step.'
+  },
+  {
+    cat: 'schemes',
+    q: 'Can I save government schemes for later reference?',
+    a: 'Yes! On the Government Schemes page, click the bookmark icon on any scheme to save it to your "Saved Schemes" list. You can access your saved schemes from the Dashboard stat card or the notifications area.'
+  },
+];
+
+let activeCat = 'all';
+let searchTerm = '';
+
+/* ── RENDER FAQ ───────────────────────────────────────────── */
+function renderFAQ() {
+  const container = document.getElementById('faq-list');
+  if (!container) return;
+
+  const filtered = FAQ_DATA.filter(item => {
+    const matchCat  = activeCat === 'all' || item.cat === activeCat;
+    const matchSearch = !searchTerm ||
+      item.q.toLowerCase().includes(searchTerm) ||
+      item.a.toLowerCase().includes(searchTerm);
+    return matchCat && matchSearch;
+  });
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <div style="text-align:center;padding:48px;color:#64748b;">
+        <i class="fas fa-search" style="font-size:32px;margin-bottom:12px;display:block;"></i>
+        No results found. Try a different search or category.
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map((item, idx) => `
+    <div class="faq-item" data-cat="${item.cat}" role="listitem" id="faq-item-${idx}">
+      <div class="faq-question" role="button" tabindex="0"
+           aria-expanded="false" aria-controls="faq-ans-${idx}"
+           onclick="toggleFAQ(${idx})" onkeydown="if(event.key==='Enter')toggleFAQ(${idx})">
+        ${highlightSearch(item.q)}
+        <i class="fas fa-chevron-down" aria-hidden="true"></i>
+      </div>
+      <div class="faq-answer" id="faq-ans-${idx}" role="region">
+        <p>${highlightSearch(item.a)}</p>
+      </div>
+    </div>
+  `).join('');
+}
+
+function highlightSearch(text) {
+  if (!searchTerm) return text;
+  const re = new RegExp(`(${searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+  return text.replace(re, '<mark style="background:rgba(34,197,94,0.3);color:#22c55e;border-radius:2px;">$1</mark>');
+}
+
+function toggleFAQ(idx) {
+  const item = document.getElementById(`faq-item-${idx}`);
+  if (!item) return;
+  const isOpen = item.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+  // Open clicked (if it was closed)
+  if (!isOpen) item.classList.add('open');
+}
+
+/* ── CATEGORY FILTER ──────────────────────────────────────── */
+document.querySelectorAll('.faq-cat-btn').forEach(btn => {
+  btn.addEventListener('click', function () {
+    document.querySelectorAll('.faq-cat-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    activeCat = this.dataset.cat;
+    renderFAQ();
+  });
+});
+
+/* ── SEARCH ───────────────────────────────────────────────── */
+const searchInput = document.getElementById('faq-search');
+searchInput?.addEventListener('input', function () {
+  searchTerm = this.value.toLowerCase().trim();
+  renderFAQ();
+});
+
+/* ── INIT ─────────────────────────────────────────────────── */
+renderFAQ();
+</script>
+</body>
+</html>

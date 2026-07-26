@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications – KrishiMitra AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+  <style>
+    :root {
+      --bg: linear-gradient(135deg,#0a0f1e 0%,#0f172a 60%,#0d1a12 100%);
+      --card: rgba(30,41,59,0.7);
+      --border: #334155;
+      --green: #22c55e;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --radius: 14px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);min-height:100vh;color:var(--text);font-family:'Inter',sans-serif;}
+
+    /* TOPNAV */
+    .notif-topnav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 28px;background:rgba(15,23,42,0.96);
+      backdrop-filter:blur(12px);border-bottom:1px solid var(--border);
+      position:sticky;top:0;z-index:100;
+    }
+    .notif-topnav__logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text);}
+    .notif-topnav__logo-icon{
+      width:36px;height:36px;border-radius:9px;
+      background:linear-gradient(135deg,#22c55e,#16a34a);
+      display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;
+    }
+    .notif-topnav__logo span{font-weight:700;}
+    .notif-topnav__back{
+      display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;
+      background:rgba(34,197,94,0.1);color:var(--green);text-decoration:none;
+      font-size:0.82rem;font-weight:600;border:1px solid rgba(34,197,94,0.25);
+      transition:background .2s;
+    }
+    .notif-topnav__back:hover{background:rgba(34,197,94,0.2);}
+
+    /* MAIN */
+    .notif-main{max-width:860px;margin:0 auto;padding:36px 20px 80px;}
+
+    /* HEADER */
+    .notif-header{
+      display:flex;align-items:center;justify-content:space-between;
+      margin-bottom:28px;flex-wrap:wrap;gap:12px;
+    }
+    .notif-header__left h1{
+      font-size:1.7rem;font-weight:800;font-family:'Poppins',sans-serif;color:#fff;
+      display:flex;align-items:center;gap:10px;
+    }
+    .notif-header__left h1 i{color:var(--green);}
+    .notif-header__left p{font-size:0.85rem;color:var(--muted);margin-top:4px;}
+    .notif-badge{
+      display:inline-flex;align-items:center;gap:4px;
+      padding:3px 10px;border-radius:50px;
+      background:rgba(239,68,68,0.15);color:#f87171;
+      font-size:0.78rem;font-weight:700;border:1px solid rgba(239,68,68,0.3);
+    }
+    .notif-header__actions{display:flex;gap:10px;}
+    .notif-action-btn{
+      display:flex;align-items:center;gap:6px;padding:8px 16px;
+      border-radius:8px;border:1px solid var(--border);
+      background:var(--card);color:var(--muted);font-size:0.82rem;
+      cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;
+    }
+    .notif-action-btn:hover{border-color:var(--green);color:var(--green);}
+    .notif-action-btn.btn-green{
+      background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.3);color:var(--green);
+    }
+
+    /* FILTER TABS */
+    .notif-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+    .notif-filter-btn{
+      padding:7px 16px;border-radius:50px;font-size:0.8rem;font-weight:600;
+      border:1px solid var(--border);background:rgba(30,41,59,0.6);
+      color:var(--muted);cursor:pointer;transition:all .2s;
+    }
+    .notif-filter-btn.active,.notif-filter-btn:hover{
+      background:rgba(34,197,94,0.12);border-color:var(--green);color:var(--green);
+    }
+
+    /* NOTIFICATION ITEMS */
+    .notif-list{display:flex;flex-direction:column;gap:10px;}
+    .notif-card{
+      background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      padding:18px 20px;display:flex;gap:16px;align-items:flex-start;
+      transition:all .2s;position:relative;overflow:hidden;
+    }
+    .notif-card.unread{border-left:3px solid var(--green);}
+    .notif-card:hover{border-color:rgba(34,197,94,0.3);background:rgba(30,41,59,0.9);}
+    .notif-card.dismissed{opacity:0;transform:translateX(100%);transition:all .3s ease;}
+
+    .notif-card__icon{
+      width:46px;height:46px;border-radius:12px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:20px;flex-shrink:0;
+    }
+    .notif-card__body{flex:1;min-width:0;}
+    .notif-card__title{
+      font-weight:700;font-size:0.95rem;color:var(--text);
+      display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    }
+    .unread-dot{
+      width:8px;height:8px;border-radius:50%;background:#22c55e;
+      display:inline-block;flex-shrink:0;
+    }
+    .notif-card__text{font-size:0.85rem;color:var(--muted);margin-top:5px;line-height:1.6;}
+    .notif-card__footer{display:flex;align-items:center;gap:12px;margin-top:10px;}
+    .notif-card__time{font-size:0.75rem;color:#64748b;}
+    .notif-card__tag{
+      font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:50px;
+    }
+    .notif-card__actions{
+      display:flex;gap:6px;margin-left:auto;
+      opacity:0;transition:opacity .2s;
+    }
+    .notif-card:hover .notif-card__actions{opacity:1;}
+    .notif-icon-btn{
+      width:30px;height:30px;border-radius:7px;border:1px solid var(--border);
+      background:rgba(15,23,42,0.6);color:var(--muted);
+      display:flex;align-items:center;justify-content:center;font-size:13px;
+      cursor:pointer;transition:all .2s;
+    }
+    .notif-icon-btn:hover{border-color:var(--green);color:var(--green);}
+    .notif-icon-btn.dismiss:hover{border-color:#ef4444;color:#f87171;}
+
+    /* EMPTY STATE */
+    .notif-empty{
+      text-align:center;padding:64px 24px;color:var(--muted);
+    }
+    .notif-empty i{font-size:48px;margin-bottom:16px;display:block;color:#334155;}
+    .notif-empty p{font-size:0.95rem;}
+
+    /* TAG COLORS */
+    .tag-weather{background:rgba(59,130,246,0.15);color:#60a5fa;}
+    .tag-pest{background:rgba(239,68,68,0.15);color:#f87171;}
+    .tag-scheme{background:rgba(251,191,36,0.15);color:#fbbf24;}
+    .tag-irrigation{background:rgba(20,184,166,0.15);color:#2dd4bf;}
+    .tag-disease{background:rgba(249,115,22,0.15);color:#fb923c;}
+    .tag-advisory{background:rgba(34,197,94,0.15);color:#4ade80;}
+    .tag-market{background:rgba(168,85,247,0.15);color:#c084fc;}
+    .tag-system{background:rgba(148,163,184,0.15);color:#94a3b8;}
+  </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="notif-topnav" role="navigation">
+  <a href="dashboard.html" class="notif-topnav__logo">
+    <div class="notif-topnav__logo-icon"><i class="fas fa-seedling"></i></div>
+    <span>KrishiMitra AI</span>
+  </a>
+  <a href="dashboard.html" class="notif-topnav__back">
+    <i class="fas fa-arrow-left"></i> Back to Dashboard
+  </a>
+</nav>
+
+<!-- MAIN -->
+<main class="notif-main" aria-label="Notifications">
+
+  <!-- HEADER -->
+  <div class="notif-header">
+    <div class="notif-header__left">
+      <h1>
+        <i class="fas fa-bell"></i>
+        Notifications
+        <span class="notif-badge" id="unread-badge" aria-label="unread count">3 Unread</span>
+      </h1>
+      <p>Stay updated with AI-powered farm alerts and advisory messages</p>
+    </div>
+    <div class="notif-header__actions">
+      <button class="notif-action-btn" id="mark-all-read-btn" aria-label="Mark all as read">
+        <i class="fas fa-check-double"></i> Mark All Read
+      </button>
+      <button class="notif-action-btn" id="clear-all-btn" aria-label="Clear all notifications">
+        <i class="fas fa-trash-alt"></i> Clear All
+      </button>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="notif-filters" role="group" aria-label="Filter notifications">
+    <button class="notif-filter-btn active" data-filter="all" id="filter-all">All</button>
+    <button class="notif-filter-btn" data-filter="unread" id="filter-unread">Unread</button>
+    <button class="notif-filter-btn" data-filter="weather" id="filter-weather">🌧️ Weather</button>
+    <button class="notif-filter-btn" data-filter="pest" id="filter-pest">🐛 Pest</button>
+    <button class="notif-filter-btn" data-filter="disease" id="filter-disease">🌿 Disease</button>
+    <button class="notif-filter-btn" data-filter="scheme" id="filter-scheme">🏛️ Schemes</button>
+    <button class="notif-filter-btn" data-filter="irrigation" id="filter-irrigation">💧 Irrigation</button>
+  </div>
+
+  <!-- NOTIFICATION LIST -->
+  <div class="notif-list" id="notif-list" role="list" aria-label="Notification items">
+    <!-- Populated by JS -->
+  </div>
+
+</main>
+
+<script>
+'use strict';
+
+/* ── NOTIFICATION DATA ───────────────────────────────────── */
+const NOTIFICATIONS_KEY = 'km_notifications_v2';
+
+const DEFAULT_NOTIFICATIONS = [
+  {
+    id: 'n001', cat: 'weather', unread: true, time: '2 hrs ago',
+    icon: 'fa-cloud-rain', iconBg: 'rgba(59,130,246,0.15)', iconColor: '#60a5fa',
+    title: '🌧️ Heavy Rainfall Alert',
+    text: 'Heavy rainfall is expected in your region tomorrow. Consider covering sensitive crops and avoiding pesticide spraying. Check drains and reduce irrigation.',
+    tag: 'Weather', tagClass: 'tag-weather'
+  },
+  {
+    id: 'n002', cat: 'pest', unread: true, time: '4 hrs ago',
+    icon: 'fa-bug', iconBg: 'rgba(239,68,68,0.15)', iconColor: '#f87171',
+    title: '🐛 Pest Risk – Cotton',
+    text: 'High pink bollworm activity detected in cotton crops across your district this week. Inspect crops immediately and consider pheromone trap deployment.',
+    tag: 'Pest Alert', tagClass: 'tag-pest'
+  },
+  {
+    id: 'n003', cat: 'irrigation', unread: true, time: '6 hrs ago',
+    icon: 'fa-tint', iconBg: 'rgba(20,184,166,0.15)', iconColor: '#2dd4bf',
+    title: '💧 Irrigation Reminder',
+    text: 'Soil moisture levels may be critically low for your wheat crop. Based on current conditions, irrigation is recommended within 24 hours. Optimal time: early morning.',
+    tag: 'Irrigation', tagClass: 'tag-irrigation'
+  },
+  {
+    id: 'n004', cat: 'scheme', unread: false, time: '1 day ago',
+    icon: 'fa-landmark', iconBg: 'rgba(251,191,36,0.15)', iconColor: '#fbbf24',
+    title: '📢 PM-KISAN New Installment',
+    text: 'The 16th installment of PM-KISAN Samman Nidhi has been released. Check your bank account or PM-KISAN portal to confirm receipt. Amount: ₹2,000.',
+    tag: 'Govt Scheme', tagClass: 'tag-scheme'
+  },
+  {
+    id: 'n005', cat: 'disease', unread: false, time: '2 days ago',
+    icon: 'fa-leaf', iconBg: 'rgba(249,115,22,0.15)', iconColor: '#fb923c',
+    title: '🌿 Disease Risk – Tomato',
+    text: 'Late blight risk is HIGH for tomato crops in your area due to prolonged humid conditions. Apply preventive fungicide (Mancozeb 75% WP) immediately.',
+    tag: 'Disease', tagClass: 'tag-disease'
+  },
+  {
+    id: 'n006', cat: 'advisory', unread: false, time: '3 days ago',
+    icon: 'fa-seedling', iconBg: 'rgba(34,197,94,0.15)', iconColor: '#4ade80',
+    title: '🌱 Weekly Crop Advisory Ready',
+    text: 'Your personalized AI crop advisory for this week has been generated. It includes fertilizer schedule, pest monitoring checklist, and irrigation plan for your crops.',
+    tag: 'Advisory', tagClass: 'tag-advisory'
+  },
+  {
+    id: 'n007', cat: 'weather', unread: false, time: '4 days ago',
+    icon: 'fa-thermometer-full', iconBg: 'rgba(239,68,68,0.15)', iconColor: '#f87171',
+    title: '🌡️ Heat Wave Warning',
+    text: 'Temperature may exceed 42°C in the next 3 days. Provide shade to sensitive crops. Irrigate fields in the early morning or after sunset. Avoid daytime field work.',
+    tag: 'Weather', tagClass: 'tag-weather'
+  },
+  {
+    id: 'n008', cat: 'scheme', unread: false, time: '5 days ago',
+    icon: 'fa-shield-alt', iconBg: 'rgba(168,85,247,0.15)', iconColor: '#c084fc',
+    title: '🔔 PMFBY Enrollment Deadline',
+    text: 'Last date to enroll in Pradhan Mantri Fasal Bima Yojana (PMFBY) for Kharif season is approaching. Visit your nearest bank or CSC center before the deadline.',
+    tag: 'Govt Scheme', tagClass: 'tag-scheme'
+  },
+  {
+    id: 'n009', cat: 'market', unread: false, time: '1 week ago',
+    icon: 'fa-chart-line', iconBg: 'rgba(168,85,247,0.15)', iconColor: '#c084fc',
+    title: '📈 Onion Prices Rising',
+    text: 'Onion prices at Nashik mandi have risen by 18% this week (₹2,400/quintal). Consider selling stored stock now or checking local mandi prices before selling.',
+    tag: 'Market', tagClass: 'tag-market'
+  },
+];
+
+/* ── STATE ───────────────────────────────────────────────── */
+let notifications = [];
+let activeFilter = 'all';
+
+function loadNotifications() {
+  const stored = localStorage.getItem(NOTIFICATIONS_KEY);
+  if (stored) {
+    try { notifications = JSON.parse(stored); } catch { notifications = [...DEFAULT_NOTIFICATIONS]; }
+  } else {
+    notifications = [...DEFAULT_NOTIFICATIONS];
+    saveNotifications();
+  }
+}
+
+function saveNotifications() {
+  localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
+}
+
+/* ── RENDER ──────────────────────────────────────────────── */
+function renderNotifications() {
+  const container = document.getElementById('notif-list');
+  if (!container) return;
+
+  let visible = notifications.filter(n => {
+    if (activeFilter === 'unread') return n.unread;
+    if (activeFilter === 'all') return true;
+    return n.cat === activeFilter;
+  });
+
+  // Update unread badge
+  const unreadCount = notifications.filter(n => n.unread).length;
+  const badge = document.getElementById('unread-badge');
+  if (badge) {
+    badge.textContent = unreadCount > 0 ? `${unreadCount} Unread` : 'All Read';
+    badge.style.background = unreadCount > 0 ? 'rgba(239,68,68,0.15)' : 'rgba(34,197,94,0.15)';
+    badge.style.color = unreadCount > 0 ? '#f87171' : '#4ade80';
+    badge.style.borderColor = unreadCount > 0 ? 'rgba(239,68,68,0.3)' : 'rgba(34,197,94,0.3)';
+  }
+
+  if (!visible.length) {
+    container.innerHTML = `
+      <div class="notif-empty">
+        <i class="fas fa-bell-slash"></i>
+        <p>No notifications in this category.<br>Check back later for farm alerts.</p>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = visible.map(n => `
+    <div class="notif-card ${n.unread ? 'unread' : ''}" id="nc-${n.id}" role="listitem"
+         data-id="${n.id}" aria-label="${n.title}">
+      <div class="notif-card__icon" style="background:${n.iconBg};" aria-hidden="true">
+        <i class="fas ${n.icon}" style="color:${n.iconColor};"></i>
+      </div>
+      <div class="notif-card__body">
+        <div class="notif-card__title">
+          ${n.title}
+          ${n.unread ? '<span class="unread-dot" aria-label="Unread"></span>' : ''}
+        </div>
+        <p class="notif-card__text">${n.text}</p>
+        <div class="notif-card__footer">
+          <span class="notif-card__time"><i class="fas fa-clock" aria-hidden="true"></i> ${n.time}</span>
+          <span class="notif-card__tag ${n.tagClass}">${n.tag}</span>
+          <div class="notif-card__actions">
+            ${n.unread ? `<button class="notif-icon-btn" onclick="markRead('${n.id}')" title="Mark as read" aria-label="Mark as read">
+              <i class="fas fa-check"></i>
+            </button>` : ''}
+            <button class="notif-icon-btn dismiss" onclick="dismissNotification('${n.id}')" title="Dismiss" aria-label="Dismiss notification">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── ACTIONS ──────────────────────────────────────────────── */
+function markRead(id) {
+  const n = notifications.find(x => x.id === id);
+  if (n) { n.unread = false; saveNotifications(); renderNotifications(); }
+}
+
+function dismissNotification(id) {
+  const card = document.getElementById(`nc-${id}`);
+  if (card) {
+    card.classList.add('dismissed');
+    setTimeout(() => {
+      notifications = notifications.filter(x => x.id !== id);
+      saveNotifications();
+      renderNotifications();
+    }, 320);
+  }
+}
+
+function markAllRead() {
+  notifications.forEach(n => n.unread = false);
+  saveNotifications();
+  renderNotifications();
+  showToast('All notifications marked as read', 'success');
+}
+
+function clearAll() {
+  if (!confirm('Clear all notifications? This cannot be undone.')) return;
+  notifications = [];
+  saveNotifications();
+  renderNotifications();
+  showToast('All notifications cleared', 'info');
+}
+
+/* ── TOAST ───────────────────────────────────────────────── */
+function showToast(msg, type = 'success') {
+  let c = document.getElementById('notif-toast');
+  if (!c) {
+    c = document.createElement('div');
+    c.id = 'notif-toast';
+    c.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:9999;';
+    document.body.appendChild(c);
+  }
+  const bg = type === 'success' ? '#22c55e' : '#3b82f6';
+  c.innerHTML = `<div style="background:${bg};color:#fff;padding:12px 20px;border-radius:10px;font-size:14px;font-family:Inter,sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.3);">
+    <i class="fas fa-check-circle"></i> ${msg}</div>`;
+  setTimeout(() => c.innerHTML = '', 3000);
+}
+
+/* ── EVENT LISTENERS ──────────────────────────────────────── */
+document.getElementById('mark-all-read-btn')?.addEventListener('click', markAllRead);
+document.getElementById('clear-all-btn')?.addEventListener('click', clearAll);
+
+document.querySelectorAll('.notif-filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.notif-filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    activeFilter = this.dataset.filter;
+    renderNotifications();
+  });
+});
+
+/* ── INIT ────────────────────────────────────────────────── */
+loadNotifications();
+renderNotifications();
+</script>
+</body>
+</html>

@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Pest Radar – AI-powered early warning system that predicts and monitors pest outbreaks using real-time agricultural and environmental data. KrishiMitra AI." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Pest Radar – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="stylesheet" href="../css/pest-detection.css" />
+  <link rel="stylesheet" href="../css/pest-radar.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+</head>
+<body class="km-app-body">
+
+<!-- SIDEBAR CONTAINER (Injected by components.js) -->
+<div id="sidebar-container"></div>
+
+<div class="km-app-wrapper">
+  <div class="km-app-main" id="dashboard-main">
+
+    <div id="navbar-container"></div>
+
+    <main class="km-page-content" aria-label="Pest Radar Early Warning System">
+
+      <!-- BREADCRUMB -->
+      <div class="breadcrumb-header" style="margin-bottom:8px;">
+        <nav aria-label="Breadcrumb" class="km-breadcrumb">
+          <ol style="display:flex;gap:8px;list-style:none;padding:0;margin:0;font-size:0.75rem;color:var(--text-light);">
+            <li><a href="dashboard.html" style="color:inherit;text-decoration:none;">Dashboard</a></li>
+            <li><span style="color:var(--text-light);margin:0 4px;">&gt;</span></li>
+            <li aria-current="page" style="color:var(--primary);font-weight:600;">Pest Radar</li>
+          </ol>
+        </nav>
+      </div>
+
+      <!-- PAGE HEADER -->
+      <header class="pr-page-header" style="margin-bottom:20px;">
+        <div class="pr-header-left">
+          <div class="pr-header-icon-wrap" aria-hidden="true">
+            <i class="fas fa-radar"></i>
+          </div>
+          <div>
+            <h1 class="pr-page-title">Pest Radar <span class="pr-title-badge">AI Early Warning</span></h1>
+            <p class="pr-page-subtitle">Intelligent pest outbreak prediction using weather, crop, and location data. Detect threats before they spread.</p>
+          </div>
+        </div>
+        <div class="pr-header-right">
+          <div class="pr-lang-select-wrap">
+            <i class="fas fa-globe" aria-hidden="true"></i>
+            <select id="pr-lang-select" class="pr-lang-select" aria-label="Select language">
+              <option value="en">English</option>
+              <option value="hi">Hindi (हिंदी)</option>
+              <option value="mr">Marathi (मराठी)</option>
+            </select>
+          </div>
+          <span class="pr-live-badge" aria-label="System status: Live monitoring">
+            <span class="pr-live-dot"></span> Live Monitoring
+          </span>
+        </div>
+      </header>
+
+      <!-- ══ SECTION 1: CRITICAL OUTBREAK ALERT BANNER ════════ -->
+      <section id="pr-outbreak-banner" class="pr-outbreak-banner" role="alert" aria-live="assertive">
+        <div class="pr-outbreak-banner__icon"><i class="fas fa-triangle-exclamation"></i></div>
+        <div class="pr-outbreak-banner__body">
+          <div class="pr-outbreak-banner__title">
+            <span class="pr-risk-chip pr-risk-chip--critical">CRITICAL ALERT</span>
+            <strong id="pr-banner-title">Cotton Bollworm Outbreak — Nagpur District</strong>
+          </div>
+          <p id="pr-banner-desc">AI prediction models indicate a 91% probability of Cotton Bollworm surge in Nagpur, Wardha and surrounding districts over the next 5-7 days due to high temperature (36°C) and humidity (82%). Immediate preventive action is recommended.</p>
+        </div>
+        <div class="pr-outbreak-banner__actions">
+          <button class="pr-btn pr-btn--light" onclick="scrollToSection('pr-recommendations')">View Actions</button>
+          <button class="pr-btn pr-btn--ghost-white" onclick="document.getElementById('pr-outbreak-banner').style.display='none'" aria-label="Dismiss alert">
+            <i class="fas fa-xmark"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- ══ SECTION 2: RISK SUMMARY STAT CARDS ═════════════ -->
+      <section class="pr-stat-row" aria-label="Pest risk summary statistics" style="margin-top:20px;">
+
+        <div class="pr-stat-card pr-stat-card--primary" id="pr-overall-risk-card">
+          <div class="pr-stat-card__header">
+            <span class="pr-stat-card__label">Overall Pest Risk Score</span>
+            <span class="pr-risk-chip pr-risk-chip--high" id="pr-risk-level-chip">HIGH RISK</span>
+          </div>
+          <div class="pr-risk-meter-wrap">
+            <div class="pr-risk-gauge" role="meter" aria-valuenow="76" aria-valuemin="0" aria-valuemax="100" aria-label="Pest risk score: 76 out of 100">
+              <svg viewBox="0 0 120 70" class="pr-gauge-svg" aria-hidden="true">
+                <path d="M10,65 A55,55 0 0,1 110,65" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="10" stroke-linecap="round"/>
+                <path id="pr-gauge-arc" d="M10,65 A55,55 0 0,1 110,65" fill="none" stroke="#fbbf24" stroke-width="10" stroke-linecap="round" stroke-dasharray="173" stroke-dashoffset="41"/>
+              </svg>
+              <div class="pr-gauge-center">
+                <span class="pr-gauge-number" id="pr-risk-score-num">76</span>
+                <span class="pr-gauge-unit">/100</span>
+              </div>
+            </div>
+          </div>
+          <div class="pr-stat-card__footer">
+            <span><i class="fas fa-location-dot"></i> Nagpur, Maharashtra</span>
+            <span><i class="fas fa-clock"></i> Updated 15 min ago</span>
+          </div>
+        </div>
+
+        <div class="pr-stat-card">
+          <div class="pr-stat-card__icon pr-stat-card__icon--red"><i class="fas fa-bell-ring"></i></div>
+          <div class="pr-stat-card__num" id="pr-active-alerts-num">4</div>
+          <div class="pr-stat-card__label">Active Pest Alerts</div>
+          <div class="pr-stat-card__sub">In your district this week</div>
+          <div class="pr-stat-sparkbar"><div class="pr-sparkbar-fill pr-sparkbar-fill--red" style="width:72%"></div></div>
+        </div>
+
+        <div class="pr-stat-card">
+          <div class="pr-stat-card__icon pr-stat-card__icon--orange"><i class="fas fa-tractor"></i></div>
+          <div class="pr-stat-card__num" id="pr-farms-affected-num">1,240</div>
+          <div class="pr-stat-card__label">Farms Affected Nearby</div>
+          <div class="pr-stat-card__sub">Within 50km radius</div>
+          <div class="pr-stat-sparkbar"><div class="pr-sparkbar-fill pr-sparkbar-fill--orange" style="width:58%"></div></div>
+        </div>
+
+        <div class="pr-stat-card">
+          <div class="pr-stat-card__icon pr-stat-card__icon--blue"><i class="fas fa-cloud-bolt"></i></div>
+          <div class="pr-stat-card__num" id="pr-weather-risk-num">82%</div>
+          <div class="pr-stat-card__label">Weather Risk Index</div>
+          <div class="pr-stat-card__sub">Humidity triggers pest surge</div>
+          <div class="pr-stat-sparkbar"><div class="pr-sparkbar-fill pr-sparkbar-fill--blue" style="width:82%"></div></div>
+        </div>
+
+        <div class="pr-stat-card">
+          <div class="pr-stat-card__icon pr-stat-card__icon--green"><i class="fas fa-shield-check"></i></div>
+          <div class="pr-stat-card__num" id="pr-actions-done-num">3/7</div>
+          <div class="pr-stat-card__label">Preventive Actions Done</div>
+          <div class="pr-stat-card__sub">This season for your farm</div>
+          <div class="pr-stat-sparkbar"><div class="pr-sparkbar-fill pr-sparkbar-fill--green" style="width:43%"></div></div>
+        </div>
+
+      </section>
+
+      <!-- ══ SECTION 3: LOCATION INPUT PANEL + RADAR MAP ════ -->
+      <div class="pr-two-col-layout" style="margin-top:24px;">
+
+        <!-- LEFT: Input Panel -->
+        <section class="km-card pr-input-panel" aria-labelledby="pr-input-title">
+          <div class="km-card__header">
+            <h2 id="pr-input-title" class="km-card__title">
+              <i class="fas fa-sliders" aria-hidden="true"></i> Farm &amp; Crop Parameters
+            </h2>
+          </div>
+          <div class="km-card__body">
+            <form id="pr-analysis-form" novalidate>
+
+              <div class="form-row pr-form-row">
+                <div class="form-group">
+                  <label class="form-label" for="pr-state">State</label>
+                  <select id="pr-state" class="form-select no-icon" aria-required="true">
+                    <option value="">Select State</option>
+                    <option value="Maharashtra" selected>Maharashtra</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="pr-district">District</label>
+                  <select id="pr-district" class="form-select no-icon" aria-required="true">
+                    <option value="">Select District</option>
+                    <option value="Nagpur" selected>Nagpur</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Nashik">Nashik</option>
+                    <option value="Aurangabad">Aurangabad</option>
+                    <option value="Amravati">Amravati</option>
+                    <option value="Wardha">Wardha</option>
+                    <option value="Yavatmal">Yavatmal</option>
+                    <option value="Latur">Latur</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:14px;">
+                <label class="form-label" for="pr-village">Village / Taluka</label>
+                <input type="text" id="pr-village" class="form-input" placeholder="e.g. Kamptee, Hingna" />
+              </div>
+
+              <div class="form-row pr-form-row">
+                <div class="form-group">
+                  <label class="form-label" for="pr-crop">Crop Type</label>
+                  <select id="pr-crop" class="form-select no-icon" aria-required="true">
+                    <option value="">Select Crop</option>
+                    <option value="cotton" selected>Cotton</option>
+                    <option value="wheat">Wheat</option>
+                    <option value="rice">Rice (Paddy)</option>
+                    <option value="soybean">Soybean</option>
+                    <option value="tomato">Tomato</option>
+                    <option value="sugarcane">Sugarcane</option>
+                    <option value="onion">Onion</option>
+                    <option value="maize">Maize</option>
+                    <option value="groundnut">Groundnut</option>
+                    <option value="chilli">Chilli</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="pr-crop-stage">Crop Stage</label>
+                  <select id="pr-crop-stage" class="form-select no-icon">
+                    <option value="">Select Stage</option>
+                    <option value="seedling">Seedling (0-21 days)</option>
+                    <option value="vegetative" selected>Vegetative</option>
+                    <option value="flowering">Flowering</option>
+                    <option value="fruiting">Fruiting / Boll Formation</option>
+                    <option value="harvest">Pre-Harvest</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom:16px;">
+                <label class="form-label" for="pr-season">Current Season</label>
+                <select id="pr-season" class="form-select no-icon">
+                  <option value="kharif" selected>Kharif (Monsoon)</option>
+                  <option value="rabi">Rabi (Winter)</option>
+                  <option value="zaid">Zaid (Summer)</option>
+                </select>
+              </div>
+
+              <button type="button" id="pr-gps-btn" class="pr-btn pr-btn--outline pr-gps-btn" style="width:100%;margin-bottom:12px;">
+                <i class="fas fa-location-crosshairs" aria-hidden="true"></i> Auto-Detect My Location (GPS)
+              </button>
+
+              <button type="submit" id="pr-run-btn" class="pr-btn pr-btn--primary" style="width:100%;">
+                <i class="fas fa-radar" aria-hidden="true"></i> Run Pest Radar Analysis
+              </button>
+
+              <!-- Weather Snapshot -->
+              <div class="pr-form-divider" aria-hidden="true" style="margin:20px 0;border-top:1px solid var(--dash-border);"></div>
+              <div class="pr-weather-snap" aria-label="Current weather snapshot">
+                <div class="pr-weather-snap__title"><i class="fas fa-cloud-sun"></i> Live Weather Snapshot</div>
+                <div class="pr-weather-snap__grid">
+                  <div class="pr-weather-tile">
+                    <i class="fas fa-temperature-high" style="color:#ef4444;"></i>
+                    <span class="pr-weather-tile__val" id="pr-w-temp">36°C</span>
+                    <span class="pr-weather-tile__lbl">Temp</span>
+                  </div>
+                  <div class="pr-weather-tile">
+                    <i class="fas fa-droplet" style="color:#3b82f6;"></i>
+                    <span class="pr-weather-tile__val" id="pr-w-humidity">82%</span>
+                    <span class="pr-weather-tile__lbl">Humidity</span>
+                  </div>
+                  <div class="pr-weather-tile">
+                    <i class="fas fa-cloud-rain" style="color:#6366f1;"></i>
+                    <span class="pr-weather-tile__val" id="pr-w-rain">18mm</span>
+                    <span class="pr-weather-tile__lbl">Rainfall</span>
+                  </div>
+                  <div class="pr-weather-tile">
+                    <i class="fas fa-wind" style="color:#10b981;"></i>
+                    <span class="pr-weather-tile__val" id="pr-w-wind">12 km/h</span>
+                    <span class="pr-weather-tile__lbl">Wind</span>
+                  </div>
+                </div>
+                <div class="pr-weather-snap__assess" id="pr-weather-assessment">
+                  <i class="fas fa-triangle-exclamation"></i>
+                  High humidity + warm temperature = Optimal pest breeding conditions
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </section>
+
+        <!-- RIGHT: Interactive Pest Risk Map -->
+        <section class="km-card pr-map-section" aria-labelledby="pr-map-title">
+          <div class="km-card__header" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <h2 id="pr-map-title" class="km-card__title">
+              <i class="fas fa-map-location-dot" aria-hidden="true"></i> Pest Risk Radar Map
+            </h2>
+            <div class="pr-map-legend" aria-label="Map legend">
+              <span class="pr-legend-dot pr-legend-dot--critical"></span> Critical
+              <span class="pr-legend-dot pr-legend-dot--high"></span> High
+              <span class="pr-legend-dot pr-legend-dot--moderate"></span> Moderate
+              <span class="pr-legend-dot pr-legend-dot--low"></span> Low
+            </div>
+          </div>
+          <div class="km-card__body" style="padding:0;">
+
+            <div class="pr-map-visual" id="pr-map-visual" role="img" aria-label="Interactive pest risk map of Maharashtra showing outbreak hotspots">
+              <!-- Radar sweep animation -->
+              <div class="pr-radar-sweep-wrap" aria-hidden="true">
+                <div class="pr-radar-circle pr-radar-circle--1"></div>
+                <div class="pr-radar-circle pr-radar-circle--2"></div>
+                <div class="pr-radar-circle pr-radar-circle--3"></div>
+                <div class="pr-radar-sweep"></div>
+              </div>
+
+              <!-- Hotspot Markers -->
+              <div class="pr-hotspot pr-hotspot--critical" style="top:28%;left:42%;" data-district="Nagpur" data-pest="Cotton Bollworm" data-risk="91" data-risk-level="Critical" data-farms="1,240" tabindex="0" role="button" aria-label="Nagpur: Cotton Bollworm - Critical 91%">
+                <span class="pr-hotspot__pulse"></span><span class="pr-hotspot__label">Nagpur</span>
+              </div>
+              <div class="pr-hotspot pr-hotspot--high" style="top:48%;left:22%;" data-district="Wardha" data-pest="Pink Bollworm" data-risk="74" data-risk-level="High" data-farms="680" tabindex="0" role="button" aria-label="Wardha: Pink Bollworm - High 74%">
+                <span class="pr-hotspot__pulse"></span><span class="pr-hotspot__label">Wardha</span>
+              </div>
+              <div class="pr-hotspot pr-hotspot--high" style="top:55%;left:60%;" data-district="Yavatmal" data-pest="Whitefly" data-risk="68" data-risk-level="High" data-farms="920" tabindex="0" role="button" aria-label="Yavatmal: Whitefly - High 68%">
+                <span class="pr-hotspot__pulse"></span><span class="pr-hotspot__label">Yavatmal</span>
+              </div>
+              <div class="pr-hotspot pr-hotspot--moderate" style="top:65%;left:35%;" data-district="Amravati" data-pest="Thrips" data-risk="52" data-risk-level="Moderate" data-farms="430" tabindex="0" role="button" aria-label="Amravati: Thrips - Moderate 52%">
+                <span class="pr-hotspot__label">Amravati</span>
+              </div>
+              <div class="pr-hotspot pr-hotspot--moderate" style="top:72%;left:20%;" data-district="Akola" data-pest="Aphids" data-risk="45" data-risk-level="Moderate" data-farms="310" tabindex="0" role="button" aria-label="Akola: Aphids - Moderate 45%">
+                <span class="pr-hotspot__label">Akola</span>
+              </div>
+              <div class="pr-hotspot pr-hotspot--low" style="top:75%;left:70%;" data-district="Latur" data-pest="Stem Borer" data-risk="22" data-risk-level="Low" data-farms="95" tabindex="0" role="button" aria-label="Latur: Stem Borer - Low 22%">
+                <span class="pr-hotspot__label">Latur</span>
+              </div>
+              <div class="pr-hotspot pr-hotspot--low" style="top:30%;left:68%;" data-district="Chandrapur" data-pest="Mealybug" data-risk="18" data-risk-level="Low" data-farms="72" tabindex="0" role="button" aria-label="Chandrapur: Mealybug - Low 18%">
+                <span class="pr-hotspot__label">Chandrapur</span>
+              </div>
+
+              <!-- Tooltip -->
+              <div class="pr-map-tooltip" id="pr-map-tooltip" role="tooltip" aria-hidden="true">
+                <div class="pr-map-tooltip__header">
+                  <strong id="pr-tt-district">Nagpur</strong>
+                  <span class="pr-risk-chip pr-risk-chip--critical" id="pr-tt-level">Critical</span>
+                </div>
+                <div class="pr-map-tooltip__row"><i class="fas fa-bug"></i> <span id="pr-tt-pest">Cotton Bollworm</span></div>
+                <div class="pr-map-tooltip__row"><i class="fas fa-chart-simple"></i> Risk: <strong id="pr-tt-risk">91%</strong></div>
+                <div class="pr-map-tooltip__row"><i class="fas fa-tractor"></i> <span id="pr-tt-farms">1,240</span> farms affected</div>
+              </div>
+
+              <span class="pr-map-watermark">Demo Risk Visualization · KrishiMitra AI</span>
+            </div>
+
+            <!-- Nearby Outbreaks List -->
+            <div class="pr-nearby-outbreaks" aria-labelledby="pr-nearby-title">
+              <h3 id="pr-nearby-title" class="pr-nearby-title">
+                <i class="fas fa-circle-radiation" aria-hidden="true"></i>
+                Nearby Pest Outbreaks
+                <span class="pr-nearby-badge" id="pr-nearby-count">6 active</span>
+              </h3>
+              <div class="pr-nearby-list" id="pr-nearby-list" role="list"><!-- Injected by JS --></div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+
+      <!-- ══ SECTION 4: AI PREDICTION RESULTS ═══════════════ -->
+      <section class="km-card pr-prediction-section" id="pr-prediction-results" style="margin-top:24px;" aria-labelledby="pr-prediction-title">
+        <div class="km-card__header" style="justify-content:space-between;">
+          <h2 id="pr-prediction-title" class="km-card__title">
+            <i class="fas fa-brain" aria-hidden="true"></i> AI Pest Prediction Results
+          </h2>
+          <span class="pr-live-badge"><span class="pr-live-dot"></span> AI Computed</span>
+        </div>
+        <div class="km-card__body">
+          <div class="pr-prediction-grid" id="pr-prediction-grid"><!-- Injected by JS --></div>
+        </div>
+      </section>
+
+      <!-- ══ SECTION 5: RISK LEVEL MATRIX ════════════════════ -->
+      <section class="km-card pr-risk-matrix" style="margin-top:24px;" aria-labelledby="pr-matrix-title">
+        <div class="km-card__header">
+          <h2 id="pr-matrix-title" class="km-card__title">
+            <i class="fas fa-table-cells-large" aria-hidden="true"></i> Risk Level Classification Matrix
+          </h2>
+        </div>
+        <div class="km-card__body">
+          <div class="pr-risk-matrix-grid" role="table" aria-label="Pest risk level matrix">
+            <div class="pr-risk-row pr-risk-row--low" role="row">
+              <div class="pr-risk-row__level" role="cell">
+                <span class="pr-risk-indicator pr-risk-indicator--low"></span>
+                <strong>LOW</strong><span>0-30</span>
+              </div>
+              <div class="pr-risk-row__desc" role="cell">Minimal pest presence. Standard field monitoring recommended. No immediate action needed.</div>
+              <div class="pr-risk-row__action" role="cell">
+                <span class="pr-action-tag"><i class="fas fa-eye"></i> Monitor Weekly</span>
+              </div>
+            </div>
+            <div class="pr-risk-row pr-risk-row--medium" role="row">
+              <div class="pr-risk-row__level" role="cell">
+                <span class="pr-risk-indicator pr-risk-indicator--medium"></span>
+                <strong>MEDIUM</strong><span>31-60</span>
+              </div>
+              <div class="pr-risk-row__desc" role="cell">Elevated pest activity. Weather conditions favor pest breeding. Apply preventive organic treatments.</div>
+              <div class="pr-risk-row__action" role="cell">
+                <span class="pr-action-tag pr-action-tag--medium"><i class="fas fa-spray-can-sparkles"></i> Preventive Spray</span>
+              </div>
+            </div>
+            <div class="pr-risk-row pr-risk-row--high" role="row">
+              <div class="pr-risk-row__level" role="cell">
+                <span class="pr-risk-indicator pr-risk-indicator--high"></span>
+                <strong>HIGH</strong><span>61-80</span>
+              </div>
+              <div class="pr-risk-row__desc" role="cell">Significant outbreak risk. Nearby farms reporting active infestation. Deploy chemical/IPM treatment immediately.</div>
+              <div class="pr-risk-row__action" role="cell">
+                <span class="pr-action-tag pr-action-tag--high"><i class="fas fa-exclamation-triangle"></i> Deploy IPM Treatment</span>
+              </div>
+            </div>
+            <div class="pr-risk-row pr-risk-row--critical" role="row">
+              <div class="pr-risk-row__level" role="cell">
+                <span class="pr-risk-indicator pr-risk-indicator--critical"></span>
+                <strong>CRITICAL</strong><span>81-100</span>
+              </div>
+              <div class="pr-risk-row__desc" role="cell">Active multi-district outbreak. Government surveillance triggered. Emergency pesticide protocol required.</div>
+              <div class="pr-risk-row__action" role="cell">
+                <span class="pr-action-tag pr-action-tag--critical"><i class="fas fa-siren"></i> Emergency Protocol</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ SECTION 6: AI WORKFLOW VISUALIZER ═══════════════ -->
+      <section class="km-card pr-workflow-section" style="margin-top:24px;" aria-labelledby="pr-workflow-title">
+        <div class="km-card__header">
+          <h2 id="pr-workflow-title" class="km-card__title">
+            <i class="fas fa-network-wired" aria-hidden="true"></i> AI Pest Radar Workflow
+          </h2>
+          <span class="km-badge km-badge--green" style="font-size:0.7rem;">How It Works</span>
+        </div>
+        <div class="km-card__body">
+          <div class="pr-workflow" role="list" aria-label="AI workflow steps">
+            <div class="pr-workflow-step" role="listitem">
+              <div class="pr-workflow-step__icon"><i class="fas fa-location-dot"></i></div>
+              <div class="pr-workflow-step__label">Farmer Location</div>
+              <div class="pr-workflow-arrow" aria-hidden="true"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="pr-workflow-step" role="listitem">
+              <div class="pr-workflow-step__icon" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);"><i class="fas fa-cloud-sun-rain"></i></div>
+              <div class="pr-workflow-step__label">Weather Data</div>
+              <div class="pr-workflow-arrow" aria-hidden="true"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="pr-workflow-step" role="listitem">
+              <div class="pr-workflow-step__icon" style="background:linear-gradient(135deg,#10b981,#059669);"><i class="fas fa-seedling"></i></div>
+              <div class="pr-workflow-step__label">Crop Information</div>
+              <div class="pr-workflow-arrow" aria-hidden="true"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="pr-workflow-step" role="listitem">
+              <div class="pr-workflow-step__icon" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);"><i class="fas fa-database"></i></div>
+              <div class="pr-workflow-step__label">Historical Pest Database</div>
+              <div class="pr-workflow-arrow" aria-hidden="true"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="pr-workflow-step" role="listitem">
+              <div class="pr-workflow-step__icon" style="background:linear-gradient(135deg,#f59e0b,#d97706);"><i class="fas fa-landmark"></i></div>
+              <div class="pr-workflow-step__label">Govt Surveillance Data</div>
+              <div class="pr-workflow-arrow" aria-hidden="true"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="pr-workflow-step pr-workflow-step--highlight" role="listitem">
+              <div class="pr-workflow-step__icon" style="background:linear-gradient(135deg,#1a6b3c,#064e3b);"><i class="fas fa-brain"></i></div>
+              <div class="pr-workflow-step__label">AI Prediction Model</div>
+              <div class="pr-workflow-arrow" aria-hidden="true"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="pr-workflow-step" role="listitem">
+              <div class="pr-workflow-step__icon" style="background:linear-gradient(135deg,#ef4444,#991b1b);"><i class="fas fa-chart-simple"></i></div>
+              <div class="pr-workflow-step__label">Risk Score Generation</div>
+              <div class="pr-workflow-arrow" aria-hidden="true"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="pr-workflow-step" role="listitem">
+              <div class="pr-workflow-step__icon" style="background:linear-gradient(135deg,#0ea5e9,#0369a1);"><i class="fas fa-radar"></i></div>
+              <div class="pr-workflow-step__label">Pest Radar Dashboard</div>
+              <div class="pr-workflow-arrow" aria-hidden="true"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="pr-workflow-step" role="listitem">
+              <div class="pr-workflow-step__icon" style="background:linear-gradient(135deg,#16a34a,#15803d);"><i class="fas fa-shield-halved"></i></div>
+              <div class="pr-workflow-step__label">Preventive Recommendations</div>
+              <div class="pr-workflow-arrow" aria-hidden="true"><i class="fas fa-chevron-down"></i></div>
+            </div>
+            <div class="pr-workflow-step pr-workflow-step--last" role="listitem">
+              <div class="pr-workflow-step__icon" style="background:linear-gradient(135deg,#f97316,#c2410c);"><i class="fas fa-bell-ring"></i></div>
+              <div class="pr-workflow-step__label">Smart Notifications</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ SECTION 7: HIGH RISK CROPS + RECOMMENDATIONS ════ -->
+      <div class="pr-two-col-layout" style="margin-top:24px;" id="pr-recommendations">
+
+        <section class="km-card" aria-labelledby="pr-high-risk-crops-title">
+          <div class="km-card__header">
+            <h2 id="pr-high-risk-crops-title" class="km-card__title">
+              <i class="fas fa-wheat-awn" aria-hidden="true"></i> High Risk Crops
+            </h2>
+            <span class="pr-risk-chip pr-risk-chip--high" style="font-size:0.65rem;">Nagpur District</span>
+          </div>
+          <div class="km-card__body" style="padding:0;">
+            <div class="pr-crop-risk-list" id="pr-crop-risk-list" role="list"><!-- Injected by JS --></div>
+          </div>
+        </section>
+
+        <section class="km-card" aria-labelledby="pr-actions-title">
+          <div class="km-card__header">
+            <h2 id="pr-actions-title" class="km-card__title">
+              <i class="fas fa-list-check" aria-hidden="true"></i> Preventive Action Checklist
+            </h2>
+          </div>
+          <div class="km-card__body" style="padding:0;">
+            <div class="pr-action-checklist" id="pr-action-checklist" role="list"><!-- Injected by JS --></div>
+          </div>
+        </section>
+      </div>
+
+      <!-- ══ SECTION 8: TREATMENT GUIDE (IPM Tabs) ═══════════ -->
+      <section class="km-card pr-treatment-guide" style="margin-top:24px;" aria-labelledby="pr-treatment-title">
+        <div class="km-card__header">
+          <h2 id="pr-treatment-title" class="km-card__title">
+            <i class="fas fa-hand-holding-medical" aria-hidden="true"></i> Treatment Guide &amp; IPM Practices
+          </h2>
+          <span class="km-badge km-badge--green" style="font-size:0.7rem;">Integrated Pest Management</span>
+        </div>
+        <div class="km-card__body">
+
+          <div style="margin-bottom:20px;">
+            <label class="form-label" for="pr-treatment-pest-sel">Select Pest for Treatment Guide</label>
+            <select id="pr-treatment-pest-sel" class="form-select no-icon" style="max-width:320px;" onchange="loadTreatmentGuide(this.value)">
+              <option value="bollworm">Cotton Bollworm (Helicoverpa)</option>
+              <option value="whitefly">Whitefly</option>
+              <option value="aphids">Aphids</option>
+              <option value="thrips">Thrips</option>
+              <option value="mealybug">Mealybug</option>
+              <option value="stem-borer">Yellow Stem Borer (Rice)</option>
+            </select>
+          </div>
+
+          <div class="control-tabs pr-treatment-tabs" role="tablist">
+            <button type="button" class="control-tab-btn active" data-tab="pr-organic" role="tab" aria-selected="true">
+              <i class="fas fa-seedling"></i> Organic
+            </button>
+            <button type="button" class="control-tab-btn" data-tab="pr-biological" role="tab" aria-selected="false">
+              <i class="fas fa-bug"></i> Biological
+            </button>
+            <button type="button" class="control-tab-btn" data-tab="pr-chemical" role="tab" aria-selected="false">
+              <i class="fas fa-vial"></i> Chemical
+            </button>
+            <button type="button" class="control-tab-btn" data-tab="pr-ipm" role="tab" aria-selected="false">
+              <i class="fas fa-arrows-spin"></i> IPM Protocol
+            </button>
+            <button type="button" class="control-tab-btn" data-tab="pr-cultural" role="tab" aria-selected="false">
+              <i class="fas fa-tractor"></i> Cultural
+            </button>
+          </div>
+
+          <div class="control-content-panel active" id="pr-organic" role="tabpanel">
+            <div class="pr-treatment-grid" id="pr-organic-content"><!-- Injected by JS --></div>
+          </div>
+          <div class="control-content-panel" id="pr-biological" role="tabpanel">
+            <div class="pr-treatment-grid" id="pr-biological-content"><!-- Injected by JS --></div>
+          </div>
+          <div class="control-content-panel" id="pr-chemical" role="tabpanel">
+            <div class="pr-treatment-grid" id="pr-chemical-content"><!-- Injected by JS --></div>
+            <div class="chemical-alert-box" style="margin-top:16px;">
+              <i class="fas fa-exclamation-triangle"></i>
+              <strong>Safety Notice:</strong> Always wear PPE (gloves, mask, protective clothing) when applying chemical pesticides. Follow label instructions strictly. Consult your local agricultural officer before applying.
+            </div>
+          </div>
+          <div class="control-content-panel" id="pr-ipm" role="tabpanel">
+            <div class="pr-treatment-grid" id="pr-ipm-content"><!-- Injected by JS --></div>
+          </div>
+          <div class="control-content-panel" id="pr-cultural" role="tabpanel">
+            <div class="pr-treatment-grid" id="pr-cultural-content"><!-- Injected by JS --></div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ══ SECTION 9: TREND GRAPHS ══════════════════════════ -->
+      <section class="km-card pr-trend-section" style="margin-top:24px;" aria-labelledby="pr-trend-title">
+        <div class="km-card__header" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
+          <h2 id="pr-trend-title" class="km-card__title">
+            <i class="fas fa-chart-line" aria-hidden="true"></i> Pest Outbreak Trends &amp; History
+          </h2>
+          <select id="pr-trend-period" class="form-select no-icon" style="font-size:0.75rem;padding:6px 12px;width:auto;" aria-label="Select trend period" onchange="updateTrendCharts(this.value)">
+            <option value="7">Last 7 Days</option>
+            <option value="30" selected>Last 30 Days</option>
+            <option value="90">Last 3 Months</option>
+            <option value="365">This Season</option>
+          </select>
+        </div>
+        <div class="km-card__body">
+          <div class="pr-chart-grid">
+            <div class="pr-chart-card">
+              <div class="pr-chart-card__header">
+                <span class="pr-chart-card__title">Risk Score Over Time</span>
+                <span class="pr-risk-chip pr-risk-chip--high" style="font-size:0.62rem;">Nagpur</span>
+              </div>
+              <canvas id="pr-trend-chart" height="200" aria-label="Pest risk score trend chart"></canvas>
+            </div>
+            <div class="pr-chart-card">
+              <div class="pr-chart-card__header">
+                <span class="pr-chart-card__title">Pest Frequency by Type</span>
+                <span class="pr-risk-chip" style="font-size:0.62rem;background:#f1f5f9;color:#475569;">This Season</span>
+              </div>
+              <canvas id="pr-pest-freq-chart" height="200" aria-label="Pest frequency bar chart"></canvas>
+            </div>
+          </div>
+          <div class="pr-chart-card" style="margin-top:16px;">
+            <div class="pr-chart-card__header">
+              <span class="pr-chart-card__title">District-Wise Pest Risk Comparison</span>
+              <span class="pr-risk-chip" style="font-size:0.62rem;background:#f1f5f9;color:#475569;">Maharashtra</span>
+            </div>
+            <canvas id="pr-district-chart" height="120" aria-label="District-wise pest risk comparison chart"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ SECTION 10: ALERT TIMELINE ════════════════════════ -->
+      <section class="km-card pr-alert-timeline" style="margin-top:24px;" aria-labelledby="pr-alert-timeline-title">
+        <div class="km-card__header" style="justify-content:space-between;">
+          <h2 id="pr-alert-timeline-title" class="km-card__title">
+            <i class="fas fa-timeline" aria-hidden="true"></i> Alert Timeline
+          </h2>
+          <button class="pr-btn pr-btn--ghost" style="font-size:0.78rem;" onclick="clearAlertTimeline()" aria-label="Clear all alerts">
+            <i class="fas fa-trash-can"></i> Clear All
+          </button>
+        </div>
+        <div class="km-card__body" style="padding:0;">
+          <div class="pr-timeline" id="pr-timeline" role="list" aria-label="Pest alert timeline"><!-- Injected by JS --></div>
+        </div>
+      </section>
+
+      <!-- ══ SECTION 11: PEST HISTORY TABLE ════════════════════ -->
+      <section class="km-card pr-history-section" style="margin-top:24px;" aria-labelledby="pr-history-title">
+        <div class="km-card__header" style="justify-content:space-between;">
+          <h2 id="pr-history-title" class="km-card__title">
+            <i class="fas fa-clock-rotate-left" aria-hidden="true"></i> Pest History – My Farm
+          </h2>
+          <span style="font-size:0.7rem;color:var(--text-light);">Matches farmer profile</span>
+        </div>
+        <div class="km-card__body" style="padding:0;">
+          <div class="analysis-table-wrap" style="overflow-x:auto;">
+            <table class="analysis-table" aria-label="Pest history table" style="width:100%;border-collapse:collapse;font-size:0.83rem;">
+              <thead>
+                <tr style="background:#f8fafc;border-bottom:1px solid var(--dash-border);text-align:left;">
+                  <th scope="col" style="padding:12px 16px;">Date</th>
+                  <th scope="col" style="padding:12px 16px;">Pest Detected</th>
+                  <th scope="col" style="padding:12px 16px;">Crop</th>
+                  <th scope="col" style="padding:12px 16px;">Risk Score</th>
+                  <th scope="col" style="padding:12px 16px;">Stage</th>
+                  <th scope="col" style="padding:12px 16px;">Action Taken</th>
+                  <th scope="col" style="padding:12px 16px;">Outcome</th>
+                </tr>
+              </thead>
+              <tbody id="pr-history-tbody"><!-- Injected by JS --></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ SECTION 12: DATA SOURCES & TECHNOLOGIES ══════════ -->
+      <section class="km-card pr-tech-sources" style="margin-top:24px;" aria-labelledby="pr-tech-title">
+        <div class="km-card__header">
+          <h2 id="pr-tech-title" class="km-card__title">
+            <i class="fas fa-microchip" aria-hidden="true"></i> Data Sources &amp; Technologies
+          </h2>
+        </div>
+        <div class="km-card__body">
+          <div class="pr-tech-grid">
+            <div class="pr-tech-card">
+              <div class="pr-tech-card__icon" style="background:#dbeafe;color:#2563eb;"><i class="fas fa-cloud"></i></div>
+              <div class="pr-tech-card__name">OpenWeatherMap API</div>
+              <div class="pr-tech-card__desc">Real-time temperature, humidity, rainfall, and wind data</div>
+              <span class="pr-tech-status pr-tech-status--live">Live</span>
+            </div>
+            <div class="pr-tech-card">
+              <div class="pr-tech-card__icon" style="background:#dcfce7;color:#16a34a;"><i class="fas fa-landmark"></i></div>
+              <div class="pr-tech-card__name">NCIPM Database</div>
+              <div class="pr-tech-card__desc">Government Pest Surveillance (NCIPM, state departments)</div>
+              <span class="pr-tech-status pr-tech-status--live">Live</span>
+            </div>
+            <div class="pr-tech-card">
+              <div class="pr-tech-card__icon" style="background:#fef3c7;color:#d97706;"><i class="fas fa-satellite"></i></div>
+              <div class="pr-tech-card__name">ISRO Satellite Data</div>
+              <div class="pr-tech-card__desc">Remote sensing &amp; NDVI crop health indices</div>
+              <span class="pr-tech-status pr-tech-status--future">Future</span>
+            </div>
+            <div class="pr-tech-card">
+              <div class="pr-tech-card__icon" style="background:#f3e8ff;color:#7c3aed;"><i class="fas fa-brain"></i></div>
+              <div class="pr-tech-card__name">Gemini AI / ML Model</div>
+              <div class="pr-tech-card__desc">AI risk scoring, pattern recognition, and outbreak prediction</div>
+              <span class="pr-tech-status pr-tech-status--live">Live</span>
+            </div>
+            <div class="pr-tech-card">
+              <div class="pr-tech-card__icon" style="background:#fee2e2;color:#dc2626;"><i class="fas fa-users"></i></div>
+              <div class="pr-tech-card__name">Farmer Community Reports</div>
+              <div class="pr-tech-card__desc">Crowdsourced outbreak data from registered KrishiMitra farmers</div>
+              <span class="pr-tech-status pr-tech-status--live">Live</span>
+            </div>
+            <div class="pr-tech-card">
+              <div class="pr-tech-card__icon" style="background:#e0f2fe;color:#0369a1;"><i class="fas fa-map"></i></div>
+              <div class="pr-tech-card__name">Leaflet.js / OpenStreetMap</div>
+              <div class="pr-tech-card__desc">Interactive district &amp; village-level pest risk map</div>
+              <span class="pr-tech-status pr-tech-status--future">Future</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ SECTION 13: FUTURE ENHANCEMENTS ══════════════════ -->
+      <section class="km-card pr-future-section" style="margin-top:24px;margin-bottom:24px;" aria-labelledby="pr-future-title">
+        <div class="km-card__header">
+          <h2 id="pr-future-title" class="km-card__title">
+            <i class="fas fa-rocket" aria-hidden="true"></i> Future Enhancements (Roadmap)
+          </h2>
+          <span class="km-badge" style="background:#f3e8ff;color:#7c3aed;font-size:0.7rem;">Coming Soon</span>
+        </div>
+        <div class="km-card__body">
+          <div class="pr-future-grid">
+            <div class="pr-future-item">
+              <div class="pr-future-item__icon"><i class="fas fa-satellite-dish"></i></div>
+              <div class="pr-future-item__title">Satellite Imagery Integration</div>
+              <div class="pr-future-item__desc">ISRO &amp; Sentinel-2 multispectral analysis for crop health and pest detection at field level</div>
+              <span class="pr-roadmap-tag">Q3 2025</span>
+            </div>
+            <div class="pr-future-item">
+              <div class="pr-future-item__icon"><i class="fas fa-camera"></i></div>
+              <div class="pr-future-item__title">Drone Surveillance Mode</div>
+              <div class="pr-future-item__desc">Integration with UAV imagery for real-time field scanning and automatic pest detection</div>
+              <span class="pr-roadmap-tag">Q4 2025</span>
+            </div>
+            <div class="pr-future-item">
+              <div class="pr-future-item__icon"><i class="fas fa-network-wired"></i></div>
+              <div class="pr-future-item__title">IoT Sensor Integration</div>
+              <div class="pr-future-item__desc">Smart field sensors reporting live soil, temperature and pest trap data to the radar dashboard</div>
+              <span class="pr-roadmap-tag">Q1 2026</span>
+            </div>
+            <div class="pr-future-item">
+              <div class="pr-future-item__icon"><i class="fas fa-microphone-lines"></i></div>
+              <div class="pr-future-item__title">Voice Alert in Regional Languages</div>
+              <div class="pr-future-item__desc">Automated voice call alerts in Hindi, Marathi, Telugu, Tamil for low-literacy farmers</div>
+              <span class="pr-roadmap-tag">Q2 2026</span>
+            </div>
+            <div class="pr-future-item">
+              <div class="pr-future-item__icon"><i class="fas fa-globe"></i></div>
+              <div class="pr-future-item__title">Cross-District AI Prediction</div>
+              <div class="pr-future-item__desc">Multi-state outbreak prediction using historical climate &amp; pest migration pattern data</div>
+              <span class="pr-roadmap-tag">Q2 2026</span>
+            </div>
+            <div class="pr-future-item">
+              <div class="pr-future-item__icon"><i class="fas fa-handshake"></i></div>
+              <div class="pr-future-item__title">Agri-Insurance Integration</div>
+              <div class="pr-future-item__desc">Automated pest risk reports for PMFBY crop insurance claim documentation</div>
+              <span class="pr-roadmap-tag">Q3 2026</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div style="height:24px;" aria-hidden="true"></div>
+    </main>
+  </div>
+</div>
+
+<div id="chatbot-container"></div>
+<div id="footer-container"></div>
+
+<script src="../js/components.js"></script>
+<script src="../js/pdf-generator.js"></script>
+<script src="../js/pest-radar.js"></script>
+
+</body>
+</html>

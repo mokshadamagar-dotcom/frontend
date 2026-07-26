@@ -1,0 +1,162 @@
+<!-- ============================================================
+     KrishiMitra AI – sidebar.html
+     Reusable Sidebar Component
+     Loaded via components.js → loadComponent()
+     ============================================================ -->
+
+<!-- Sidebar Overlay (Mobile) -->
+<div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+<!-- Sidebar -->
+<aside id="main-sidebar" class="sidebar" role="navigation" aria-label="Main navigation">
+
+  <!-- Logo / Brand -->
+  <a href="dashboard.html" class="sidebar__logo" aria-label="KrishiMitra AI – Go to Dashboard">
+    <div class="sidebar__logo-icon" aria-hidden="true">
+      <i class="fas fa-seedling"></i>
+    </div>
+    <div class="sidebar__logo-texts">
+      <span class="sidebar__logo-name">KrishiMitra AI</span>
+      <span class="sidebar__logo-tagline">AI Agriculture Advisor</span>
+    </div>
+  </a>
+
+  <!-- Navigation -->
+  <nav class="sidebar__nav" aria-label="Main application navigation">
+
+    <!-- ── MAIN ── -->
+    <span class="sidebar__nav-label" aria-hidden="true">Main</span>
+
+    <a href="dashboard.html" class="sidebar__nav-item"
+       aria-label="Dashboard" data-page="dashboard.html">
+      <i class="fas fa-th-large sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Dashboard</span>
+    </a>
+
+    <!-- ── AI AGRICULTURE ── -->
+    <span class="sidebar__nav-label" aria-hidden="true">AI Agriculture</span>
+
+    <a href="crop-disease.html" class="sidebar__nav-item"
+       aria-label="Crop Disease Detection" data-page="crop-disease.html">
+      <i class="fas fa-microscope sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Crop Disease Detection</span>
+    </a>
+
+    <a href="pest-detection.html" class="sidebar__nav-item"
+       aria-label="Pest Radar" data-page="pest-detection.html">
+      <i class="fas fa-bug sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Pest Radar</span>
+    </a>
+
+    <a href="fertilizer.html" class="sidebar__nav-item"
+       aria-label="Fertilizer Recommendation" data-page="fertilizer.html">
+      <i class="fas fa-vial sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Fertilizer Recommendation</span>
+    </a>
+
+    <a href="irrigation.html" class="sidebar__nav-item"
+       aria-label="Irrigation Advisory" data-page="irrigation.html">
+      <i class="fas fa-tint sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Irrigation Advisory</span>
+    </a>
+
+    <a href="crop-advisory.html" class="sidebar__nav-item"
+       aria-label="Crop Advisory" data-page="crop-advisory.html">
+      <i class="fas fa-leaf sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Crop Advisory</span>
+    </a>
+
+    <!-- ── AI TOOLS ── -->
+    <span class="sidebar__nav-label" aria-hidden="true">AI Tools</span>
+
+    <a href="soil-analysis.html" class="sidebar__nav-item"
+       aria-label="PDF and Soil Analysis" data-page="soil-analysis.html">
+      <i class="fas fa-flask sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">PDF &amp; Soil Analysis</span>
+    </a>
+
+    <a href="chatbot.html" class="sidebar__nav-item"
+       aria-label="AI Chatbot" data-page="chatbot.html">
+      <i class="fas fa-comments sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">AI Chatbot</span>
+    </a>
+
+    <a href="voice-assistant.html" class="sidebar__nav-item"
+       aria-label="Voice Assistant" data-page="voice-assistant.html">
+      <i class="fas fa-microphone sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Voice Assistant</span>
+    </a>
+
+    <!-- ── INSIGHTS ── -->
+    <span class="sidebar__nav-label" aria-hidden="true">Insights</span>
+
+    <a href="weather.html" class="sidebar__nav-item"
+       aria-label="Weather Advisory" data-page="weather.html">
+      <i class="fas fa-cloud-sun-rain sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Weather Advisory</span>
+    </a>
+
+    <a href="market-price.html" class="sidebar__nav-item"
+       aria-label="Market Prices" data-page="market-price.html">
+      <i class="fas fa-chart-line sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Market Prices</span>
+    </a>
+
+    <a href="government-schemes.html" class="sidebar__nav-item"
+       aria-label="Government Schemes" data-page="government-schemes.html">
+      <i class="fas fa-landmark sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Government Schemes</span>
+    </a>
+
+    <a href="crop-calendar.html" class="sidebar__nav-item"
+       aria-label="Crop Calendar" data-page="crop-calendar.html">
+      <i class="fas fa-calendar-alt sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Crop Calendar</span>
+    </a>
+
+    <!-- ── PERSONAL ── -->
+    <span class="sidebar__nav-label" aria-hidden="true">Personal</span>
+
+    <a href="history.html" class="sidebar__nav-item"
+       aria-label="Analysis History" data-page="history.html">
+      <i class="fas fa-history sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">History</span>
+    </a>
+
+    <a href="notifications.html" class="sidebar__nav-item"
+       aria-label="Notifications" data-page="notifications.html">
+      <i class="fas fa-bell sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Notifications</span>
+      <span class="sidebar__nav-badge" aria-label="3 unread">3</span>
+    </a>
+
+    <a href="profile.html" class="sidebar__nav-item"
+       aria-label="My Profile" data-page="profile.html">
+      <i class="fas fa-user-circle sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">My Profile</span>
+    </a>
+
+  </nav>
+
+  <!-- Bottom Actions -->
+  <div class="sidebar__bottom">
+    <div class="sidebar__divider" aria-hidden="true"></div>
+
+    <a href="profile.html" class="sidebar__nav-item" aria-label="Settings">
+      <i class="fas fa-cog sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Settings</span>
+    </a>
+
+    <a href="#" class="sidebar__nav-item" aria-label="Help and Support">
+      <i class="fas fa-question-circle sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Help &amp; Support</span>
+    </a>
+
+    <a href="#" class="sidebar__nav-item" data-action="logout"
+       aria-label="Logout from KrishiMitra AI">
+      <i class="fas fa-sign-out-alt sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Logout</span>
+    </a>
+  </div>
+
+</aside>

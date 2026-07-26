@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Create your free KrishiMitra AI account – Intelligent Agriculture Advisor powered by Artificial Intelligence." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Create Account – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/login.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+</head>
+<body data-page="register">
+
+<!-- ═══════════════════════════════════════════════════════════
+     REGISTER PAGE – SPLIT SCREEN LAYOUT
+════════════════════════════════════════════════════════════ -->
+<main class="auth-page" id="auth-main" aria-label="Registration page">
+
+  <!-- ──────────────────────────────────────────────────────
+       LEFT PANEL – Branding
+  ─────────────────────────────────────────────────────── -->
+  <aside class="auth-left" aria-label="KrishiMitra AI Branding">
+
+    <!-- Decorative -->
+    <div class="auth-left__grid"  aria-hidden="true"></div>
+    <div class="auth-left__orb auth-left__orb--1" aria-hidden="true"></div>
+    <div class="auth-left__orb auth-left__orb--2" aria-hidden="true"></div>
+
+    <!-- Logo -->
+    <a href="../index.html" class="auth-left__logo" aria-label="Go to KrishiMitra AI home page">
+      <div class="auth-left__logo-icon" aria-hidden="true">
+        <i class="fas fa-seedling"></i>
+      </div>
+      <div class="auth-left__logo-texts">
+        <span class="auth-left__logo-name">KrishiMitra AI</span>
+        <span class="auth-left__logo-tagline">Intelligent Agriculture Advisor</span>
+      </div>
+    </a>
+
+    <!-- Center Content -->
+    <div class="auth-left__content">
+
+      <div class="auth-left__badge" aria-label="Free to Start">
+        <span class="auth-left__badge-dot" aria-hidden="true"></span>
+        Free to Start – No Credit Card
+      </div>
+
+      <h1 class="auth-left__headline">
+        Join Thousands of<br />
+        <span class="auth-left__headline-accent">Smart Farmers<br />Using AI</span>
+      </h1>
+
+      <p class="auth-left__desc">
+        Create your free account in under 2 minutes and start making
+        smarter farming decisions with the power of Artificial Intelligence.
+      </p>
+
+      <div class="auth-features" aria-label="What you get after registering">
+        <div class="auth-feature-item">
+          <div class="auth-feature-item__icon" aria-hidden="true">
+            <i class="fas fa-robot"></i>
+          </div>
+          <span class="auth-feature-item__text">Free AI Consultation – No Cost</span>
+        </div>
+        <div class="auth-feature-item">
+          <div class="auth-feature-item__icon" aria-hidden="true">
+            <i class="fas fa-language"></i>
+          </div>
+          <span class="auth-feature-item__text">Support in Hindi, Marathi &amp; English</span>
+        </div>
+        <div class="auth-feature-item">
+          <div class="auth-feature-item__icon" aria-hidden="true">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <span class="auth-feature-item__text">Your Data is Safe &amp; Private</span>
+        </div>
+        <div class="auth-feature-item">
+          <div class="auth-feature-item__icon" aria-hidden="true">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <span class="auth-feature-item__text">Works on Any Smartphone</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Stats -->
+    <div class="auth-left__footer">
+      <div class="auth-stats" aria-label="Platform statistics">
+        <div class="auth-stat">
+          <span class="auth-stat__value">12+</span>
+          <span class="auth-stat__label">AI Features</span>
+        </div>
+        <div class="auth-stat-divider" aria-hidden="true"></div>
+        <div class="auth-stat">
+          <span class="auth-stat__value">100%</span>
+          <span class="auth-stat__label">AI Powered</span>
+        </div>
+        <div class="auth-stat-divider" aria-hidden="true"></div>
+        <div class="auth-stat">
+          <span class="auth-stat__value">Free</span>
+          <span class="auth-stat__label">Registration</span>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ──────────────────────────────────────────────────────
+       RIGHT PANEL – Registration Form
+  ─────────────────────────────────────────────────────── -->
+  <div class="auth-right" role="main">
+
+    <!-- Top: Switch to Login -->
+    <div class="auth-right__top">
+      <p class="auth-right__top-text">
+        Already have an account?&nbsp;
+        <a href="login.html" id="go-to-login" aria-label="Login to existing account">Sign in</a>
+      </p>
+    </div>
+
+    <div class="auth-form-box">
+
+      <!-- ─── SUCCESS STATE (shown after registration) ────── -->
+      <div id="register-success" class="auth-success" role="status" aria-live="polite">
+        <div class="auth-success__icon" aria-hidden="true">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h2 class="auth-success__title">Account Created! 🎉</h2>
+        <p class="auth-success__desc">
+          Welcome to KrishiMitra AI! Your account has been created successfully.
+          You'll be redirected to the login page in a moment.
+        </p>
+        <div class="auth-success__redirect" aria-label="Redirecting">
+          <i class="fas fa-spinner" aria-hidden="true"></i>
+          Redirecting to login…
+        </div>
+      </div>
+
+      <!-- ─── FORM CONTENT ─────────────────────────────────── -->
+      <div id="register-form-content">
+
+        <!-- Form Header -->
+        <div class="auth-form-header">
+          <span class="auth-form-header__eyebrow">
+            <i class="fas fa-user-plus" aria-hidden="true"></i>
+            Create Account
+          </span>
+          <h2 class="auth-form-header__title">
+            Start Your<br />
+            <span>AI Farming Journey</span>
+          </h2>
+          <p class="auth-form-header__subtitle">
+            Fill in your details to create a free KrishiMitra AI account.
+            All fields marked <strong style="color:#ef4444;">*</strong> are required.
+          </p>
+        </div>
+
+        <!-- Form-level Alert -->
+        <div id="register-alert" class="form-alert" role="alert" aria-live="assertive"></div>
+
+        <!-- Registration Form -->
+        <form id="register-form" class="auth-form" novalidate aria-label="Registration form">
+
+          <!-- ── Row 1: Full Name + Email ── -->
+          <div class="form-row">
+
+            <!-- Full Name -->
+            <div class="form-group">
+              <label class="form-label" for="reg-name">
+                Full Name <span class="required-mark" aria-label="required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fas fa-user input-icon" aria-hidden="true"></i>
+                <input
+                  type="text"
+                  id="reg-name"
+                  name="name"
+                  class="form-input"
+                  placeholder="e.g. Ramesh Patil"
+                  autocomplete="name"
+                  aria-required="true"
+                  aria-describedby="reg-name-error"
+                  maxlength="80"
+                />
+              </div>
+              <span id="reg-name-error" class="form-error" role="alert" aria-live="polite">
+                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              </span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label class="form-label" for="reg-email">
+                Email Address <span class="required-mark" aria-label="required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fas fa-envelope input-icon" aria-hidden="true"></i>
+                <input
+                  type="email"
+                  id="reg-email"
+                  name="email"
+                  class="form-input"
+                  placeholder="you@example.com"
+                  autocomplete="email"
+                  aria-required="true"
+                  aria-describedby="reg-email-error"
+                />
+              </div>
+              <span id="reg-email-error" class="form-error" role="alert" aria-live="polite">
+                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              </span>
+            </div>
+
+          </div>
+
+          <!-- ── Row 2: Mobile + User Type ── -->
+          <div class="form-row">
+
+            <!-- Mobile Number -->
+            <div class="form-group">
+              <label class="form-label" for="reg-phone">
+                Mobile Number <span class="required-mark" aria-label="required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fas fa-phone input-icon" aria-hidden="true"></i>
+                <input
+                  type="tel"
+                  id="reg-phone"
+                  name="phone"
+                  class="form-input"
+                  placeholder="10-digit number"
+                  autocomplete="tel"
+                  maxlength="10"
+                  pattern="[6-9][0-9]{9}"
+                  aria-required="true"
+                  aria-describedby="reg-phone-error reg-phone-hint"
+                />
+              </div>
+              <span id="reg-phone-hint" class="form-hint">Indian mobile (starts with 6–9)</span>
+              <span id="reg-phone-error" class="form-error" role="alert" aria-live="polite">
+                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              </span>
+            </div>
+
+            <!-- User Type -->
+            <div class="form-group">
+              <label class="form-label" for="reg-user-type">
+                I Am A
+                <span class="required-mark" aria-label="required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fas fa-id-badge input-icon" aria-hidden="true"></i>
+                <select
+                  id="reg-user-type"
+                  name="userType"
+                  class="form-select"
+                  aria-required="true"
+                  aria-describedby="reg-user-type-error"
+                >
+                  <option value="" disabled selected>Select your role</option>
+                  <option value="farmer">🌾 Farmer</option>
+                  <option value="agriculture_officer">🏛️ Agriculture Officer</option>
+                  <option value="student">🎓 Student</option>
+                  <option value="researcher">🔬 Researcher</option>
+                  <option value="other">👤 Other</option>
+                </select>
+              </div>
+              <span id="reg-user-type-error" class="form-error" role="alert" aria-live="polite">
+                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              </span>
+            </div>
+
+          </div>
+
+          <!-- ── Row 3: State + District ── -->
+          <div class="form-row">
+
+            <!-- State -->
+            <div class="form-group">
+              <label class="form-label" for="reg-state">
+                State <span class="required-mark" aria-label="required">*</span>
+              </label>
+              <div class="input-wrapper">
+                <i class="fas fa-map-marker-alt input-icon" aria-hidden="true"></i>
+                <select
+                  id="reg-state"
+                  name="state"
+                  class="form-select"
+                  aria-required="true"
+                  aria-describedby="reg-state-error"
+                >
+                  <option value="" disabled selected>Select state</option>
+                  <optgroup label="Maharashtra">
+                    <option value="maharashtra">Maharashtra</option>
+                  </optgroup>
+                  <optgroup label="North India">
+                    <option value="uttar_pradesh">Uttar Pradesh</option>
+                    <option value="madhya_pradesh">Madhya Pradesh</option>
+                    <option value="rajasthan">Rajasthan</option>
+                    <option value="haryana">Haryana</option>
+                    <option value="punjab">Punjab</option>
+                    <option value="himachal_pradesh">Himachal Pradesh</option>
+                    <option value="uttarakhand">Uttarakhand</option>
+                  </optgroup>
+                  <optgroup label="South India">
+                    <option value="andhra_pradesh">Andhra Pradesh</option>
+                    <option value="karnataka">Karnataka</option>
+                    <option value="kerala">Kerala</option>
+                    <option value="tamil_nadu">Tamil Nadu</option>
+                    <option value="telangana">Telangana</option>
+                  </optgroup>
+                  <optgroup label="East India">
+                    <option value="bihar">Bihar</option>
+                    <option value="jharkhand">Jharkhand</option>
+                    <option value="odisha">Odisha</option>
+                    <option value="west_bengal">West Bengal</option>
+                    <option value="assam">Assam</option>
+                  </optgroup>
+                  <optgroup label="West India">
+                    <option value="gujarat">Gujarat</option>
+                    <option value="goa">Goa</option>
+                  </optgroup>
+                  <optgroup label="Central India">
+                    <option value="chhattisgarh">Chhattisgarh</option>
+                  </optgroup>
+                  <optgroup label="Other">
+                    <option value="delhi">Delhi</option>
+                    <option value="other_state">Other State / UT</option>
+                  </optgroup>
+                </select>
+              </div>
+              <span id="reg-state-error" class="form-error" role="alert" aria-live="polite">
+                <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              </span>
+            </div>
+
+            <!-- District -->
+            <div class="form-group">
+              <label class="form-label" for="reg-district">
+                District
+              </label>
+              <div class="input-wrapper">
+                <i class="fas fa-map input-icon" aria-hidden="true"></i>
+                <input
+                  type="text"
+                  id="reg-district"
+                  name="district"
+                  class="form-input"
+                  placeholder="e.g. Pune, Nashik"
+                  maxlength="60"
+                  aria-describedby="reg-district-hint"
+                />
+              </div>
+              <span id="reg-district-hint" class="form-hint">Optional – for better localisation</span>
+            </div>
+
+          </div>
+
+          <!-- ── Row 4: Language + Spacer ── -->
+          <div class="form-group">
+            <label class="form-label" for="reg-language">
+              Preferred Language
+              <span class="required-mark" aria-label="required">*</span>
+            </label>
+            <div class="input-wrapper">
+              <i class="fas fa-globe input-icon" aria-hidden="true"></i>
+              <select
+                id="reg-language"
+                name="language"
+                class="form-select"
+                aria-required="true"
+                aria-describedby="reg-language-hint"
+              >
+                <option value="en" selected>🇬🇧 English</option>
+                <option value="hi">🇮🇳 हिंदी (Hindi)</option>
+                <option value="mr">🟠 मराठी (Marathi)</option>
+              </select>
+            </div>
+            <span id="reg-language-hint" class="form-hint">AI responses will be in your chosen language</span>
+          </div>
+
+          <!-- ── Password ── -->
+          <div class="form-group">
+            <label class="form-label" for="reg-password">
+              Password <span class="required-mark" aria-label="required">*</span>
+            </label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+              <input
+                type="password"
+                id="reg-password"
+                name="password"
+                class="form-input"
+                placeholder="Min. 8 characters"
+                autocomplete="new-password"
+                aria-required="true"
+                aria-describedby="reg-password-error password-strength-wrap"
+              />
+              <button
+                type="button"
+                id="toggle-reg-password"
+                class="input-action"
+                aria-label="Show password"
+                title="Toggle password visibility"
+              >
+                <i class="fas fa-eye" aria-hidden="true"></i>
+              </button>
+            </div>
+            <span id="reg-password-error" class="form-error" role="alert" aria-live="polite">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+            </span>
+
+            <!-- Password Strength Meter -->
+            <div id="password-strength-wrap" class="password-strength" aria-label="Password strength indicator">
+              <div class="strength-bar-track" aria-hidden="true">
+                <div class="strength-bar-segment" data-index="0"></div>
+                <div class="strength-bar-segment" data-index="1"></div>
+                <div class="strength-bar-segment" data-index="2"></div>
+                <div class="strength-bar-segment" data-index="3"></div>
+              </div>
+              <span class="strength-label" aria-live="polite"></span>
+            </div>
+
+            <!-- Password Tips -->
+            <div style="margin-top:8px; padding:10px 14px; background:var(--gray-50); border-radius:var(--radius-md); border:1px solid var(--gray-200);">
+              <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px; font-weight:600;">
+                <i class="fas fa-lightbulb" style="color:var(--gold);" aria-hidden="true"></i>
+                Strong password tips:
+              </p>
+              <ul style="font-size:0.73rem; color:var(--text-light); display:flex; flex-wrap:wrap; gap:4px 16px; list-style:none;">
+                <li>✓ 8+ characters</li>
+                <li>✓ Uppercase letter</li>
+                <li>✓ Number (0–9)</li>
+                <li>✓ Special symbol (!@#$)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- ── Confirm Password ── -->
+          <div class="form-group">
+            <label class="form-label" for="reg-confirm-password">
+              Confirm Password <span class="required-mark" aria-label="required">*</span>
+            </label>
+            <div class="input-wrapper">
+              <i class="fas fa-lock input-icon" aria-hidden="true"></i>
+              <input
+                type="password"
+                id="reg-confirm-password"
+                name="confirmPassword"
+                class="form-input"
+                placeholder="Re-enter your password"
+                autocomplete="new-password"
+                aria-required="true"
+                aria-describedby="reg-confirm-error password-match"
+              />
+              <button
+                type="button"
+                id="toggle-reg-confirm"
+                class="input-action"
+                aria-label="Show confirm password"
+                title="Toggle confirm password visibility"
+              >
+                <i class="fas fa-eye" aria-hidden="true"></i>
+              </button>
+            </div>
+            <span id="reg-confirm-error" class="form-error" role="alert" aria-live="polite">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+            </span>
+            <!-- Match Indicator -->
+            <div id="password-match" class="match-indicator" aria-live="polite"></div>
+          </div>
+
+          <!-- ── Terms & Conditions ── -->
+          <div class="form-group">
+            <label class="terms-check" for="reg-terms" id="terms-check-label">
+              <input
+                type="checkbox"
+                id="reg-terms"
+                name="terms"
+                class="terms-check__input"
+                aria-required="true"
+                aria-describedby="reg-terms-error"
+              />
+              <span class="terms-check__text">
+                I agree to the KrishiMitra AI
+                <a href="#" aria-label="Read Terms and Conditions">Terms &amp; Conditions</a>
+                and
+                <a href="#" aria-label="Read Privacy Policy">Privacy Policy</a>.
+                I understand that my farming data will be used to provide AI-powered recommendations.
+              </span>
+            </label>
+            <span id="reg-terms-error" class="form-error" role="alert" aria-live="polite">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+            </span>
+          </div>
+
+          <!-- ── Submit Button ── -->
+          <button
+            type="submit"
+            id="register-submit-btn"
+            class="auth-submit-btn"
+            aria-label="Create my free KrishiMitra AI account"
+          >
+            <div class="btn-spinner" aria-hidden="true"></div>
+            <span class="btn-text">
+              <i class="fas fa-user-plus" aria-hidden="true" style="margin-right:8px;"></i>
+              Create My Free Account
+            </span>
+          </button>
+
+          <!-- ── Divider ── -->
+          <div class="auth-divider" aria-hidden="true">
+            <span class="auth-divider__text">OR</span>
+          </div>
+
+          <!-- ── Google Register (placeholder) ── -->
+          <button
+            type="button"
+            id="google-register-btn"
+            class="google-btn"
+            aria-label="Continue with Google (coming soon)"
+          >
+            <svg class="google-btn__icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Continue with Google
+          </button>
+
+        </form>
+
+        <!-- Switch to Login -->
+        <p class="auth-switch" style="margin-top:28px;">
+          Already a member?
+          <a href="login.html" aria-label="Login to your account">Sign in to your account</a>
+        </p>
+
+      </div><!-- /register-form-content -->
+    </div><!-- /auth-form-box -->
+  </div><!-- /auth-right -->
+
+</main>
+
+<!-- Scripts -->
+<script src="../js/auth.js" defer></script>
+
+<!-- Google register placeholder handler -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('google-register-btn')?.addEventListener('click', () => {
+      // Inline toast since auth.js showToastMessage is available after DOMContentLoaded
+      if (typeof showToastMessage === 'function') {
+        showToastMessage('Google registration will be available after backend integration.', 'info');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

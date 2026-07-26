@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Crop Advisory – Receive structured daily, weekly crop action plans, weather alerts, and NPK assessments with KrishiMitra AI." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Crop Advisory – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+</head>
+<body class="km-app-body">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED SIDEBAR CONTAINER (components.js Injected)
+════════════════════════════════════════════════════════════ -->
+<div id="sidebar-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     APP LAYOUT WRAPPER
+════════════════════════════════════════════════════════════ -->
+<div class="km-app-wrapper">
+  <div class="km-app-main" id="dashboard-main">
+
+    <!-- ─────────────────────────────────────────────────────────
+         SHARED TOPBAR CONTAINER (components.js Injected)
+    ──────────────────────────────────────────────────────────── -->
+    <div id="navbar-container"></div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         MAIN CONTENT AREA
+    ──────────────────────────────────────────────────────────── -->
+    <main class="km-page-content" aria-label="AI Crop Advisory Management Dashboard">
+
+      <!-- Page Header -->
+      <header class="title-badge-wrap">
+        <h1 class="topbar__page-name" style="font-size:1.4rem;font-weight:800;margin:0;">AI Crop Advisory</h1>
+        <span class="ai-badge" aria-label="AI Technology Badge">Powered by AI + Agricultural Knowledge</span>
+      </header>
+
+      <!-- Hero Information Banner -->
+      <section class="welcome-banner" style="padding: 16px 24px; border-radius: var(--radius-md); margin-bottom: 8px; background: linear-gradient(135deg, #0d3d22 0%, #155e34 100%);" aria-label="Information Banner">
+        <div class="welcome-banner__content" style="display:flex; align-items:center; gap:16px;">
+          <div style="font-size: 1.8rem; color: var(--green-300); display: flex; gap: 8px;" aria-hidden="true">
+            <i class="fas fa-brain"></i>
+            <i class="fas fa-leaf" style="font-size: 1.2rem; align-self: flex-end;"></i>
+          </div>
+          <div>
+            <h3 style="font-family:var(--font-display); font-size:0.95rem; font-weight:700; color:var(--white); margin:0 0 2px;">Your Complete Crop Management Assistant</h3>
+            <p style="font-size:0.8rem; color:rgba(255,255,255,0.72); margin:0;">
+              KrishiMitra AI combines crop health status, weather forecasting, soil quality, irrigation maps, and pest thresholds to provide a simplified, structured action plan.
+              <span style="font-weight:600; color:#fff;">Get a simple action plan for your crop in one place.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Layout Grid: Two-Column Form Layout -->
+      <div class="crop-disease-container">
+
+        <!-- LEFT COLUMN: Crop Selection & Overall Health Widget -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+
+          <!-- Crop Selection Form card -->
+          <section class="dash-card" aria-labelledby="crop-selection-heading">
+            <div class="dash-card__header">
+              <h2 id="crop-selection-heading" class="dash-card__title">
+                <i class="fas fa-seedling" aria-hidden="true"></i>
+                Select Your Crop
+              </h2>
+            </div>
+            <div class="dash-card__body">
+              <form id="crop-advisory-form" novalidate aria-label="Crop advisory parameters form">
+
+                <!-- Crop, soil, stage, season -->
+                <div class="form-row" style="margin-bottom: 14px;">
+                  <div class="form-group">
+                    <label class="form-label" for="crop-type-select">Crop Type <span style="color:#ef4444;">*</span></label>
+                    <div class="input-wrapper">
+                      <select id="crop-type-select" name="crop" class="form-select no-icon" aria-required="true" aria-label="Select crop type">
+                        <option value="" disabled selected>Select crop type</option>
+                        <option value="cotton">Cotton</option>
+                        <option value="tomato">Tomato</option>
+                        <option value="wheat">Wheat</option>
+                        <option value="rice">Rice</option>
+                        <option value="onion">Onion</option>
+                        <option value="soybean">Soybean</option>
+                        <option value="sugarcane">Sugarcane</option>
+                        <option value="maize">Maize</option>
+                        <option value="other">Other Crop</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="soil-type-select">Soil Type <span style="color:#ef4444;">*</span></label>
+                    <div class="input-wrapper">
+                      <select id="soil-type-select" name="soil" class="form-select no-icon" aria-required="true" aria-label="Select soil type">
+                        <option value="" disabled selected>Select soil type</option>
+                        <option value="black">Black Soil</option>
+                        <option value="red">Red Soil</option>
+                        <option value="alluvial">Alluvial Soil</option>
+                        <option value="sandy">Sandy Soil</option>
+                        <option value="clay">Clay Soil</option>
+                        <option value="loamy">Loamy Soil</option>
+                        <option value="other">Other Type</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row" style="margin-bottom: 14px;">
+                  <div class="form-group">
+                    <label class="form-label" for="growth-stage-select">Growth Stage <span style="color:#ef4444;">*</span></label>
+                    <div class="input-wrapper">
+                      <select id="growth-stage-select" name="stage" class="form-select no-icon" aria-required="true" aria-label="Select growth stage">
+                        <option value="" disabled selected>Select growth stage</option>
+                        <option value="seedling">Seedling</option>
+                        <option value="vegetative">Vegetative</option>
+                        <option value="flowering">Flowering</option>
+                        <option value="fruiting">Fruiting</option>
+                        <option value="maturity">Maturity</option>
+                        <option value="harvest">Harvest Ready</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="form-label" for="season-select">Season <span style="color:#ef4444;">*</span></label>
+                    <div class="input-wrapper">
+                      <select id="season-select" name="season" class="form-select no-icon" aria-required="true" aria-label="Select season">
+                        <option value="" disabled selected>Select season</option>
+                        <option value="kharif">Kharif</option>
+                        <option value="rabi">Rabi</option>
+                        <option value="summer">Summer</option>
+                        <option value="other">Other Season</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- State & District Required location values -->
+                <div class="form-row" style="margin-bottom: 18px;">
+                  <div class="form-group">
+                    <label class="form-label" for="state-input">State <span style="color:#ef4444;">*</span></label>
+                    <input type="text" id="state-input" class="form-input no-icon" placeholder="e.g. Maharashtra" aria-required="true" />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="district-input">District <span style="color:#ef4444;">*</span></label>
+                    <input type="text" id="district-input" class="form-input no-icon" placeholder="e.g. Hingoli" aria-required="true" />
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button
+                  type="submit"
+                  id="advisory-generate-btn"
+                  class="km-btn km-btn--primary"
+                  style="width: 100%; display: flex; justify-content: center; font-size: 1rem; font-weight: 700; padding: 14px;"
+                  disabled
+                  aria-label="Generate complete crop advisory"
+                >
+                  <i class="fas fa-magic" aria-hidden="true"></i>
+                  Generate Crop Advisory
+                </button>
+
+              </form>
+            </div>
+          </section>
+
+          <!-- Current Crop Health card (Mock indicators before/after) -->
+          <section class="dash-card" aria-labelledby="crop-health-heading">
+            <div class="dash-card__header">
+              <h2 id="crop-health-heading" class="dash-card__title">
+                <i class="fas fa-heartbeat" aria-hidden="true"></i>
+                Current Crop Health Summary
+              </h2>
+            </div>
+            <div class="dash-card__body" style="padding:16px 20px;">
+              <div class="health-score-container" style="padding:14px 20px;">
+                <div class="health-score-circle-wrap" style="border-color:var(--green-200); color:var(--primary);">
+                  <span id="res-health-score">78</span><span style="font-size:0.6rem;color:var(--text-light);position:absolute;bottom:8px;">/100</span>
+                </div>
+                <div class="health-score-bar-wrap">
+                  <p style="font-size:0.85rem; font-weight:700; color:var(--text-primary); margin-bottom:4px;">Crop health: Good</p>
+                  <!-- Horizontal progress bar visualizer -->
+                  <div class="confidence-track" style="width:100%; height:8px; border-radius:8px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                    <div id="res-health-bar" class="confidence-fill" style="width: 78%; height:100%; border-radius:8px; background:var(--gradient-primary);"></div>
+                  </div>
+                  <span style="font-size:0.65rem; color:var(--text-light); display:block; margin-top:4px;">* Illustrative AI Health Score. Refer to lab testing.</span>
+                </div>
+              </div>
+
+              <!-- Sub-risk factors metrics -->
+              <div class="risk-indicators-list" style="margin-top:16px;" role="presentation">
+                <div class="risk-indicator-row">
+                  <span class="risk-indicator-label">Disease Risk:</span>
+                  <span id="risk-disease" class="severity-tag severity-tag--low">Low</span>
+                </div>
+                <div class="risk-indicator-row">
+                  <span class="risk-indicator-label">Pest Infestation:</span>
+                  <span id="risk-pest" class="severity-tag severity-tag--low">Low</span>
+                </div>
+                <div class="risk-indicator-row">
+                  <span class="risk-indicator-label">Nutrient Gap Risk:</span>
+                  <span id="risk-nutrient" class="severity-tag severity-tag--moderate">Moderate</span>
+                </div>
+                <div class="risk-indicator-row">
+                  <span class="risk-indicator-label">Water Stress Risk:</span>
+                  <span id="risk-water" class="severity-tag severity-tag--low">Low</span>
+                </div>
+                <div class="risk-indicator-row">
+                  <span class="risk-indicator-label">Weather Risk Alert:</span>
+                  <span id="risk-weather" class="severity-tag severity-tag--moderate">Moderate</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Output Viewport & Status overview -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+
+          <!-- Crop Status Overview Cards List (6 modules) -->
+          <section aria-labelledby="status-overview-heading">
+            <h3 id="status-overview-heading" class="dash-section-title" style="margin-bottom:12px;">Crop Status Overview</h3>
+            <div class="status-overview-grid" role="list">
+              <!-- Disease Card -->
+              <div class="status-overview-card" role="listitem">
+                <div class="status-overview-card__header">
+                  <div class="status-overview-card__icon status-overview-card__icon--blue" aria-hidden="true"><i class="fas fa-microscope"></i></div>
+                  <span class="status-overview-card__title">Disease Status</span>
+                </div>
+                <span class="status-overview-card__status" style="color:var(--green-700);">No Major Disease</span>
+                <p class="status-overview-card__desc">AI models show no active pathogen signs. Continue standard crop care scouting.</p>
+                <button type="button" class="km-btn km-btn--ghost km-btn--sm" onclick="window.location.href='crop-disease.html'" style="padding:4px 0; justify-content:flex-start; width:fit-content;" aria-label="Go to Disease Detection page">View Details <i class="fas fa-arrow-right" aria-hidden="true" style="margin-left:4px; font-size:0.75rem;"></i></button>
+              </div>
+              <!-- Pest Card -->
+              <div class="status-overview-card" role="listitem">
+                <div class="status-overview-card__header">
+                  <div class="status-overview-card__icon status-overview-card__icon--orange" aria-hidden="true"><i class="fas fa-bug"></i></div>
+                  <span class="status-overview-card__title">Pest Status</span>
+                </div>
+                <span class="status-overview-card__status" style="color:var(--green-700);">Low Risk</span>
+                <p class="status-overview-card__desc">Pest populations are within guidelines. Scout leaves twice weekly.</p>
+                <button type="button" class="km-btn km-btn--ghost km-btn--sm" onclick="window.location.href='pest-detection.html'" style="padding:4px 0; justify-content:flex-start; width:fit-content;" aria-label="Go to Pest Detection page">View Details <i class="fas fa-arrow-right" aria-hidden="true" style="margin-left:4px; font-size:0.75rem;"></i></button>
+              </div>
+              <!-- Nutrient Card -->
+              <div class="status-overview-card" role="listitem">
+                <div class="status-overview-card__header">
+                  <div class="status-overview-card__icon status-overview-card__icon--teal" aria-hidden="true"><i class="fas fa-vial"></i></div>
+                  <span class="status-overview-card__title">Nutrient Status</span>
+                </div>
+                <span class="status-overview-card__status" style="color:var(--gold);">Nitrogen Low</span>
+                <p class="status-overview-card__desc">Soil reports indicate low nitrogen values during vegetative tillering.</p>
+                <button type="button" class="km-btn km-btn--ghost km-btn--sm" onclick="window.location.href='fertilizer.html'" style="padding:4px 0; justify-content:flex-start; width:fit-content;" aria-label="Go to Fertilizer Advisory page">View Details <i class="fas fa-arrow-right" aria-hidden="true" style="margin-left:4px; font-size:0.75rem;"></i></button>
+              </div>
+              <!-- Irrigation Card -->
+              <div class="status-overview-card" role="listitem">
+                <div class="status-overview-card__header">
+                  <div class="status-overview-card__icon status-overview-card__icon--purple" aria-hidden="true"><i class="fas fa-tint"></i></div>
+                  <span class="status-overview-card__title">Irrigation Status</span>
+                </div>
+                <span class="status-overview-card__status" style="color:var(--gold);">Monitor Moisture</span>
+                <p class="status-overview-card__desc">Check soil water parameters before performing next irrigation cycle.</p>
+                <button type="button" class="km-btn km-btn--ghost km-btn--sm" onclick="window.location.href='irrigation.html'" style="padding:4px 0; justify-content:flex-start; width:fit-content;" aria-label="Go to Irrigation page">View Details <i class="fas fa-arrow-right" aria-hidden="true" style="margin-left:4px; font-size:0.75rem;"></i></button>
+              </div>
+              <!-- Weather Card -->
+              <div class="status-overview-card" role="listitem">
+                <div class="status-overview-card__header">
+                  <div class="status-overview-card__icon status-overview-card__icon--blue" aria-hidden="true"><i class="fas fa-cloud-sun"></i></div>
+                  <span class="status-overview-card__title">Weather Risk</span>
+                </div>
+                <span class="status-overview-card__status" style="color:var(--primary);">Rain Expected</span>
+                <p class="status-overview-card__desc">Meteorological forecasts show 75% rain probability tomorrow afternoon.</p>
+                <button type="button" class="km-btn km-btn--ghost km-btn--sm" onclick="window.location.href='weather.html'" style="padding:4px 0; justify-content:flex-start; width:fit-content;" aria-label="Go to Weather page">View Details <i class="fas fa-arrow-right" aria-hidden="true" style="margin-left:4px; font-size:0.75rem;"></i></button>
+              </div>
+              <!-- Crop Stage Card -->
+              <div class="status-overview-card" role="listitem">
+                <div class="status-overview-card__header">
+                  <div class="status-overview-card__icon status-overview-card__icon--green" aria-hidden="true"><i class="fas fa-leaf"></i></div>
+                  <span class="status-overview-card__title">Crop Stage</span>
+                </div>
+                <span class="status-overview-card__status">Vegetative Stage</span>
+                <p class="status-overview-card__desc">Crop nodes are developing fast. Target splits amendments applications.</p>
+                <button type="button" class="km-btn km-btn--ghost km-btn--sm" onclick="window.showToast('Crop vegetative growth is on schedule. Monitor nutrients.','success')" style="padding:4px 0; justify-content:flex-start; width:fit-content;" aria-label="Show crop stage details alert">View Details <i class="fas fa-arrow-right" aria-hidden="true" style="margin-left:4px; font-size:0.75rem;"></i></button>
+              </div>
+            </div>
+          </section>
+
+          <!-- Dynamic Output viewports -->
+          <section id="advisory-viewport" aria-live="polite" aria-relevant="all">
+
+            <!-- 1. EMPTY STATE -->
+            <div id="advisory-empty-state" class="km-card" style="min-height: 480px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+              <div class="km-empty-state">
+                <i class="fas fa-brain" aria-hidden="true" style="color:var(--primary);"></i>
+                <h3>No Crop Advisory Generated Yet</h3>
+                <p>Complete crop metadata entries and click the Generate button to load the full AI crop management timeline.</p>
+              </div>
+            </div>
+
+            <!-- 2. AI MULTI-STEP LOADING SYSTEM -->
+            <div id="advisory-analysis-loader" class="km-card" style="min-height: 480px; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 24px;">
+              <div class="ai-pulse-spinner">
+                <div class="ai-pulse-ring" aria-hidden="true"></div>
+                <div class="ai-pulse-icon" aria-hidden="true">
+                  <i class="fas fa-sync fa-spin"></i>
+                </div>
+              </div>
+              <h3 class="analysis-loader__title" style="margin:0;">Compiling AI Advisory</h3>
+              <p class="analysis-loader__desc" style="margin:0 0 10px;">Please wait while KrishiMitra processes multi-module parameters.</p>
+
+              <!-- Step checkmarks checkpoints list -->
+              <div class="advisory-loading-steps" role="presentation">
+                <div id="step-crop" class="advisory-loading-step">
+                  <span>Analyzing Crop Information</span>
+                  <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+                </div>
+                <div id="step-health" class="advisory-loading-step">
+                  <span>Checking Crop Health</span>
+                  <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+                </div>
+                <div id="step-weather" class="advisory-loading-step">
+                  <span>Reviewing Weather Forecasts</span>
+                  <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+                </div>
+                <div id="step-nutrients" class="advisory-loading-step">
+                  <span>Analyzing Soil &amp; Nutrients</span>
+                  <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+                </div>
+                <div id="step-irrigation" class="advisory-loading-step">
+                  <span>Checking Irrigation Status</span>
+                  <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+                </div>
+                <div id="step-rag" class="advisory-loading-step">
+                  <span>Retrieving Agricultural Knowledge</span>
+                  <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+                </div>
+                <div id="step-advise" class="advisory-loading-step">
+                  <span>Generating AI Crop Advisory</span>
+                  <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. AI ADVISORY DETAILED REPORT RESULT SECTION -->
+            <div id="advisory-result-section" style="display: none;">
+              <div class="dash-card" style="display: flex; flex-direction: column; gap: 20px; padding: 24px;">
+
+                <!-- Header Details -->
+                <div class="welcome-banner" style="padding: 24px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #0d3d22 0%, #155e34 100%);">
+                  <div class="welcome-banner__content">
+                    <span class="crop-status-pill crop-status-pill--healthy" style="margin-bottom:10px; font-size:0.75rem; padding:4px 12px;">
+                      AI Advisory Ready
+                    </span>
+                    <h3 class="welcome-banner__greeting" style="font-size: 1.45rem; font-weight: 800; margin-bottom: 4px;">
+                      AI Crop Advisory Plan
+                    </h3>
+                    <p class="welcome-banner__subtitle" style="font-size: 0.88rem; margin: 0; opacity: 0.9;">
+                      Advisory generated on: <span id="res-doc-date">25 July 2026</span>
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Parameters summary row indicators -->
+                <div class="info-box-grid">
+                  <div class="info-box">
+                    <span class="info-box__label">Selected Crop</span>
+                    <span id="res-crop" class="info-box__value">Cotton</span>
+                  </div>
+                  <div class="info-box">
+                    <span class="info-box__label">Farm Location</span>
+                    <span id="res-location" class="info-box__value">Hingoli, Maharashtra</span>
+                  </div>
+                  <div class="info-box">
+                    <span class="info-box__label">Season Category</span>
+                    <span id="res-season" class="info-box__value">Kharif</span>
+                  </div>
+                  <div class="info-box">
+                    <span class="info-box__label">Growth Stage</span>
+                    <span id="res-stage" class="info-box__value">Vegetative</span>
+                  </div>
+                </div>
+
+                <!-- Priority Actions list cards -->
+                <section aria-labelledby="priority-actions-heading">
+                  <h4 id="priority-actions-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Priority Action Items</h4>
+                  <div id="res-priority-actions-wrap" class="treatment-list" role="list">
+                    <!-- Injected by crop-advisory.js -->
+                  </div>
+                </section>
+
+                <hr style="border:0; border-top:1px solid var(--dash-border); margin:6px 0;" aria-hidden="true" />
+
+                <!-- Today's action plan checkbox checklist -->
+                <section aria-labelledby="daily-checklist-heading">
+                  <h4 id="daily-checklist-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Today's Farming Action Plan</h4>
+                  <div id="res-daily-checklist-wrap" class="action-check-list" role="group" aria-label="Daily action checklists items">
+                    <!-- Injected by crop-advisory.js -->
+                  </div>
+                </section>
+
+                <!-- 7-Day Management timeline plan vertical track -->
+                <section aria-labelledby="timeline-heading">
+                  <h4 id="timeline-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">7-Day Crop Management Plan</h4>
+                  <div class="timeline-track-wrap" id="res-weekly-timeline-wrap" role="list" aria-label="7-Day weekly farming schedule timeline">
+                    <!-- Injected by crop-advisory.js -->
+                  </div>
+                  <span style="font-size:0.65rem; color:var(--text-light); text-align:right; display:block; margin-top:8px;">* AI-generated planning guidance.</span>
+                </section>
+
+                <hr style="border:0; border-top:1px solid var(--dash-border); margin:6px 0;" aria-hidden="true" />
+
+                <!-- Detailed Advisories loops links cards -->
+                <section aria-labelledby="detailed-advisories-heading">
+                  <h4 id="detailed-advisories-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Detailed Advisories</h4>
+                  <div style="display:flex; flex-direction:column; gap:16px;">
+                    <!-- Disease -->
+                    <div class="treatment-item" style="border-left-color: #2563eb;">
+                      <div class="treatment-item__num" style="background:#eff6ff; color:#2563eb;" aria-hidden="true"><i class="fas fa-microscope"></i></div>
+                      <div class="treatment-item__text" style="padding:0; flex:1;">
+                        <strong style="color:#2563eb; font-size:0.75rem; text-transform:uppercase; display:block; margin-bottom:2px;">Disease Advisory</strong>
+                        <p id="adv-disease-text" style="margin:0 0 6px; font-size:0.83rem; color:var(--text-secondary);">Continue regular leaf inspections.</p>
+                        <button type="button" class="km-btn km-btn--outline km-btn--sm" onclick="window.location.href='crop-disease.html'" aria-label="Go to Disease detection page">Open Disease Detection</button>
+                      </div>
+                    </div>
+                    <!-- Pest -->
+                    <div class="treatment-item" style="border-left-color: #ea580c;">
+                      <div class="treatment-item__num" style="background:#fff7ed; color:#ea580c;" aria-hidden="true"><i class="fas fa-bug"></i></div>
+                      <div class="treatment-item__text" style="padding:0; flex:1;">
+                        <strong style="color:#ea580c; font-size:0.75rem; text-transform:uppercase; display:block; margin-bottom:2px;">Pest Advisory</strong>
+                        <p id="adv-pest-text" style="margin:0 0 6px; font-size:0.83rem; color:var(--text-secondary);">Scout twice weekly for insect presence.</p>
+                        <button type="button" class="km-btn km-btn--outline km-btn--sm" onclick="window.location.href='pest-detection.html'" aria-label="Go to Pest detection page">Open Pest Detection</button>
+                      </div>
+                    </div>
+                    <!-- Fertilizer -->
+                    <div class="treatment-item" style="border-left-color: #0d9488;">
+                      <div class="treatment-item__num" style="background:#ccfbf1; color:#0d9488;" aria-hidden="true"><i class="fas fa-vial"></i></div>
+                      <div class="treatment-item__text" style="padding:0; flex:1;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; flex-wrap:wrap;">
+                          <strong style="color:#0d9488; font-size:0.75rem; text-transform:uppercase; display:block;">Fertilizer &amp; Nutrient Advisory</strong>
+                          <span id="adv-fertilizer-status" class="severity-tag severity-tag--moderate" style="font-size:0.65rem;">Nitrogen Needs Attention</span>
+                        </div>
+                        <p id="adv-fertilizer-text" style="margin:0 0 6px; font-size:0.83rem; color:var(--text-secondary);">Focus on nitrogen amendments Urea/Ammonium Sulphate.</p>
+                        <button type="button" class="km-btn km-btn--outline km-btn--sm" onclick="window.location.href='fertilizer.html'" aria-label="Go to Fertilizer advisory page">Open Fertilizer Recommendation</button>
+                      </div>
+                    </div>
+                    <!-- Irrigation -->
+                    <div class="treatment-item" style="border-left-color: #3b82f6;">
+                      <div class="treatment-item__num" style="background:#eff6ff; color:#3b82f6;" aria-hidden="true"><i class="fas fa-tint"></i></div>
+                      <div class="treatment-item__text" style="padding:0; flex:1;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2px; flex-wrap:wrap;">
+                          <strong style="color:#3b82f6; font-size:0.75rem; text-transform:uppercase; display:block;">Irrigation Advisory</strong>
+                          <span id="adv-irrigation-status" class="severity-tag severity-tag--low" style="font-size:0.65rem;">Moderate Moisture (55%)</span>
+                        </div>
+                        <p id="adv-irrigation-text" style="margin:0 0 6px; font-size:0.83rem; color:var(--text-secondary);">Delay irrigation. Rain forecast tomorrow.</p>
+                        <button type="button" class="km-btn km-btn--outline km-btn--sm" onclick="window.location.href='irrigation.html'" aria-label="Go to Irrigation page">Open Irrigation Recommendation</button>
+                      </div>
+                    </div>
+                    <!-- Weather -->
+                    <div class="treatment-item" style="border-left-color: #7c3aed;">
+                      <div class="treatment-item__num" style="background:#faf5ff; color:#7c3aed;" aria-hidden="true"><i class="fas fa-cloud-sun"></i></div>
+                      <div class="treatment-item__text" style="padding:0; flex:1;">
+                        <strong style="color:#7c3aed; font-size:0.75rem; text-transform:uppercase; display:block; margin-bottom:2px;">Weather Advisory</strong>
+                        <div class="info-box-grid" style="margin:6px 0; gap:8px;">
+                          <div class="info-box" style="padding:6px 10px;"><span class="info-box__label" style="font-size:0.6rem;">Temp</span><span id="adv-weather-temp" style="font-size:0.8rem; font-weight:700;">29°C</span></div>
+                          <div class="info-box" style="padding:6px 10px;"><span class="info-box__label" style="font-size:0.6rem;">Humidity</span><span id="adv-weather-humidity" style="font-size:0.8rem; font-weight:700;">68%</span></div>
+                          <div class="info-box" style="padding:6px 10px;"><span class="info-box__label" style="font-size:0.6rem;">Rain Prob.</span><span id="adv-weather-rain" style="font-size:0.8rem; font-weight:700; color:#2563eb;">75%</span></div>
+                          <div class="info-box" style="padding:6px 10px;"><span class="info-box__label" style="font-size:0.6rem;">Wind</span><span id="adv-weather-wind" style="font-size:0.8rem; font-weight:700;">12 km/h</span></div>
+                        </div>
+                        <p id="adv-weather-text" style="margin:0 0 6px; font-size:0.83rem; color:var(--text-secondary);">Rain forecast expected. Avoid field chemical sprays.</p>
+                        <button type="button" class="km-btn km-btn--outline km-btn--sm" onclick="window.location.href='weather.html'" aria-label="Go to detailed weather forecasting page">View Weather Forecast</button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <hr style="border:0; border-top:1px solid var(--dash-border); margin:6px 0;" aria-hidden="true" />
+
+                <!-- Crop care general recommendations cards list -->
+                <section aria-labelledby="general-care-heading">
+                  <h4 id="general-care-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Crop Care Recommendations</h4>
+                  <div class="organic-grid" role="list">
+                    <div class="organic-card" role="listitem">
+                      <div class="organic-card__icon" aria-hidden="true"><i class="fas fa-eye"></i></div>
+                      <div class="organic-card__content">
+                        <h5 class="organic-card__name">Crop Monitoring</h5>
+                        <p class="organic-card__benefit">Inspect leaves color, node expansion, and insects regularly.</p>
+                      </div>
+                    </div>
+                    <div class="organic-card" role="listitem">
+                      <div class="organic-card__icon" aria-hidden="true"><i class="fas fa-flask"></i></div>
+                      <div class="organic-card__content">
+                        <h5 class="organic-card__name">Soil Health</h5>
+                        <p class="organic-card__benefit">Always use soil test records to adjust fertilizer schedules.</p>
+                      </div>
+                    </div>
+                    <div class="organic-card" role="listitem">
+                      <div class="organic-card__icon" aria-hidden="true"><i class="fas fa-tint"></i></div>
+                      <div class="organic-card__content">
+                        <h5 class="organic-card__name">Water Management</h5>
+                        <p class="organic-card__benefit">Synchronize irrigation runs relative to localized rains forecasts.</p>
+                      </div>
+                    </div>
+                    <div class="organic-card" role="listitem">
+                      <div class="organic-card__icon" aria-hidden="true"><i class="fas fa-bug"></i></div>
+                      <div class="organic-card__content">
+                        <h5 class="organic-card__name">Pest Prevention</h5>
+                        <p class="organic-card__benefit">Introduce biological ladybugs early during aphid spikes.</p>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- AI highlighted Recommendation summary card with Read More expand/collapse -->
+                <section aria-labelledby="ai-summary-heading">
+                  <h4 id="ai-summary-heading" class="dash-section-title" style="margin-bottom:10px; font-size: 0.9rem;">KrishiMitra AI Recommendation Summary</h4>
+                  <div class="ai-recommendation-box">
+                    <div class="ai-recommendation-box__header">
+                      <i class="fas fa-robot" aria-hidden="true"></i>
+                      <span>AI Crop Executive Summary</span>
+                    </div>
+                    <p id="ai-summary-text" class="ai-recommendation-box__desc">
+                      Your cotton crop is currently in the vegetative stage and appears to be in generally good condition.
+                    </p>
+                    <div id="ai-summary-details-box" style="display: none; padding-top:6px; border-top:1px dashed rgba(0,0,0,0.1); font-size:0.8rem; line-height:1.5; color:var(--text-secondary);">
+                      <strong>Recommendations details:</strong> Adjust Nitrogen split amendments, inspect tender nodes weekly, and keep weeds cleared around boundaries to block pest host vectors.
+                    </div>
+                    <button type="button" id="btn-summary-expand" class="km-btn km-btn--outline km-btn--sm" style="width:fit-content; align-self:flex-start;">
+                      Read More <i class="fas fa-chevron-down" aria-hidden="true" style="margin-left:4px;"></i>
+                    </button>
+                  </div>
+                </section>
+
+                <!-- Knowledge References Used (RAG) -->
+                <section aria-labelledby="rag-heading">
+                  <h4 id="rag-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Trusted Knowledge Sources Used (RAG)</h4>
+                  <div id="res-rag-sources-grid" class="rag-sources-grid" role="list">
+                    <!-- Injected by crop-advisory.js -->
+                  </div>
+                  <span style="font-size:0.65rem; color:var(--text-light); text-align:right; display:block; margin-top:6px;">* Retrieved dynamically from vector DB.</span>
+                </section>
+
+                <!-- Confidence indicator progress bar -->
+                <div class="health-score-container" style="padding:14px 20px;">
+                  <div style="flex:1;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:700; color:var(--text-primary); margin-bottom:4px;">
+                      <span>AI Advisory Confidence</span>
+                      <strong id="res-confidence-score" style="color:var(--primary);">82%</strong>
+                    </div>
+                    <div class="confidence-track" style="width:100%; height:6px; border-radius:6px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                      <div id="res-confidence-bar" class="confidence-fill" style="width:82%; height:100%; border-radius:6px; background:var(--primary);"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Safety disclaimers warnings -->
+                <p style="font-size:0.7rem; color: var(--text-light); line-height: 1.45; text-align: center; margin: 4px 0 0;">
+                  <i class="fas fa-exclamation-triangle" aria-hidden="true" style="margin-right:3px;"></i>
+                  <strong>Disclaimer:</strong> AI-generated crop planning is advisory guidance. Precise decisions should verify local extensions, certified soil tests, and label restrictions.
+                </p>
+
+                <hr style="border: 0; border-top: 1px solid var(--dash-border); margin: 4px 0;" aria-hidden="true" />
+
+                <!-- Action Controls buttons wrap -->
+                <div class="actions-wrap">
+                  <button type="button" id="btn-adv-another" class="km-btn km-btn--outline" aria-label="Reset forms to generate a new management advisory plan">
+                    <i class="fas fa-redo-alt" aria-hidden="true"></i> Generate New Advisory
+                  </button>
+                  <button type="button" id="btn-adv-save" class="km-btn km-btn--primary" aria-label="Save this compiled advisory schedule report to history profile">
+                    <i class="fas fa-save" aria-hidden="true"></i> Save Advisory
+                  </button>
+                  <button type="button" id="btn-adv-download" class="km-btn km-btn--ghost" style="color:var(--text-primary); border:1px solid var(--gray-300);" aria-label="Download compiled crop advisory PDF guide">
+                    <i class="fas fa-file-pdf" aria-hidden="true"></i> Download Advisory
+                  </button>
+                  <button type="button" id="btn-adv-share" class="km-btn km-btn--ghost" style="color:var(--text-primary); border:1px solid var(--gray-300);" aria-label="Share crop advisory schedule via Web Share API">
+                    <i class="fas fa-share-alt" aria-hidden="true"></i> Share Advisory
+                  </button>
+                </div>
+
+              </div><!-- /dash-card -->
+            </div><!-- /advisory-result-section -->
+
+          </section><!-- /advisory-viewport -->
+
+        </div>
+
+      </div><!-- /crop-disease-container -->
+
+      <!-- Recent Crop advisories log table -->
+      <section class="analysis-card" aria-labelledby="history-table-title" style="margin-top: 24px;">
+        <div class="analysis-card__header">
+          <h2 id="history-table-title" class="dash-section-title">Recent Crop Advisories</h2>
+          <a href="history.html" class="dash-section-link" aria-label="Go to historical diagnostic list">
+            View History <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <div class="analysis-table-wrap">
+          <table class="analysis-table" aria-label="Recent crop advisories table list">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Crop</th>
+                <th scope="col">Growth Stage</th>
+                <th scope="col">Overall Health</th>
+                <th scope="col">Priority Risk</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="recent-advisories-tbody">
+              <!-- Injected by crop-advisory.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Bottom padding spacing -->
+      <div style="height:24px;" aria-hidden="true"></div>
+
+    </main>
+  </div><!-- /km-app-main -->
+</div><!-- /km-app-wrapper -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED BOTTOM CHATBOT FLOATING CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="chatbot-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED FOOTER CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="footer-container"></div>
+
+<!-- Global Components Loader Script -->
+<script src="../js/components.js"></script>
+
+<!-- PDF Export Engine -->
+<script src="../js/pdf-generator.js"></script>
+
+<!-- Crop advisory specific logic script -->
+<script src="../js/crop-advisory.js"></script>
+
+</body>
+</html>

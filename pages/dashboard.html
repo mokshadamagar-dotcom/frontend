@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KrishiMitra AI Farmer Dashboard – Your intelligent AI agriculture advisor." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Dashboard – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets: core design system → components → dashboard-specific -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+</head>
+<body class="dashboard-body">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SIDEBAR OVERLAY (Mobile)
+════════════════════════════════════════════════════════════ -->
+<div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════════════════════════ -->
+<aside id="main-sidebar" class="sidebar" role="navigation" aria-label="Main navigation">
+
+  <!-- Logo -->
+  <a href="dashboard.html" class="sidebar__logo" aria-label="KrishiMitra AI Dashboard">
+    <div class="sidebar__logo-icon" aria-hidden="true">
+      <i class="fas fa-seedling"></i>
+    </div>
+    <div class="sidebar__logo-texts">
+      <span class="sidebar__logo-name">KrishiMitra AI</span>
+      <span class="sidebar__logo-tagline">Agriculture Advisor</span>
+    </div>
+  </a>
+
+  <!-- Nav -->
+  <nav class="sidebar__nav" aria-label="Dashboard navigation">
+
+    <!-- MAIN -->
+    <span class="sidebar__nav-label">Main</span>
+
+    <a href="dashboard.html"
+       class="sidebar__nav-item active"
+       aria-label="Dashboard"
+       aria-current="page">
+      <i class="fas fa-th-large sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Dashboard</span>
+    </a>
+
+    <!-- AI FEATURES -->
+    <span class="sidebar__nav-label">AI Features</span>
+
+    <a href="crop-disease.html"
+       class="sidebar__nav-item"
+       aria-label="Crop Disease Detection">
+      <i class="fas fa-microscope sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Crop Disease Detection</span>
+    </a>
+
+    <a href="pest-detection.html"
+       class="sidebar__nav-item"
+       aria-label="Pest Radar">
+      <i class="fas fa-bug sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Pest Radar</span>
+    </a>
+
+    <a href="fertilizer.html"
+       class="sidebar__nav-item"
+       aria-label="Fertilizer Recommendation">
+      <i class="fas fa-vial sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Fertilizer Recommendation</span>
+    </a>
+
+    <a href="irrigation.html"
+       class="sidebar__nav-item"
+       aria-label="Irrigation Advisory">
+      <i class="fas fa-tint sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Irrigation Advisory</span>
+    </a>
+
+    <a href="crop-advisory.html"
+       class="sidebar__nav-item"
+       aria-label="Crop Advisory">
+      <i class="fas fa-leaf sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Crop Advisory</span>
+    </a>
+
+    <a href="soil-analysis.html"
+       class="sidebar__nav-item"
+       aria-label="PDF and Soil Analysis">
+      <i class="fas fa-flask sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">PDF &amp; Soil Analysis</span>
+    </a>
+
+    <!-- AI TOOLS -->
+    <span class="sidebar__nav-label">AI Tools</span>
+
+    <a href="chatbot.html"
+       class="sidebar__nav-item"
+       aria-label="AI Chatbot">
+      <i class="fas fa-comments sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">AI Chatbot</span>
+    </a>
+
+    <a href="voice-assistant.html"
+       class="sidebar__nav-item"
+       aria-label="Voice Assistant">
+      <i class="fas fa-microphone sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Voice Assistant</span>
+    </a>
+
+    <!-- INFORMATION -->
+    <span class="sidebar__nav-label">Information</span>
+
+    <a href="weather.html"
+       class="sidebar__nav-item"
+       aria-label="Weather Advisory">
+      <i class="fas fa-cloud-sun-rain sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Weather Advisory</span>
+    </a>
+
+    <a href="market-price.html"
+       class="sidebar__nav-item"
+       aria-label="Market Prices">
+      <i class="fas fa-chart-line sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Market Prices</span>
+    </a>
+
+    <a href="government-schemes.html"
+       class="sidebar__nav-item"
+       aria-label="Government Schemes">
+      <i class="fas fa-landmark sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Government Schemes</span>
+    </a>
+
+    <a href="crop-calendar.html"
+       class="sidebar__nav-item"
+       aria-label="Crop Calendar">
+      <i class="fas fa-calendar-alt sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Crop Calendar</span>
+    </a>
+
+    <!-- ACCOUNT -->
+    <span class="sidebar__nav-label">Account</span>
+
+    <a href="history.html"
+       class="sidebar__nav-item"
+       aria-label="Analysis History">
+      <i class="fas fa-history sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">History</span>
+    </a>
+
+    <a href="notifications.html"
+       class="sidebar__nav-item"
+       aria-label="Notifications">
+      <i class="fas fa-bell sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Notifications</span>
+      <span class="sidebar__nav-badge" aria-label="3 new notifications">3</span>
+    </a>
+
+  </nav>
+
+  <!-- Bottom Actions -->
+  <div class="sidebar__bottom">
+    <div class="sidebar__divider" aria-hidden="true"></div>
+
+    <a href="profile.html"
+       class="sidebar__nav-item"
+       aria-label="Settings">
+      <i class="fas fa-cog sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text" data-i18n="nav.settings">Settings</span>
+    </a>
+
+    <a href="help-center.html"
+       class="sidebar__nav-item"
+       aria-label="Help and Support">
+      <i class="fas fa-question-circle sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text" data-i18n="nav.help">Help &amp; Support</span>
+    </a>
+
+    <a href="#"
+       class="sidebar__nav-item"
+       data-action="logout"
+       aria-label="Logout from KrishiMitra AI"
+       id="sidebar-logout-btn">
+      <i class="fas fa-sign-out-alt sidebar__nav-icon" aria-hidden="true"></i>
+      <span class="sidebar__nav-text">Logout</span>
+    </a>
+  </div>
+
+</aside>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN CONTENT WRAPPER
+════════════════════════════════════════════════════════════ -->
+<div class="dashboard-main" id="dashboard-main">
+
+  <!-- ─────────────────────────────────────────────────────────
+       TOP NAVBAR
+  ──────────────────────────────────────────────────────────── -->
+  <header class="dash-topbar" role="banner" aria-label="Dashboard top navigation">
+
+    <!-- Sidebar Toggle -->
+    <button
+      class="topbar__toggle"
+      data-sidebar-toggle
+      aria-label="Toggle sidebar navigation"
+      aria-controls="main-sidebar"
+      id="sidebar-toggle-btn"
+    >
+      <i class="fas fa-bars" aria-hidden="true"></i>
+    </button>
+
+    <!-- Page Title -->
+    <div class="topbar__title">
+      <div class="topbar__page-name" id="topbar-page-name">Farmer Dashboard</div>
+      <div class="topbar__breadcrumb" aria-label="Breadcrumb">
+        <a href="dashboard.html">Home</a>
+        <span aria-hidden="true"> › </span>
+        <span>Dashboard</span>
+      </div>
+    </div>
+
+    <!-- Right Actions -->
+    <div class="topbar__right" role="group" aria-label="User controls">
+
+      <!-- Language Selector -->
+      <div class="topbar__lang" aria-label="Language selector">
+        <i class="fas fa-globe" aria-hidden="true"></i>
+        <select id="dash-lang-select" aria-label="Select display language" title="Choose language">
+          <option value="en">English</option>
+          <option value="hi">हिंदी</option>
+          <option value="mr">मराठी</option>
+        </select>
+      </div>
+
+      <!-- Notification Bell -->
+      <button
+        class="topbar__icon-btn"
+        id="notif-bell-btn"
+        aria-label="View notifications (3 unread)"
+        title="Notifications"
+      >
+        <i class="fas fa-bell" aria-hidden="true"></i>
+        <span class="topbar__notif-dot" aria-hidden="true"></span>
+      </button>
+
+      <!-- Profile Dropdown -->
+      <div
+        class="topbar__profile"
+        id="profile-dropdown-trigger"
+        role="button"
+        tabindex="0"
+        aria-haspopup="true"
+        aria-expanded="false"
+        aria-label="User profile menu"
+      >
+        <div class="topbar__avatar" aria-hidden="true">
+          <span data-user-initials>DF</span>
+        </div>
+        <span class="topbar__user-name" data-user-name>Demo Farmer</span>
+        <i class="fas fa-chevron-down topbar__profile-caret" aria-hidden="true"></i>
+
+        <!-- Dropdown -->
+        <div class="profile-dropdown" role="menu" aria-label="Profile options">
+          <div class="profile-dropdown__header" aria-hidden="true">
+            <div class="profile-dropdown__name" data-user-name>Demo Farmer</div>
+            <div class="profile-dropdown__email" data-user-email>farmer@example.com</div>
+            <span class="profile-dropdown__role" data-user-role>🌾 Farmer</span>
+          </div>
+
+          <a href="profile.html" class="profile-dropdown__item" role="menuitem" aria-label="My Profile">
+            <i class="fas fa-user" aria-hidden="true"></i>
+            My Profile
+          </a>
+          <a href="profile.html" class="profile-dropdown__item" role="menuitem" aria-label="Settings">
+            <i class="fas fa-cog" aria-hidden="true"></i>
+            Settings
+          </a>
+
+          <div class="profile-dropdown__divider" aria-hidden="true"></div>
+
+          <a href="#" class="profile-dropdown__item profile-dropdown__item--logout" role="menuitem"
+             data-action="logout" aria-label="Logout" id="topbar-logout-btn">
+            <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+            Logout
+          </a>
+        </div>
+      </div><!-- /profile -->
+
+    </div><!-- /topbar__right -->
+  </header>
+
+  <!-- ─────────────────────────────────────────────────────────
+       MAIN SCROLLABLE CONTENT
+  ──────────────────────────────────────────────────────────── -->
+  <main class="dash-content" id="dash-content" aria-label="Dashboard content">
+
+    <!-- ══════════════════════════════════════════════════════
+         WELCOME BANNER
+    ═══════════════════════════════════════════════════════ -->
+    <section class="welcome-banner" aria-labelledby="welcome-greeting">
+      <div class="welcome-banner__grid" aria-hidden="true"></div>
+
+      <div class="welcome-banner__content">
+        <h1 id="welcome-greeting" class="welcome-banner__greeting">
+          Good Morning, Farmer! 🌱
+        </h1>
+        <p class="welcome-banner__subtitle">
+          Welcome back to <strong style="color:var(--green-300);">KrishiMitra AI</strong>.
+          Your intelligent agriculture advisor is ready to help you make smarter farming decisions.
+        </p>
+
+        <div class="welcome-banner__meta" aria-label="Farm information">
+          <div class="welcome-meta-item">
+            <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+            <span id="current-date">Friday, 25 July 2026</span>
+          </div>
+          <div class="welcome-meta-item">
+            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+            <strong>Maharashtra, India</strong>
+          </div>
+          <div class="welcome-meta-item">
+            <i class="fas fa-thermometer-half" aria-hidden="true"></i>
+            <span><strong id="welcome-temp">28°C</strong></span>
+          </div>
+          <div class="welcome-meta-item">
+            <i class="fas fa-tint" aria-hidden="true"></i>
+            <span id="welcome-humidity">65% Humidity</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini Weather Card -->
+      <div class="welcome-banner__weather" aria-label="Current weather summary" role="complementary">
+        <span class="welcome-banner__weather-icon" id="welcome-weather-icon" aria-hidden="true">🌤️</span>
+        <div class="welcome-banner__temp" id="welcome-temp-large" aria-label="Current temperature">28°C</div>
+        <div class="welcome-banner__weather-desc">Partly Cloudy</div>
+        <span class="welcome-banner__weather-tag">📍 Demo Data</span>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         QUICK STATS
+    ═══════════════════════════════════════════════════════ -->
+    <section aria-labelledby="stats-heading">
+      <div class="dash-section-header">
+        <div>
+          <h2 id="stats-heading" class="dash-section-title">Farm Overview</h2>
+          <p class="dash-section-sub">Your current season at a glance</p>
+        </div>
+      </div>
+
+      <div class="stats-grid" role="list" aria-label="Farm statistics">
+
+        <div class="stat-card" role="listitem" aria-label="My Crops">
+          <div class="stat-card__top">
+            <div class="stat-card__icon stat-card__icon--green" aria-hidden="true">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <span class="stat-card__trend stat-card__trend--up" aria-label="Trending up">
+              <i class="fas fa-arrow-up" aria-hidden="true"></i> Active
+            </span>
+          </div>
+          <div>
+            <div class="stat-card__value" id="stat-crops" aria-label="Number of active crops">04</div>
+            <div class="stat-card__label">Active Crops</div>
+          </div>
+        </div>
+
+        <div class="stat-card" role="listitem" aria-label="AI Analyses">
+          <div class="stat-card__top">
+            <div class="stat-card__icon stat-card__icon--blue" aria-hidden="true">
+              <i class="fas fa-brain"></i>
+            </div>
+            <span class="stat-card__trend stat-card__trend--up" aria-label="Trending up">
+              <i class="fas fa-arrow-up" aria-hidden="true"></i> +3
+            </span>
+          </div>
+          <div>
+            <div class="stat-card__value" id="stat-analyses" aria-label="Total AI analyses">12</div>
+            <div class="stat-card__label">Total AI Analyses</div>
+          </div>
+        </div>
+
+        <div class="stat-card" role="listitem" aria-label="Saved Recommendations">
+          <div class="stat-card__top">
+            <div class="stat-card__icon stat-card__icon--gold" aria-hidden="true">
+              <i class="fas fa-bookmark"></i>
+            </div>
+            <span class="stat-card__trend stat-card__trend--neu" aria-label="No change">
+              <i class="fas fa-minus" aria-hidden="true"></i> Same
+            </span>
+          </div>
+          <div>
+            <div class="stat-card__value" id="stat-saved" aria-label="Saved insights count">08</div>
+            <div class="stat-card__label">Saved Insights</div>
+          </div>
+        </div>
+
+        <div class="stat-card" role="listitem" aria-label="Active Alerts">
+          <div class="stat-card__top">
+            <div class="stat-card__icon stat-card__icon--red" aria-hidden="true">
+              <i class="fas fa-bell"></i>
+            </div>
+            <span class="stat-card__trend stat-card__trend--down" aria-label="3 new alerts">
+              <i class="fas fa-exclamation" aria-hidden="true"></i> New
+            </span>
+          </div>
+          <div>
+            <div class="stat-card__value" id="stat-alerts" aria-label="Number of new alerts">03</div>
+            <div class="stat-card__label">New Alerts</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         AI QUICK ACTIONS
+    ═══════════════════════════════════════════════════════ -->
+    <section aria-labelledby="ai-actions-heading">
+      <div class="dash-section-header">
+        <div>
+          <h2 id="ai-actions-heading" class="dash-section-title">
+            <i class="fas fa-robot" style="color:var(--primary);margin-right:8px;" aria-hidden="true"></i>
+            AI Agriculture Assistant
+          </h2>
+          <p class="dash-section-sub">Choose an AI-powered service to get instant farming guidance.</p>
+        </div>
+      </div>
+
+      <div class="ai-actions-grid" role="list" aria-label="AI feature quick actions">
+
+        <!-- Disease Detection -->
+        <article class="ai-action-card" role="listitem" aria-label="Crop Disease Detection">
+          <div class="ai-action-card__icon icon--green" aria-hidden="true">
+            <i class="fas fa-microscope"></i>
+          </div>
+          <h3 class="ai-action-card__title">Disease Detection</h3>
+          <p class="ai-action-card__desc">Upload a crop image and instantly identify possible diseases with treatment advice.</p>
+          <a href="crop-disease.html" class="ai-action-card__btn" aria-label="Analyze your crop for diseases">
+            <i class="fas fa-camera" aria-hidden="true"></i> Analyze Crop
+          </a>
+        </article>
+
+        <!-- Pest Radar -->
+        <article class="ai-action-card" role="listitem" aria-label="Pest Radar">
+          <div class="ai-action-card__icon icon--orange" aria-hidden="true">
+            <i class="fas fa-bug"></i>
+          </div>
+          <h3 class="ai-action-card__title">Pest Radar</h3>
+          <p class="ai-action-card__desc">Detect common pests affecting your crops using AI-powered image analysis.</p>
+          <a href="pest-detection.html" class="ai-action-card__btn" aria-label="Detect pests with Pest Radar">
+            <i class="fas fa-search" aria-hidden="true"></i> Open Pest Radar
+          </a>
+        </article>
+
+        <!-- Fertilizer -->
+        <article class="ai-action-card" role="listitem" aria-label="Fertilizer Recommendation">
+          <div class="ai-action-card__icon icon--teal" aria-hidden="true">
+            <i class="fas fa-vial"></i>
+          </div>
+          <h3 class="ai-action-card__title">Fertilizer Recommendation</h3>
+          <p class="ai-action-card__desc">Get precise fertilizer dosage recommendations based on crop type and soil data.</p>
+          <a href="fertilizer.html" class="ai-action-card__btn" aria-label="Get fertilizer recommendations">
+            <i class="fas fa-flask" aria-hidden="true"></i> Get Recommendation
+          </a>
+        </article>
+
+        <!-- Irrigation -->
+        <article class="ai-action-card" role="listitem" aria-label="Irrigation Advisory">
+          <div class="ai-action-card__icon icon--cyan" aria-hidden="true">
+            <i class="fas fa-tint"></i>
+          </div>
+          <h3 class="ai-action-card__title">Irrigation Advisory</h3>
+          <p class="ai-action-card__desc">Get smart irrigation schedules based on your crop, soil moisture, and weather.</p>
+          <a href="irrigation.html" class="ai-action-card__btn" aria-label="Check irrigation advice">
+            <i class="fas fa-water" aria-hidden="true"></i> Check Irrigation
+          </a>
+        </article>
+
+        <!-- Soil Analysis -->
+        <article class="ai-action-card" role="listitem" aria-label="Soil Health Analysis">
+          <div class="ai-action-card__icon icon--emerald" aria-hidden="true">
+            <i class="fas fa-flask"></i>
+          </div>
+          <h3 class="ai-action-card__title">Soil Health Analysis</h3>
+          <p class="ai-action-card__desc">Upload your soil report PDF and get AI-powered soil health insights instantly.</p>
+          <a href="soil-analysis.html" class="ai-action-card__btn" aria-label="Analyze your soil report">
+            <i class="fas fa-file-pdf" aria-hidden="true"></i> Analyze Soil
+          </a>
+        </article>
+
+        <!-- AI Chatbot -->
+        <article class="ai-action-card" role="listitem" aria-label="AI Chatbot">
+          <div class="ai-action-card__icon icon--blue" aria-hidden="true">
+            <i class="fas fa-comments"></i>
+          </div>
+          <h3 class="ai-action-card__title">AI Chatbot</h3>
+          <p class="ai-action-card__desc">Ask KrishiMitra anything about farming and get expert AI-powered guidance.</p>
+          <a href="chatbot.html" class="ai-action-card__btn" aria-label="Start a conversation with AI">
+            <i class="fas fa-robot" aria-hidden="true"></i> Ask AI
+          </a>
+        </article>
+
+        <!-- Voice Assistant -->
+        <article class="ai-action-card" role="listitem" aria-label="Voice Assistant">
+          <div class="ai-action-card__icon icon--purple" aria-hidden="true">
+            <i class="fas fa-microphone"></i>
+          </div>
+          <h3 class="ai-action-card__title">Voice Assistant</h3>
+          <p class="ai-action-card__desc">Talk to your agriculture advisor in Hindi, Marathi, or English.</p>
+          <a href="voice-assistant.html" class="ai-action-card__btn" aria-label="Start voice assistant">
+            <i class="fas fa-volume-up" aria-hidden="true"></i> Start Voice
+          </a>
+        </article>
+
+        <!-- Weather Advisory -->
+        <article class="ai-action-card" role="listitem" aria-label="Weather Advisory">
+          <div class="ai-action-card__icon icon--indigo" aria-hidden="true">
+            <i class="fas fa-cloud-sun-rain"></i>
+          </div>
+          <h3 class="ai-action-card__title">Weather Advisory</h3>
+          <p class="ai-action-card__desc">Get hyperlocal weather forecasts and farm-specific weather-based recommendations.</p>
+          <a href="weather.html" class="ai-action-card__btn" aria-label="View weather advisory">
+            <i class="fas fa-cloud-sun" aria-hidden="true"></i> View Weather
+          </a>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         TODAY'S ADVISORY + WEATHER (Two columns)
+    ═══════════════════════════════════════════════════════ -->
+    <div class="three-col-row">
+
+      <!-- Today's Advisory -->
+      <section aria-labelledby="advisory-heading">
+        <div class="dash-section-header" style="margin-bottom:14px;">
+          <h2 id="advisory-heading" class="dash-section-title">Today's Smart Farming Advisory</h2>
+        </div>
+
+        <div class="advisory-card">
+          <div class="advisory-card__header">
+            <span class="advisory-card__title">
+              <i class="fas fa-lightbulb" aria-hidden="true"></i>
+              AI Recommendations
+            </span>
+            <span class="advisory-card__meta">
+              <!-- TODO: Date from FastAPI -->
+              <i class="fas fa-clock" aria-hidden="true"></i>
+              Updated today
+            </span>
+          </div>
+
+          <!-- TODO: These recommendations will come from:
+               FastAPI /api/v1/advisory/daily
+               Weather API for rain/temperature data
+               AI Recommendation Engine for crop/fertilizer advice -->
+          <div class="advisory-list" role="list" aria-label="Today's farming advisory">
+
+            <div class="advisory-item" role="listitem">
+              <div class="advisory-item__icon" style="background:#dbeafe;" aria-hidden="true">
+                <i class="fas fa-cloud-rain" style="color:#1d4ed8;"></i>
+              </div>
+              <div class="advisory-item__content">
+                <div class="advisory-item__category">Weather</div>
+                <p class="advisory-item__text">Rainfall is expected tomorrow. Consider delaying irrigation and covering sensitive crops.</p>
+              </div>
+              <span class="priority-badge priority-badge--high" aria-label="High priority">High</span>
+            </div>
+
+            <div class="advisory-item" role="listitem">
+              <div class="advisory-item__icon" style="background:#dcfce7;" aria-hidden="true">
+                <i class="fas fa-leaf" style="color:#16a34a;"></i>
+              </div>
+              <div class="advisory-item__content">
+                <div class="advisory-item__category">Crop Health</div>
+                <p class="advisory-item__text">Check your cotton crop leaves for early signs of disease. Humid weather increases risk.</p>
+              </div>
+              <span class="priority-badge priority-badge--medium" aria-label="Medium priority">Medium</span>
+            </div>
+
+            <div class="advisory-item" role="listitem">
+              <div class="advisory-item__icon" style="background:#fef3c7;" aria-hidden="true">
+                <i class="fas fa-vial" style="color:#d97706;"></i>
+              </div>
+              <div class="advisory-item__content">
+                <div class="advisory-item__category">Fertilizer</div>
+                <p class="advisory-item__text">Review fertilizer application timing. Avoid applying before heavy rain to prevent nutrient loss.</p>
+              </div>
+              <span class="priority-badge priority-badge--low" aria-label="Low priority">Low</span>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Weather Widget -->
+      <section aria-labelledby="weather-heading">
+        <div class="dash-section-header" style="margin-bottom:14px;">
+          <h2 id="weather-heading" class="dash-section-title">Weather</h2>
+          <a href="weather.html" class="dash-section-link" aria-label="View detailed weather">
+            Details <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <!-- TODO: All weather data will come from:
+             FastAPI /api/v1/weather?location={user_district}
+             Which calls OpenWeatherMap or IMD Weather API -->
+        <div class="weather-card">
+          <div class="weather-card__hero">
+            <div class="weather-card__main">
+              <div class="weather-card__temp-wrap">
+                <span class="weather-card__icon" id="weather-icon" aria-hidden="true">🌤️</span>
+                <div class="weather-card__temp" id="weather-temp" aria-label="Temperature">28°C</div>
+                <div class="weather-card__condition" id="weather-condition">Partly Cloudy</div>
+                <div class="weather-card__location">
+                  <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                  <span id="weather-location">Maharashtra, India</span>
+                </div>
+              </div>
+              <div class="weather-card__extra">
+                <span class="weather-card__demo-tag">DEMO DATA</span>
+                <div class="weather-card__stats" aria-label="Weather details">
+                  <div class="weather-stat">
+                    <i class="fas fa-tint" aria-hidden="true"></i>
+                    <span id="weather-humidity">65%</span> Humidity
+                  </div>
+                  <div class="weather-stat">
+                    <i class="fas fa-cloud-rain" aria-hidden="true"></i>
+                    <span id="weather-rain">40%</span> Rain
+                  </div>
+                  <div class="weather-stat">
+                    <i class="fas fa-wind" aria-hidden="true"></i>
+                    <span id="weather-wind">12 km/h</span> Wind
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="weather-card__body">
+            <div class="weather-advisory-text" role="note" aria-label="Weather advisory">
+              <i class="fas fa-info-circle" aria-hidden="true"></i>
+              <span id="weather-advisory">Moderate rainfall expected. Avoid unnecessary irrigation.</span>
+            </div>
+            <a href="weather.html" class="dash-link" aria-label="View detailed weather forecast">
+              View Detailed Weather <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         RECENT ANALYSIS + CROP HEALTH (Two columns)
+    ═══════════════════════════════════════════════════════ -->
+    <div class="two-col-row">
+
+      <!-- Recent Analysis Table -->
+      <section aria-labelledby="analysis-heading">
+        <div class="dash-section-header" style="margin-bottom:14px;">
+          <div>
+            <h2 id="analysis-heading" class="dash-section-title">Recent AI Analysis</h2>
+            <p class="dash-section-sub">Your latest AI-powered farm analyses</p>
+          </div>
+          <a href="history.html" class="dash-section-link" aria-label="View full analysis history">
+            View All <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <!-- TODO: Data from FastAPI: GET /api/v1/analyses/recent?limit=5 -->
+        <div class="analysis-card">
+          <div class="analysis-table-wrap">
+            <table class="analysis-table" aria-label="Recent AI analysis results">
+              <thead>
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Crop</th>
+                  <th scope="col">Analysis Type</th>
+                  <th scope="col">Result</th>
+                  <th scope="col">Confidence</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody id="analyses-tbody">
+                <!-- Populated by dashboard.js → loadRecentAnalyses() -->
+                <tr>
+                  <td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">
+                    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Loading analyses…
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="padding:12px 16px; text-align:right; border-top:1px solid var(--dash-border); background:var(--gray-50);">
+            <a href="history.html" class="dash-link" aria-label="View full analysis history">
+              View Full History <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Crop Health + Notifications stacked -->
+      <div style="display:flex; flex-direction:column; gap:20px;">
+
+        <!-- Crop Health -->
+        <section aria-labelledby="crop-health-heading">
+          <div class="dash-section-header" style="margin-bottom:14px;">
+            <div>
+              <h2 id="crop-health-heading" class="dash-section-title">Crop Health Overview</h2>
+              <p class="dash-section-sub">Current season active crops</p>
+            </div>
+          </div>
+
+          <!-- TODO: Data from FastAPI: GET /api/v1/crops/health -->
+          <div class="crop-health-card">
+            <div class="crop-health-card__header">
+              <span class="dash-card__title">
+                <i class="fas fa-leaf" aria-hidden="true"></i>
+                My Crops
+              </span>
+              <a href="crop-advisory.html" class="dash-link" style="font-size:0.78rem;" aria-label="View crop advisory">
+                Manage <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+            <div id="crop-health-list" class="crop-health-list" role="list" aria-label="Crop health status">
+              <!-- Populated by dashboard.js → loadCropHealth() -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Smart Notifications -->
+        <section aria-labelledby="notif-heading">
+          <div class="dash-section-header" style="margin-bottom:14px;">
+            <div>
+              <h2 id="notif-heading" class="dash-section-title">Smart Notifications</h2>
+            </div>
+            <a href="notifications.html" class="dash-section-link" aria-label="View all notifications">
+              View All <i class="fas fa-arrow-right" aria-hidden="true"></i>
+            </a>
+          </div>
+
+          <!-- TODO: Data from FastAPI: GET /api/v1/notifications?limit=4 -->
+          <div class="notifications-card">
+            <div class="notifications-card__header">
+              <span class="dash-card__title">
+                <i class="fas fa-bell" aria-hidden="true"></i>
+                Recent Alerts
+              </span>
+              <span class="priority-badge priority-badge--high" style="font-size:0.68rem;" aria-label="3 new notifications">
+                3 New
+              </span>
+            </div>
+            <div id="notifications-list" role="list" aria-label="Smart notifications list">
+              <!-- Populated by dashboard.js → loadNotifications() -->
+            </div>
+            <div class="notifications-card__footer">
+              <a href="notifications.html" class="dash-link" aria-label="View all smart notifications">
+                View All Notifications <i class="fas fa-arrow-right" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /stacked right col -->
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════
+         BOTTOM SPACER
+    ═══════════════════════════════════════════════════════ -->
+    <div style="height:24px;" aria-hidden="true"></div>
+
+  </main><!-- /dash-content -->
+</div><!-- /dashboard-main -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     FLOATING AI CHATBOT BUTTON
+════════════════════════════════════════════════════════════ -->
+<a
+  href="chatbot.html"
+  class="fab-chat"
+  id="fab-chatbot"
+  aria-label="Ask KrishiMitra AI – Open AI Chatbot"
+  title="Ask KrishiMitra AI"
+  role="button"
+>
+  <i class="fas fa-robot" aria-hidden="true"></i>
+  <span class="fab-chat__tooltip">Ask KrishiMitra AI</span>
+</a>
+
+<!-- ─── Language System ────────────────────────────────────── -->
+<script src="../js/language.js" defer></script>
+<!-- ─── Dashboard JS ──────────────────────────────────────── -->
+<script src="../js/dashboard.js" defer></script>
+
+</body>
+</html>

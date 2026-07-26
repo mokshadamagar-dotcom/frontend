@@ -1,0 +1,530 @@
+/* ============================================================
+   KrishiMitra AI – responsive.css
+   Responsive Breakpoints & Mobile-first Overrides
+   ============================================================ */
+
+/* ─── Breakpoints Reference
+   xl:  > 1280px  (large desktop)
+   lg:  > 1024px  (desktop / laptop)
+   md:  > 768px   (tablet)
+   sm:  > 480px   (large mobile)
+   xs:  > 360px   (small mobile)
+─────────────────────────────────────────────────────────── */
+
+/* ─── XL – Large Desktop ─────────────────────────────────── */
+@media (min-width: 1280px) {
+  :root {
+    --container-max: 1280px;
+  }
+}
+
+/* ─── LG – Desktop / Laptop ──────────────────────────────── */
+@media (max-width: 1199px) {
+  .features__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer__top {
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 40px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .hero__inner {
+    gap: 48px;
+  }
+
+  .hero__img-wrapper {
+    width: 380px;
+    height: 380px;
+  }
+
+  .hero__float-card--1 {
+    right: 0;
+  }
+
+  .ai-cards__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── MD – Tablet ────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  :root {
+    --section-padding: 72px 0;
+  }
+
+  /* Navbar */
+  .nav__links {
+    display: none;
+  }
+
+  .nav__hamburger {
+    display: flex;
+  }
+
+  .nav__actions .btn {
+    display: none;
+  }
+
+  /* Keep language selector on tablet */
+  .nav__actions .lang-selector {
+    display: flex;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 100px 0 60px;
+  }
+
+  .hero__inner {
+    grid-template-columns: 1fr;
+    gap: 60px;
+    text-align: center;
+  }
+
+  .hero__content {
+    max-width: 100%;
+  }
+
+  .hero__actions {
+    justify-content: center;
+  }
+
+  .hero__trust {
+    justify-content: center;
+  }
+
+  .hero__visual {
+    order: -1;
+  }
+
+  .hero__img-wrapper {
+    width: 360px;
+    height: 360px;
+  }
+
+  .hero__float-card--2 {
+    left: 0;
+  }
+
+  .hero__float-card--3 {
+    right: 10%;
+  }
+
+  /* Stats */
+  .stats__inner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats__item {
+    border-right: none;
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .stats__item:nth-child(1),
+  .stats__item:nth-child(2) {
+    border-right: 1px solid var(--gray-100);
+  }
+
+  .stats__item:nth-child(3),
+  .stats__item:nth-child(4) {
+    border-bottom: none;
+  }
+
+  /* Features */
+  .features__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* How it works */
+  .steps__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+  }
+
+  .steps__grid::before {
+    display: none;
+  }
+
+  /* Benefits */
+  .benefits__layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .benefits__visual {
+    order: -1;
+  }
+
+  /* Languages */
+  .languages__inner {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  /* Footer */
+  .footer__top {
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+
+  .footer__brand {
+    grid-column: 1 / -1;
+  }
+
+  .footer__desc {
+    max-width: 100%;
+  }
+}
+
+/* ─── SM – Large Mobile ──────────────────────────────────── */
+@media (max-width: 768px) {
+  :root {
+    --section-padding: 56px 0;
+    --container-pad: 0 20px;
+  }
+
+  /* Navbar */
+  .navbar {
+    height: 64px;
+  }
+
+  .nav__mobile-menu {
+    top: 64px;
+    padding: 16px 20px;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 88px 0 48px;
+  }
+
+  .hero__heading {
+    font-size: clamp(2rem, 7vw, 2.8rem);
+  }
+
+  .hero__img-wrapper {
+    width: 280px;
+    height: 280px;
+  }
+
+  .hero__float-card {
+    padding: 10px 14px;
+  }
+
+  .hero__float-card--1 {
+    top: 2%;
+    right: 0;
+  }
+
+  .hero__float-card--2 {
+    bottom: 12%;
+    left: 0;
+  }
+
+  .hero__float-card--3 {
+    bottom: -4%;
+    right: 5%;
+  }
+
+  .hero__float-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 0.85rem;
+  }
+
+  .hero__float-label {
+    font-size: 0.65rem;
+  }
+
+  .hero__float-sub {
+    font-size: 0.58rem;
+  }
+
+  .hero__trust {
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero__trust-divider {
+    display: none;
+  }
+
+  .hero__trust-item {
+    text-align: center;
+  }
+
+  /* Stats */
+  .stats__inner {
+    grid-template-columns: repeat(2, 1fr);
+    border-radius: var(--radius-lg);
+  }
+
+  .stats__item {
+    padding: 28px 16px;
+  }
+
+  /* Section headers */
+  .section__title {
+    font-size: clamp(1.6rem, 5vw, 2.2rem);
+  }
+
+  .section__header {
+    margin-bottom: 48px;
+  }
+
+  /* Features */
+  .features__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .feature-card {
+    padding: 20px 16px;
+  }
+
+  /* Steps */
+  .steps__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .step-item {
+    flex-direction: row;
+    text-align: left;
+    gap: 24px;
+    padding: 0;
+  }
+
+  .step-item__number {
+    width: 72px;
+    height: 72px;
+    min-width: 72px;
+    margin-bottom: 0;
+  }
+
+  .step-item__num-value {
+    font-size: 1.4rem;
+  }
+
+  /* AI Cards */
+  .ai-card {
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  /* Benefits */
+  .benefits__layout {
+    gap: 32px;
+  }
+
+  .benefits__visual-card {
+    padding: 24px;
+  }
+
+  /* Languages */
+  .lang-showcase {
+    padding: 32px 24px;
+  }
+
+  /* CTA */
+  .cta__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta__actions .btn {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .cta__features {
+    gap: 16px;
+  }
+
+  /* Footer */
+  .footer__top {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 48px 0 36px;
+  }
+
+  .footer__brand {
+    grid-column: auto;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+  }
+}
+
+/* ─── XS – Small Mobile ──────────────────────────────────── */
+@media (max-width: 480px) {
+  :root {
+    --section-padding: 48px 0;
+    --container-pad: 0 16px;
+  }
+
+  /* Navbar */
+  .navbar {
+    height: 60px;
+  }
+
+  .nav__mobile-menu {
+    top: 60px;
+    padding: 14px 16px;
+  }
+
+  .nav__logo-text {
+    font-size: 1rem;
+  }
+
+  .nav__tagline {
+    display: none;
+  }
+
+  /* Hero */
+  .hero {
+    padding: 80px 0 40px;
+  }
+
+  .hero__badge {
+    font-size: 0.72rem;
+  }
+
+  .hero__description {
+    font-size: 0.95rem;
+  }
+
+  .hero__img-wrapper {
+    width: 240px;
+    height: 240px;
+  }
+
+  .hero__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__actions .btn {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  /* Stats */
+  .stats__inner {
+    grid-template-columns: 1fr;
+    border-radius: var(--radius-md);
+  }
+
+  .stats__item {
+    border-right: none !important;
+    border-bottom: 1px solid var(--gray-100) !important;
+  }
+
+  .stats__item:last-child {
+    border-bottom: none !important;
+  }
+
+  /* Features */
+  .features__grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .feature-card {
+    flex-direction: row;
+    gap: 16px;
+    padding: 18px;
+    align-items: flex-start;
+  }
+
+  .feature-card__icon-wrap {
+    flex-shrink: 0;
+  }
+
+  /* Steps – already column, just shrink */
+  .step-item__number {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+  }
+
+  .step-item__num-value {
+    font-size: 1.2rem;
+  }
+
+  /* Buttons */
+  .btn--lg {
+    padding: 14px 28px;
+    font-size: 0.95rem;
+  }
+
+  /* Section */
+  .section__title {
+    font-size: 1.65rem;
+  }
+
+  .section__subtitle {
+    font-size: 0.95rem;
+  }
+
+  /* AI Cards */
+  .ai-cards__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ai-card__icon-box {
+    width: 56px;
+    height: 56px;
+    font-size: 1.4rem;
+  }
+
+  /* Lang cards */
+  .lang-card {
+    padding: 16px;
+  }
+
+  /* Footer */
+  .footer__legal {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  /* Scroll top */
+  .scroll-top {
+    bottom: 20px;
+    right: 20px;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* ─── Print ──────────────────────────────────────────────── */
+@media print {
+  .navbar,
+  .scroll-top,
+  .hero__float-card,
+  .nav__mobile-menu {
+    display: none !important;
+  }
+
+  .hero {
+    min-height: auto;
+    padding: 40px 0;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}

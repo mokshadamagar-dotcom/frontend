@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="KrishiMitra AI Chatbot – Ask agriculture questions in Marathi, Hindi, or English with AI-powered RAG responses." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Chatbot – KrishiMitra AI</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="stylesheet" href="../css/chatbot.css" />
+
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+
+  <style>
+    /* Bounce dot keyframe for typing indicator */
+    @keyframes bounce-dot {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-6px); }
+    }
+  </style>
+</head>
+<body class="km-app-body">
+
+<!-- Shared Sidebar -->
+<div id="sidebar-container"></div>
+
+<div class="km-app-wrapper">
+  <div class="km-app-main">
+
+    <!-- Shared Navbar -->
+    <div id="navbar-container"></div>
+
+    <main class="km-page-content" style="padding-bottom: 0;" aria-label="AI Chatbot Dashboard">
+
+      <!-- Page Header -->
+      <header class="title-badge-wrap" style="margin-bottom: 8px;">
+        <h1 class="topbar__page-name" style="font-size:1.4rem;font-weight:800;margin:0;">KrishiMitra AI Assistant</h1>
+        <span class="ai-badge">AI + RAG Powered</span>
+      </header>
+
+      <!-- Language Selector strip -->
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap;">
+        <span style="font-size:0.75rem; font-weight:700; color:var(--text-light);">Language:</span>
+        <div class="lang-radio-group" style="grid-template-columns: repeat(3,auto); gap:8px; margin-bottom:0;">
+          <div class="lang-radio-card active" data-lang="mr" style="padding:6px 14px; font-size:0.8rem;" tabindex="0" role="radio" aria-checked="true">मराठी</div>
+          <div class="lang-radio-card" data-lang="hi" style="padding:6px 14px; font-size:0.8rem;" tabindex="0" role="radio" aria-checked="false">हिन्दी</div>
+          <div class="lang-radio-card" data-lang="en" style="padding:6px 14px; font-size:0.8rem;" tabindex="0" role="radio" aria-checked="false">English</div>
+        </div>
+        <span id="selected-lang-label" class="crop-status-pill crop-status-pill--healthy" style="font-size:0.7rem; padding:3px 8px;">Marathi</span>
+        <a href="voice-assistant.html" class="km-btn km-btn--ghost km-btn--sm" style="margin-left:auto;" aria-label="Switch to voice assistant">
+          <i class="fas fa-microphone" aria-hidden="true"></i> Ask by Voice
+          <!-- TODO: Connect Voice Assistant to the same chat service. -->
+        </a>
+      </div>
+
+      <!-- ─── 3-COLUMN CHAT LAYOUT ─── -->
+      <div class="chat-container-layout">
+
+        <!-- ═══ LEFT SIDEBAR: Conversation History ═══ -->
+        <aside class="chat-sidebar" aria-label="Conversation history">
+          <div class="chat-sidebar__header">
+            <h2 class="chat-sidebar__title">
+              <i class="far fa-comments" aria-hidden="true"></i> Recent Conversations
+            </h2>
+            <button type="button" id="new-conversation-btn" class="km-btn km-btn--primary km-btn--sm" style="width:100%;" aria-label="Start new conversation">
+              <i class="fas fa-plus" aria-hidden="true"></i> New Conversation
+            </button>
+            <input
+              type="search"
+              id="search-history-input"
+              class="form-input no-icon"
+              placeholder="Search conversations..."
+              style="margin-top:10px; padding:8px 12px; font-size:0.8rem;"
+              aria-label="Search conversation history"
+            />
+          </div>
+          <div class="chat-sidebar__body">
+            <div id="sidebar-history-list" class="chat-history-list" role="list" aria-label="Conversation list">
+              <!-- Injected by chatbot.js -->
+            </div>
+          </div>
+        </aside>
+
+        <!-- ═══ CENTER: Main Chat Area ═══ -->
+        <div class="chat-main-view" aria-label="Chat conversation area">
+
+          <!-- Chat top header bar -->
+          <div class="chat-main-header">
+            <div class="chat-header-profile">
+              <div class="chat-header-profile__avatar" aria-hidden="true">
+                <i class="fas fa-robot"></i>
+              </div>
+              <div>
+                <span style="font-family:var(--font-display); font-size:0.95rem; font-weight:800; color:var(--text-primary); display:block;">KrishiMitra AI</span>
+                <span class="chat-header-profile__status">Online</span>
+              </div>
+              <span class="ai-badge" style="font-size:0.65rem; margin-left:6px; display:none; display:block;">AI Agriculture Advisor</span>
+            </div>
+            <div style="display:flex; gap:8px; flex-shrink:0; align-items:center;">
+              <button type="button" id="btn-tts-toggle" class="km-btn km-btn--ghost km-btn--sm" aria-label="Toggle text-to-speech" title="Toggle AI Voice Readout" style="border:2px solid var(--gray-200); border-radius:8px;">
+                <i class="fas fa-volume-up" aria-hidden="true" id="tts-icon"></i>
+                <span id="tts-label" style="font-size:0.72rem; margin-left:4px;">Listen</span>
+              </button>
+              <button type="button" id="btn-chat-header-new" class="km-btn km-btn--ghost km-btn--sm" aria-label="Start new chat">
+                <i class="fas fa-plus" aria-hidden="true"></i> New
+              </button>
+              <button type="button" id="btn-chat-header-clear" class="km-btn km-btn--ghost km-btn--sm" aria-label="Clear current chat">
+                <i class="fas fa-trash-alt" aria-hidden="true"></i> Clear
+              </button>
+              <button type="button" id="btn-chat-header-export" class="km-btn km-btn--ghost km-btn--sm" aria-label="Export chat as text file">
+                <i class="fas fa-download" aria-hidden="true"></i> Export
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Question Chips horizontal scroll -->
+          <div class="chat-chips-scroll" role="group" aria-label="Quick question shortcuts">
+            <button type="button" class="chat-chip" data-question="My crop leaves have spots. What could be the problem?" aria-label="Quick question: Crop Disease">🌿 Crop Disease</button>
+            <button type="button" class="chat-chip" data-question="What fertilizer should I use for my crop?" aria-label="Quick question: Fertilizer">🧪 Fertilizer</button>
+            <button type="button" class="chat-chip" data-question="When should I irrigate my field?" aria-label="Quick question: Irrigation">💧 Irrigation</button>
+            <button type="button" class="chat-chip" data-question="How can I control pests naturally?" aria-label="Quick question: Pest Control">🐛 Pest Control</button>
+            <button type="button" class="chat-chip" data-question="How can I improve my soil health?" aria-label="Quick question: Soil Health">🌍 Soil Health</button>
+            <button type="button" class="chat-chip" data-question="How will weather affect my crop?" aria-label="Quick question: Weather">🌦️ Weather</button>
+            <button type="button" class="chat-chip" data-question="Give me a complete crop advisory." aria-label="Quick question: Crop Advisory">🧑‍🌾 Crop Advisory</button>
+            <button type="button" class="chat-chip" data-question="Which government schemes are available for farmers?" aria-label="Quick question: Government Schemes">🏛️ Gov Schemes</button>
+          </div>
+
+          <!-- Messages body box -->
+          <div id="chat-main-messages-box" class="chat-main-body" aria-live="polite" aria-label="Chat messages">
+
+            <!-- Welcome Screen (shown when empty) -->
+            <div id="chat-welcome-screen" class="chat-welcome-box">
+              <div class="chat-welcome-avatar" aria-hidden="true">
+                <i class="fas fa-robot"></i>
+              </div>
+              <h2 style="font-family:var(--font-display); font-size:1.3rem; font-weight:800; color:var(--text-primary); margin:0;">Namaste! I'm KrishiMitra AI.</h2>
+              <p style="font-size:0.9rem; color:var(--text-muted); margin:0; max-width:360px; line-height:1.55;">I can help you with crops, soil, irrigation, fertilizers, pests, diseases, weather, and agricultural practices.</p>
+              <p style="font-size:0.85rem; font-weight:700; color:var(--text-secondary);">How can I help you today?</p>
+              <div class="chat-suggestion-grid">
+                <div class="chat-suggestion-card" data-question="Why are my crop leaves turning yellow?" tabindex="0" role="button" aria-label="Ask: Why are my crop leaves turning yellow?">
+                  <span class="chat-suggestion-card__title">🌱 Crop Health</span>
+                  <span class="chat-suggestion-card__desc">Why are my crop leaves turning yellow?</span>
+                </div>
+                <div class="chat-suggestion-card" data-question="How often should I water my crop?" tabindex="0" role="button" aria-label="Ask: How often should I water my crop?">
+                  <span class="chat-suggestion-card__title">💧 Irrigation</span>
+                  <span class="chat-suggestion-card__desc">How often should I water my crop?</span>
+                </div>
+                <div class="chat-suggestion-card" data-question="Which fertilizer is suitable for my crop?" tabindex="0" role="button" aria-label="Ask: Which fertilizer is suitable for my crop?">
+                  <span class="chat-suggestion-card__title">🧪 Fertilizer</span>
+                  <span class="chat-suggestion-card__desc">Which fertilizer is suitable for my crop?</span>
+                </div>
+                <div class="chat-suggestion-card" data-question="How can I manage pests in my field?" tabindex="0" role="button" aria-label="Ask: How can I manage pests in my field?">
+                  <span class="chat-suggestion-card__title">🐛 Pest Control</span>
+                  <span class="chat-suggestion-card__desc">How can I manage pests in my field?</span>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /chat-main-messages-box -->
+
+          <!-- Bottom input form area -->
+          <div class="chat-main-input-wrap">
+
+            <!-- Image attachment preview (hidden by default) -->
+            <div id="chat-upload-preview-box" class="chat-upload-preview" style="display:none;">
+              <div class="chat-upload-preview__meta">
+                <img id="chat-upload-preview-img" src="#" alt="Crop image preview" class="chat-upload-preview__thumbnail" />
+                <span id="chat-upload-preview-name" style="font-size:0.78rem; font-weight:600;">crop_image.jpg</span>
+              </div>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <button type="button" id="chat-upload-analyze-btn" class="km-btn km-btn--primary km-btn--sm" aria-label="Analyze attached crop image for disease">
+                  <i class="fas fa-microscope" aria-hidden="true"></i> Analyze Crop Image
+                  <!-- TODO: Connect attachment to disease detection API. -->
+                </button>
+                <button type="button" id="chat-upload-remove-btn" class="km-btn km-btn--ghost km-btn--sm" style="color:#dc2626;" aria-label="Remove attached image">
+                  <i class="fas fa-times" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Input form row -->
+            <form id="chat-input-form" novalidate aria-label="Chat message input form">
+              <div class="chat-input-bar">
+                <button type="button" id="chat-voice-btn" class="km-btn km-btn--ghost km-btn--sm" style="flex-shrink:0; position:relative;" aria-label="Speak your question" title="Speak your question (Voice Input)">
+                  <i class="fas fa-microphone" aria-hidden="true" id="voice-btn-icon"></i>
+                  <span id="voice-btn-ripple" style="display:none; position:absolute; inset:0; border-radius:50%; background:rgba(220,38,38,0.18); animation:km-fab-pulse 1s ease-in-out infinite;"></span>
+                </button>
+                <button type="button" id="chat-attach-btn" class="km-btn km-btn--ghost km-btn--sm" style="flex-shrink:0;" aria-label="Attach crop image">
+                  <i class="fas fa-paperclip" aria-hidden="true"></i>
+                </button>
+                <textarea
+                  id="chat-textarea-control"
+                  class="chat-input-control"
+                  placeholder="Ask KrishiMitra AI about your farming..."
+                  rows="1"
+                  aria-label="Type your farming question"
+                ></textarea>
+                <button type="submit" id="chat-send-btn" class="km-btn km-btn--primary" style="flex-shrink:0; padding:10px 18px;" disabled aria-label="Send message">
+                  <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                </button>
+              </div>
+              <input type="file" id="chat-image-input" accept="image/*" style="display:none;" aria-hidden="true" />
+            </form>
+
+            <!-- Disclaimer -->
+            <p style="font-size:0.65rem; color:var(--text-light); text-align:center; margin:6px 0 0;">
+              <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+              KrishiMitra AI provides AI-generated guidance for informational purposes. For important decisions, consult qualified agricultural experts.
+            </p>
+          </div>
+
+        </div><!-- /chat-main-view -->
+
+        <!-- ═══ RIGHT SIDEBAR: Farmer Context & AI Info ═══ -->
+        <aside class="chat-sidebar" aria-label="Farmer context and AI information">
+          <div class="chat-sidebar__header">
+            <h2 class="chat-sidebar__title">
+              <i class="fas fa-user-circle" aria-hidden="true"></i> Farming Context
+            </h2>
+          </div>
+          <div class="chat-sidebar__body">
+            <div class="chat-context-panel">
+
+              <!-- Farmer profile fields grid -->
+              <div class="chat-context-profile-grid">
+                <div class="chat-context-field">
+                  <span class="chat-context-field__label">Farmer</span>
+                  <span class="chat-context-field__val">Demo Farmer</span>
+                </div>
+                <div class="chat-context-field">
+                  <span class="chat-context-field__label">Location</span>
+                  <span class="chat-context-field__val">Maharashtra</span>
+                </div>
+                <div class="chat-context-field">
+                  <span class="chat-context-field__label">Crop</span>
+                  <span class="chat-context-field__val">Cotton</span>
+                </div>
+                <div class="chat-context-field">
+                  <span class="chat-context-field__label">Language</span>
+                  <span class="chat-context-field__val" id="ctx-lang-val">Marathi</span>
+                </div>
+              </div>
+
+              <a href="profile.html" class="km-btn km-btn--outline km-btn--sm" style="width:100%; justify-content:center;" aria-label="Update farmer profile">
+                <i class="fas fa-edit" aria-hidden="true"></i> Update Profile
+              </a>
+              <p style="font-size:0.72rem; color:var(--text-light); margin:4px 0 0;">Providing more context can help generate more relevant recommendations.</p>
+
+              <hr style="border:0; border-top:1px solid var(--dash-border); margin:4px 0;" aria-hidden="true" />
+
+              <!-- Context checklist: active and future items -->
+              <div>
+                <strong style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; display:block; margin-bottom:8px;">Context Used</strong>
+                <div class="chat-context-checklist">
+                  <div class="chat-context-checklist-item">
+                    <i class="fas fa-check-circle" style="color:var(--primary);" aria-hidden="true"></i>
+                    Farmer Profile
+                  </div>
+                  <div class="chat-context-checklist-item">
+                    <i class="fas fa-check-circle" style="color:var(--primary);" aria-hidden="true"></i>
+                    Crop Information
+                  </div>
+                  <div class="chat-context-checklist-item">
+                    <i class="fas fa-check-circle" style="color:var(--primary);" aria-hidden="true"></i>
+                    Language Preference
+                  </div>
+                  <div class="chat-context-checklist-item disabled" title="Future: Connect Soil Report context">
+                    <i class="fas fa-clock" style="color:var(--text-light);" aria-hidden="true"></i>
+                    Soil Report (Future)
+                  </div>
+                  <div class="chat-context-checklist-item disabled" title="Future: Connect Weather Data context">
+                    <i class="fas fa-clock" style="color:var(--text-light);" aria-hidden="true"></i>
+                    Weather Data (Future)
+                  </div>
+                  <div class="chat-context-checklist-item disabled" title="Future: Connect Disease Detection context">
+                    <i class="fas fa-clock" style="color:var(--text-light);" aria-hidden="true"></i>
+                    Disease Results (Future)
+                  </div>
+                  <div class="chat-context-checklist-item disabled" title="Future: Connect Pest Detection context">
+                    <i class="fas fa-clock" style="color:var(--text-light);" aria-hidden="true"></i>
+                    Pest Results (Future)
+                  </div>
+                </div>
+              </div>
+
+              <hr style="border:0; border-top:1px solid var(--dash-border); margin:4px 0;" aria-hidden="true" />
+
+              <!-- Ask Me About capability cards -->
+              <div>
+                <strong style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; display:block; margin-bottom:8px;">Ask Me About</strong>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <button type="button" class="chat-suggestion-card" data-question="Why are my crop leaves turning yellow?" style="padding:8px 12px;" aria-label="Crop Health question">
+                    <span class="chat-suggestion-card__title">🌱 Crop Health</span>
+                  </button>
+                  <button type="button" class="chat-suggestion-card" data-question="How can I control pests naturally?" style="padding:8px 12px;" aria-label="Pest Management question">
+                    <span class="chat-suggestion-card__title">🐛 Pest Management</span>
+                  </button>
+                  <button type="button" class="chat-suggestion-card" data-question="What fertilizer should I use for my crop?" style="padding:8px 12px;" aria-label="Fertilizer question">
+                    <span class="chat-suggestion-card__title">🧪 Fertilizer</span>
+                  </button>
+                  <button type="button" class="chat-suggestion-card" data-question="When should I irrigate my field?" style="padding:8px 12px;" aria-label="Irrigation question">
+                    <span class="chat-suggestion-card__title">💧 Irrigation</span>
+                  </button>
+                  <button type="button" class="chat-suggestion-card" data-question="How will weather affect my crop?" style="padding:8px 12px;" aria-label="Weather question">
+                    <span class="chat-suggestion-card__title">🌦️ Weather</span>
+                  </button>
+                  <button type="button" class="chat-suggestion-card" data-question="How can I improve my soil health?" style="padding:8px 12px;" aria-label="Soil Health question">
+                    <span class="chat-suggestion-card__title">🌍 Soil Health</span>
+                  </button>
+                  <button type="button" class="chat-suggestion-card" data-question="Which government schemes are available for farmers?" style="padding:8px 12px;" aria-label="Government Schemes question">
+                    <span class="chat-suggestion-card__title">🏛️ Government Schemes</span>
+                  </button>
+                </div>
+              </div>
+
+              <hr style="border:0; border-top:1px solid var(--dash-border); margin:4px 0;" aria-hidden="true" />
+
+              <!-- RAG Pipeline visualization info card -->
+              <div class="rag-check-box" style="background:#eff6ff; border-color:#bfdbfe;">
+                <strong style="font-size:0.72rem; color:#1d4ed8; text-transform:uppercase;">How AI Finds Answers (RAG)</strong>
+                <div style="font-size:0.72rem; color:#1e40af; line-height:1.8; margin-top:4px;">
+                  Your Question<br/>
+                  ↓ Understanding<br/>
+                  ↓ Knowledge Retrieval<br/>
+                  ↓ Relevant Documents<br/>
+                  ↓ RAG Context<br/>
+                  ↓ AI Generation<br/>
+                  ↓ Final Answer
+                </div>
+                <span style="font-size:0.65rem; color:#6b7280; margin-top:4px; display:block;">Future versions will display verified source references.</span>
+              </div>
+
+              <!-- Quick module navigation links -->
+              <div>
+                <strong style="font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase; display:block; margin-bottom:8px;">Navigate To</strong>
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                  <a href="crop-disease.html" class="km-btn km-btn--ghost km-btn--sm" style="justify-content:flex-start; padding:6px 10px; font-size:0.75rem;"><i class="fas fa-microscope" style="width:14px;" aria-hidden="true"></i> Disease Detection</a>
+                  <a href="pest-detection.html" class="km-btn km-btn--ghost km-btn--sm" style="justify-content:flex-start; padding:6px 10px; font-size:0.75rem;"><i class="fas fa-bug" style="width:14px;" aria-hidden="true"></i> Pest Detection</a>
+                  <a href="fertilizer.html" class="km-btn km-btn--ghost km-btn--sm" style="justify-content:flex-start; padding:6px 10px; font-size:0.75rem;"><i class="fas fa-vial" style="width:14px;" aria-hidden="true"></i> Fertilizer</a>
+                  <a href="irrigation.html" class="km-btn km-btn--ghost km-btn--sm" style="justify-content:flex-start; padding:6px 10px; font-size:0.75rem;"><i class="fas fa-tint" style="width:14px;" aria-hidden="true"></i> Irrigation</a>
+                  <a href="weather.html" class="km-btn km-btn--ghost km-btn--sm" style="justify-content:flex-start; padding:6px 10px; font-size:0.75rem;"><i class="fas fa-cloud-sun" style="width:14px;" aria-hidden="true"></i> Weather</a>
+                  <a href="pdf-analysis.html" class="km-btn km-btn--ghost km-btn--sm" style="justify-content:flex-start; padding:6px 10px; font-size:0.75rem;"><i class="fas fa-flask" style="width:14px;" aria-hidden="true"></i> Soil Analysis</a>
+                </div>
+              </div>
+
+            </div><!-- /chat-context-panel -->
+          </div>
+        </aside>
+
+      </div><!-- /chat-container-layout -->
+
+    </main>
+  </div>
+</div>
+
+<!-- Shared Chatbot FAB -->
+<div id="chatbot-container"></div>
+
+<!-- Shared Footer -->
+<div id="footer-container"></div>
+
+<script src="../js/components.js"></script>
+<script src="../js/chatbot.js"></script>
+
+<!-- ══ VOICE: Speech-to-Text + Text-to-Speech ══ -->
+<script>
+/* ================================================================
+   KrishiMitra AI – Voice Feature
+   1. Speech-to-Text  → mic button fills textarea
+   2. Text-to-Speech  → AI responses read aloud (toggle)
+   Uses browser's native Web Speech API (no external API needed)
+   Supports: Marathi (mr-IN), Hindi (hi-IN), English (en-IN)
+================================================================ */
+
+(function () {
+  'use strict';
+
+  /* ── Language map ── */
+  const LANG_MAP = { mr: 'mr-IN', hi: 'hi-IN', en: 'en-IN' };
+  let currentLang = 'mr-IN';
+
+  /* Keep in sync with language selector */
+  document.querySelectorAll('.lang-radio-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const l = card.getAttribute('data-lang');
+      if (l) currentLang = LANG_MAP[l] || 'mr-IN';
+    });
+  });
+
+  /* ── 1. SPEECH-TO-TEXT ── */
+  const voiceBtn     = document.getElementById('chat-voice-btn');
+  const voiceBtnIcon = document.getElementById('voice-btn-icon');
+  const voiceRipple  = document.getElementById('voice-btn-ripple');
+  const textarea     = document.getElementById('chat-textarea-control');
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (SpeechRecognition && voiceBtn) {
+    const recognizer = new SpeechRecognition();
+    recognizer.continuous     = false;
+    recognizer.interimResults = true;
+
+    let isListening = false;
+
+    function startListening() {
+      recognizer.lang = currentLang;
+      recognizer.start();
+    }
+
+    recognizer.onstart = () => {
+      isListening = true;
+      voiceBtn.style.background = 'rgba(220,38,38,0.12)';
+      voiceBtnIcon.className = 'fas fa-stop-circle';
+      voiceBtnIcon.style.color = '#dc2626';
+      voiceRipple.style.display = 'block';
+      voiceBtn.title = 'Listening… Click to stop';
+      if (textarea) textarea.placeholder = '🎤 Listening…';
+    };
+
+    recognizer.onresult = (e) => {
+      let interim = '';
+      let final   = '';
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const t = e.results[i][0].transcript;
+        e.results[i].isFinal ? (final += t) : (interim += t);
+      }
+      if (textarea) textarea.value = final || interim;
+      /* Fire input event so send button enables */
+      textarea.dispatchEvent(new Event('input', { bubbles: true }));
+    };
+
+    recognizer.onend = () => {
+      isListening = false;
+      voiceBtn.style.background = '';
+      voiceBtnIcon.className = 'fas fa-microphone';
+      voiceBtnIcon.style.color = '';
+      voiceRipple.style.display = 'none';
+      voiceBtn.title = 'Speak your question (Voice Input)';
+      if (textarea) textarea.placeholder = 'Ask KrishiMitra AI about your farming...';
+    };
+
+    recognizer.onerror = (e) => {
+      console.warn('Speech recognition error:', e.error);
+      recognizer.stop();
+      if (e.error === 'not-allowed') {
+        alert('Microphone permission denied. Please allow microphone access and try again.');
+      }
+    };
+
+    voiceBtn.addEventListener('click', () => {
+      if (isListening) {
+        recognizer.stop();
+      } else {
+        startListening();
+      }
+    });
+  } else if (voiceBtn) {
+    /* Fallback if browser does not support SpeechRecognition */
+    voiceBtn.title = 'Voice input not supported in this browser. Try Chrome.';
+    voiceBtn.addEventListener('click', () => {
+      alert('Voice input is not supported in this browser. Please use Google Chrome for voice features.');
+    });
+  }
+
+  /* ── 2. TEXT-TO-SPEECH ── */
+  const ttsBtn   = document.getElementById('btn-tts-toggle');
+  const ttsIcon  = document.getElementById('tts-icon');
+  const ttsLabel = document.getElementById('tts-label');
+  let ttsEnabled = false;
+
+  if (ttsBtn && window.speechSynthesis) {
+    ttsBtn.addEventListener('click', () => {
+      ttsEnabled = !ttsEnabled;
+      if (ttsEnabled) {
+        ttsBtn.style.background    = '#f0fdf4';
+        ttsBtn.style.borderColor   = '#22c55e';
+        ttsBtn.style.color         = '#166534';
+        ttsIcon.className          = 'fas fa-volume-up';
+        ttsLabel.textContent       = 'ON';
+        ttsBtn.title               = 'AI will read responses aloud (click to turn off)';
+      } else {
+        ttsBtn.style.background    = '';
+        ttsBtn.style.borderColor   = '';
+        ttsBtn.style.color         = '';
+        ttsIcon.className          = 'fas fa-volume-mute';
+        ttsLabel.textContent       = 'OFF';
+        ttsBtn.title               = 'Click to enable AI voice readout';
+        window.speechSynthesis.cancel();
+      }
+    });
+  }
+
+  /* ── Expose TTS speaker so chatbot.js can call it ── */
+  window.KMSpeak = function (text) {
+    if (!ttsEnabled || !window.speechSynthesis) return;
+    window.speechSynthesis.cancel(); /* stop previous utterance */
+    const utter   = new SpeechSynthesisUtterance(text);
+    utter.lang    = currentLang;
+    utter.rate    = 0.92;
+    utter.pitch   = 1.05;
+    /* Pick a local voice if available */
+    const voices  = window.speechSynthesis.getVoices();
+    const match   = voices.find(v => v.lang === currentLang)
+                 || voices.find(v => v.lang.startsWith(currentLang.split('-')[0]))
+                 || null;
+    if (match) utter.voice = match;
+    window.speechSynthesis.speak(utter);
+  };
+
+  /* Voices are loaded asynchronously in some browsers */
+  if (window.speechSynthesis && window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = () => { window.speechSynthesis.getVoices(); };
+  }
+
+  /* ── Patch: observe DOM for new AI messages and auto-speak ── */
+  const msgBox = document.getElementById('chat-main-messages-box');
+  if (msgBox) {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach(mut => {
+        mut.addedNodes.forEach(node => {
+          if (node.nodeType === 1 && node.classList &&
+              (node.classList.contains('chat-message--ai') || node.querySelector?.('.chat-message--ai'))) {
+            /* Get text from the AI bubble */
+            const bubble = node.classList.contains('chat-message--ai')
+              ? node : node.querySelector('.chat-message--ai');
+            if (bubble) {
+              const textEl = bubble.querySelector('.chat-bubble') || bubble;
+              const txt    = textEl.innerText || textEl.textContent || '';
+              if (txt.trim()) window.KMSpeak(txt.trim());
+            }
+          }
+        });
+      });
+    });
+    observer.observe(msgBox, { childList: true, subtree: true });
+  }
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AI Soil Health Analysis – Extract agricultural parameters, NPK metrics, and soil pH values from laboratory PDF test reports with KrishiMitra AI." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>AI Soil Health Analysis – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+</head>
+<body class="km-app-body">
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED SIDEBAR CONTAINER (components.js Injected)
+════════════════════════════════════════════════════════════ -->
+<div id="sidebar-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     APP LAYOUT WRAPPER
+════════════════════════════════════════════════════════════ -->
+<div class="km-app-wrapper">
+  <div class="km-app-main" id="dashboard-main">
+
+    <!-- ─────────────────────────────────────────────────────────
+         SHARED TOPBAR CONTAINER (components.js Injected)
+    ──────────────────────────────────────────────────────────── -->
+    <div id="navbar-container"></div>
+
+    <!-- ─────────────────────────────────────────────────────────
+         MAIN CONTENT AREA
+    ──────────────────────────────────────────────────────────── -->
+    <main class="km-page-content" aria-label="AI Soil Health Analysis Dashboard">
+
+      <!-- Page Header -->
+      <header class="title-badge-wrap">
+        <h1 class="topbar__page-name" style="font-size:1.4rem;font-weight:800;margin:0;">AI Soil Health Analysis</h1>
+        <span class="ai-badge" aria-label="AI Technology Badge">Powered by AI + Agricultural Knowledge</span>
+      </header>
+
+      <!-- Hero Banner -->
+      <section class="welcome-banner" style="padding: 16px 24px; border-radius: var(--radius-md); margin-bottom: 8px; background: linear-gradient(135deg, #0d3d22 0%, #155e34 100%);" aria-label="Information Banner">
+        <div class="welcome-banner__content" style="display:flex; align-items:center; gap:16px;">
+          <div style="font-size: 1.8rem; color: var(--green-300); display: flex; gap: 8px;" aria-hidden="true">
+            <i class="fas fa-file-invoice"></i>
+            <i class="fas fa-flask" style="font-size: 1.2rem; align-self: flex-end;"></i>
+          </div>
+          <div>
+            <h3 style="font-family:var(--font-display); font-size:0.95rem; font-weight:700; color:var(--white); margin:0 0 2px;">Understand Your Soil Better</h3>
+            <p style="font-size:0.8rem; color:rgba(255,255,255,0.72); margin:0;">
+              Upload a laboratory soil report PDF and KrishiMitra AI will automatically extract important nutrients, assess fertility grades, and generate guidance maps.
+              <span style="font-weight:600; color:#fff;">Upload your report to begin analysis.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Layout Grid: Two-Column Form -->
+      <div class="nutrient-grid-layout">
+
+        <!-- LEFT COLUMN: PDF Upload Area & Controls -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+
+          <!-- Card: PDF Upload zone -->
+          <section class="dash-card" aria-labelledby="pdf-upload-title">
+            <div class="dash-card__header">
+              <h2 id="pdf-upload-title" class="dash-card__title">
+                <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                Upload Soil Report Document
+              </h2>
+            </div>
+            <div class="dash-card__body">
+              <form id="pdf-upload-form" novalidate aria-label="PDF file upload form">
+
+                <!-- Upload Drop Zone -->
+                <div class="form-group" style="margin-bottom: 16px;">
+                  <label class="form-label" for="pdf-file-input">Laboratory PDF Report</label>
+
+                  <div id="pdf-drop-zone" class="upload-zone" role="button" tabindex="0" aria-label="Drag and drop PDF report file here, or click to browse files.">
+                    <!-- Placeholder state -->
+                    <div id="pdf-upload-placeholder" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                      <i class="fas fa-file-pdf upload-zone__icon" aria-hidden="true" style="color:#ef4444;"></i>
+                      <span class="upload-zone__title">Drag &amp; Drop soil report here</span>
+                      <span class="upload-zone__desc">Supports PDF documents only<br />Maximum file size: 10 MB</span>
+                      <button type="button" class="upload-zone__browse-btn" aria-hidden="true">Browse Files</button>
+                    </div>
+
+                    <!-- PDF Preview Container (Hidden by default) -->
+                    <div id="pdf-preview-box" class="preview-container" style="display: none; width: 100%; border: 1px dashed var(--primary); background: var(--green-50);">
+                      <div class="preview-image-wrap" style="width: 50px; height: 50px; border-radius: 50%; background: #fee2e2; border: none;" aria-hidden="true">
+                        <i class="fas fa-file-pdf" style="color:#ef4444; font-size:1.4rem;"></i>
+                      </div>
+                      <div class="preview-details" style="border:none; background:transparent; padding:0;">
+                        <div class="preview-meta" style="text-align: center; width: 100%;">
+                          <span id="pdf-filename" class="preview-filename" style="font-size:0.85rem;">soil_report.pdf</span>
+                          <span id="pdf-filesize" class="preview-filesize" style="margin-bottom:4px;">2.4 MB</span>
+                          <span class="crop-status-pill crop-status-pill--healthy" style="font-size:0.68rem; padding:2px 10px;">Ready for Analysis</span>
+                        </div>
+                      </div>
+                      <div style="display:flex; gap:10px; margin-top:4px;">
+                        <button type="button" id="pdf-remove-btn" class="km-btn km-btn--outline km-btn--sm" style="color:#dc2626; border-color:#dc2626;" aria-label="Remove uploaded report file">Remove</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Hidden Input element -->
+                  <input
+                    type="file"
+                    id="pdf-file-input"
+                    name="pdf_report"
+                    accept="application/pdf"
+                    style="display: none;"
+                    aria-required="true"
+                  />
+                </div>
+
+                <!-- Analyze Submit Button -->
+                <button
+                  type="button"
+                  id="pdf-start-analysis-btn"
+                  class="km-btn km-btn--primary"
+                  style="width: 100%; display: flex; justify-content: center; font-size: 1rem; font-weight: 700; padding: 14px;"
+                  disabled
+                  aria-label="Analyze soil report document with AI"
+                >
+                  <i class="fas fa-brain" aria-hidden="true"></i>
+                  Analyze Soil Report
+                </button>
+
+              </form>
+            </div>
+          </section>
+
+          <!-- Integration widgets shortcuts (Part 7 & Part 9) -->
+          <section class="dash-card" aria-labelledby="integrations-heading">
+            <div class="dash-card__header">
+              <h2 id="integrations-heading" class="dash-card__title">
+                <i class="fas fa-link" aria-hidden="true"></i>
+                Advisory Integrations
+              </h2>
+            </div>
+            <div class="dash-card__body" style="padding:16px 20px; display:flex; flex-direction:column; gap:12px;">
+              <div class="treatment-item" style="border-left:3px solid var(--primary); padding:12px;">
+                <div class="treatment-item__num" aria-hidden="true"><i class="fas fa-vial"></i></div>
+                <div class="treatment-item__text" style="padding:0; flex:1;">
+                  <strong style="font-size:0.75rem; text-transform:uppercase; color:var(--primary); display:block; margin-bottom:2px;">Nutrient Planner</strong>
+                  <p style="margin:0 0 8px; font-size:0.76rem; color:var(--text-muted);">Pass extracted NPK details to generate custom fertilizer schedules.</p>
+                  <button type="button" id="btn-soil-fertilizer" class="km-btn km-btn--outline km-btn--sm" aria-label="Go to fertilizer advisory page">Get Fertilizer Recommendation</button>
+                </div>
+              </div>
+              <div class="treatment-item" style="border-left:3px solid var(--primary); padding:12px;">
+                <div class="treatment-item__num" aria-hidden="true"><i class="fas fa-brain"></i></div>
+                <div class="treatment-item__text" style="padding:0; flex:1;">
+                  <strong style="font-size:0.75rem; text-transform:uppercase; color:var(--primary); display:block; margin-bottom:2px;">Advisory Engine</strong>
+                  <p style="margin:0 0 8px; font-size:0.76rem; color:var(--text-muted);">Combine soil data with crop growth stages for a complete care program.</p>
+                  <button type="button" id="btn-soil-advisory" class="km-btn km-btn--primary km-btn--sm" style="box-shadow:none;" aria-label="Go to crop advisory page">Generate Complete Crop Advisory</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+
+        <!-- RIGHT COLUMN: Output Viewport (Dynamic) -->
+        <section id="soil-results-viewport" aria-live="polite" aria-relevant="all">
+
+          <!-- 1. EMPTY STATE -->
+          <div id="soil-empty-state" class="km-card" style="min-height: 520px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div class="km-empty-state">
+              <i class="fas fa-file-invoice" aria-hidden="true" style="color:var(--primary);"></i>
+              <h3>No Soil Report Analyzed Yet</h3>
+              <p>Upload a laboratory soil PDF report in the left panel to execute the AI document parsing and health analysis.</p>
+            </div>
+          </div>
+
+          <!-- 2. AI MULTI-STEP LOADER -->
+          <div id="soil-analysis-loader" class="km-card" style="min-height: 520px; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 24px;">
+            <div class="ai-pulse-spinner">
+              <div class="ai-pulse-ring" aria-hidden="true"></div>
+              <div class="ai-pulse-icon" aria-hidden="true">
+                <i class="fas fa-sync fa-spin"></i>
+              </div>
+            </div>
+            <h3 class="analysis-loader__title" style="margin:0;">Analyzing Soil Report</h3>
+            <p class="analysis-loader__desc" style="margin:0 0 10px;">Please wait while KrishiMitra extracts parameters and builds soil advisories.</p>
+
+            <!-- Loading Checkpoints Steps list -->
+            <div class="advisory-loading-steps" role="presentation">
+              <div id="step-upload" class="advisory-loading-step">
+                <span>Uploading Soil Report Document</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+              <div id="step-read" class="advisory-loading-step">
+                <span>Reading PDF Contents</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+              <div id="step-text" class="advisory-loading-step">
+                <span>Extracting Text and OCR Tables</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+              <div id="step-detect" class="advisory-loading-step">
+                <span>Detecting NPK &amp; pH Parameters</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+              <div id="step-health" class="advisory-loading-step">
+                <span>Analyzing Soil Health Ratios</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+              <div id="step-recommend" class="advisory-loading-step">
+                <span>Generating AI Soil Recommendations</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+              <div id="step-report" class="advisory-loading-step">
+                <span>Preparing Soil Health Report</span>
+                <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. ANALYSIS RESULT PANEL (Visible after analysis complete) -->
+          <div id="soil-result-section" style="display: none;">
+            <div class="dash-card" style="display: flex; flex-direction: column; gap: 20px; padding: 24px;">
+
+              <!-- Overview Banner -->
+              <div class="welcome-banner" style="padding: 24px; border-radius: var(--radius-lg); background: linear-gradient(135deg, #102a3a 0%, #173d54 100%);">
+                <div class="welcome-banner__content">
+                  <span class="crop-status-pill crop-status-pill--warning" style="margin-bottom:10px; font-size:0.75rem; padding:4px 12px;">
+                    Soil Health: Moderate
+                  </span>
+                  <h3 class="welcome-banner__greeting" style="font-size: 1.45rem; font-weight: 800; margin-bottom: 4px;">
+                    AI Soil Diagnostic Report
+                  </h3>
+                  <p class="welcome-banner__subtitle" style="font-size: 0.88rem; margin: 0; opacity: 0.9;">
+                    Document extraction complete. Key NPK parameters have been structured below.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Extracted Values highlights cards -->
+              <div class="info-box-grid">
+                <div class="info-box" style="border-left:3px solid #3b82f6;">
+                  <span class="info-box__label">Nitrogen (N)</span>
+                  <span id="val-n" class="info-box__value">Medium</span>
+                </div>
+                <div class="info-box" style="border-left:3px solid #f59e0b;">
+                  <span class="info-box__label">Phosphorus (P)</span>
+                  <span id="val-p" class="info-box__value">Low</span>
+                </div>
+                <div class="info-box" style="border-left:3px solid #10b981;">
+                  <span class="info-box__label">Potassium (K)</span>
+                  <span id="val-k" class="info-box__value">High</span>
+                </div>
+                <div class="info-box" style="border-left:3px solid #6366f1;">
+                  <span class="info-box__label">Soil pH</span>
+                  <span id="val-ph" class="info-box__value">7.2</span>
+                </div>
+                <div class="info-box" style="border-left:3px solid #a855f7; grid-column: span 2;">
+                  <span class="info-box__label">Organic Carbon (OC)</span>
+                  <span id="val-carbon" class="info-box__value">Medium</span>
+                </div>
+              </div>
+
+              <!-- Soil Health Score circular meter card -->
+              <section aria-labelledby="soil-score-heading">
+                <h4 id="soil-score-heading" class="dash-section-title" style="margin-bottom:10px; font-size: 0.9rem;">Soil Fertility Health Index</h4>
+                <div class="health-score-container">
+                  <div class="health-score-circle-wrap">
+                    <span id="res-health-score">72</span><span style="font-size:0.6rem;color:var(--text-light);position:absolute;bottom:8px;">/100</span>
+                  </div>
+                  <div class="health-score-bar-wrap">
+                    <p id="res-health-status-text" style="font-size:0.85rem; font-weight:700; color:var(--text-primary); margin-bottom:6px;">Soil health: Moderate</p>
+                    <!-- Progress bar -->
+                    <div class="confidence-track" style="width:100%; height:8px; border-radius:8px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                      <div id="res-health-score-bar" class="confidence-fill" style="width: 72%; height:100%; border-radius:8px; background:var(--gradient-primary);"></div>
+                    </div>
+                    <span style="font-size:0.65rem; color:var(--text-light); display:block; margin-top:4px;">* Illustrative Demo Score. Refer to certified lab specifications.</span>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Detailed parameters table -->
+              <section aria-labelledby="parameters-heading">
+                <h4 id="parameters-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Soil Parameter Details Table</h4>
+                <div class="analysis-table-wrap">
+                  <table class="analysis-table" aria-label="Soil parameter values extracted from document">
+                    <thead>
+                      <tr>
+                        <th scope="col">Parameter</th>
+                        <th scope="col">Extracted Value</th>
+                        <th scope="col">Status Grade</th>
+                        <th scope="col">AI Interpretation Guidance</th>
+                      </tr>
+                    </thead>
+                    <tbody id="soil-table-tbody">
+                      <!-- Injected by soil-analysis.js -->
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <!-- Simple NPK progress visualizer slider metrics -->
+              <section aria-labelledby="visual-metrics-heading">
+                <h4 id="visual-metrics-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Illustrative Parameter Visualization</h4>
+                <div class="moisture-slider-container" style="display:flex; flex-direction:column; gap:12px;">
+                  <!-- Nitrogen N -->
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.76rem; font-weight:600; margin-bottom:4px;">
+                      <span>Nitrogen (N)</span>
+                      <span>Moderate (55%)</span>
+                    </div>
+                    <div class="confidence-track" style="width:100%; height:5px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                      <div id="bar-n" class="confidence-fill" style="width:55%; height:100%; background:#3b82f6;"></div>
+                    </div>
+                  </div>
+                  <!-- Phosphorus P -->
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.76rem; font-weight:600; margin-bottom:4px;">
+                      <span>Phosphorus (P)</span>
+                      <span style="color:#ef4444;">Needs Attention (25%)</span>
+                    </div>
+                    <div class="confidence-track" style="width:100%; height:5px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                      <div id="bar-p" class="confidence-fill" style="width:25%; height:100%; background:#ef4444;"></div>
+                    </div>
+                  </div>
+                  <!-- Potassium K -->
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.76rem; font-weight:600; margin-bottom:4px;">
+                      <span>Potassium (K)</span>
+                      <span>Adequate (88%)</span>
+                    </div>
+                    <div class="confidence-track" style="width:100%; height:5px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                      <div id="bar-k" class="confidence-fill" style="width:88%; height:100%; background:#10b981;"></div>
+                    </div>
+                  </div>
+                  <!-- Carbon OC -->
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.76rem; font-weight:600; margin-bottom:4px;">
+                      <span>Organic Carbon (OC)</span>
+                      <span>Moderate (50%)</span>
+                    </div>
+                    <div class="confidence-track" style="width:100%; height:5px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                      <div id="bar-carbon" class="confidence-fill" style="width:50%; height:100%; background:#a855f7;"></div>
+                    </div>
+                  </div>
+                  <!-- pH -->
+                  <div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.76rem; font-weight:600; margin-bottom:4px;">
+                      <span>Soil pH Scale</span>
+                      <span>Suitable (pH 7.2)</span>
+                    </div>
+                    <div class="confidence-track" style="width:100%; height:5px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                      <div id="bar-ph" class="confidence-fill" style="width:72%; height:100%; background:#6366f1;"></div>
+                    </div>
+                  </div>
+                  <span style="font-size:0.65rem; color:var(--text-light); text-align:right; display:block;">* Illustrative visualization based on demo report data.</span>
+                </div>
+              </section>
+
+              <hr style="border: 0; border-top: 1px solid var(--dash-border); margin: 4px 0;" aria-hidden="true" />
+
+              <!-- AI Interpretation box -->
+              <section aria-labelledby="interpretation-heading">
+                <h4 id="interpretation-heading" class="dash-section-title" style="margin-bottom:10px; font-size: 0.9rem;">AI Soil Interpretation</h4>
+                <div class="ai-recommendation-box">
+                  <div class="ai-recommendation-box__header">
+                    <i class="fas fa-robot" aria-hidden="true"></i>
+                    <span>KrishiMitra AI Summary</span>
+                  </div>
+                  <p id="ai-soil-interpretation-text" class="ai-recommendation-box__desc">
+                    Based on the uploaded demo soil report, Nitrogen is in the moderate range, Phosphorus is deficient and requires urgent correction, while pH is near-neutral and ideal.
+                  </p>
+                </div>
+              </section>
+
+              <!-- Soil Improvement Guidance lists -->
+              <section aria-labelledby="guidance-heading">
+                <h4 id="guidance-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Soil Improvement Guidance Recommendations</h4>
+                <div id="soil-recs-list" class="bullet-list" role="list">
+                  <!-- Injected by soil-analysis.js -->
+                </div>
+              </section>
+
+              <!-- Crop Specific Guidance Dropdown Selector -->
+              <section class="dash-card" style="padding:16px 20px; background:var(--gray-50);" aria-labelledby="crop-guidance-select-title">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:10px;">
+                  <h4 id="crop-guidance-select-title" style="font-family:var(--font-display); font-size:0.86rem; font-weight:700; color:var(--text-primary); margin:0;">
+                    Select Crop for Soil Guidance
+                  </h4>
+                  <div class="input-wrapper" style="width:150px;">
+                    <select id="soil-crop-guide-select" class="form-select no-icon" style="padding:6px 12px; font-size:0.8rem;" aria-label="Select target crop type for soil guidance">
+                      <option value="" selected>Select crop</option>
+                      <option value="cotton">Cotton</option>
+                      <option value="tomato">Tomato</option>
+                      <option value="wheat">Wheat</option>
+                      <option value="rice">Rice</option>
+                      <option value="onion">Onion</option>
+                      <option value="soybean">Soybean</option>
+                      <option value="maize">Maize</option>
+                      <option value="sugarcane">Sugarcane</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Crop Soil Advice display panel (Hidden by default) -->
+                <div id="crop-soil-guidance-text" style="display: none; padding:12px; background:var(--white); border:1px solid var(--dash-border); border-radius:var(--radius-md); font-size:0.82rem; line-height:1.5; color:var(--text-secondary);">
+                  <i class="fas fa-info-circle" aria-hidden="true" style="color:var(--primary); margin-right:4px;"></i>
+                  <span id="crop-soil-guidance-val">Select a crop type above.</span>
+                </div>
+              </section>
+
+              <!-- Recommended Next Steps action plan timeline grid -->
+              <section aria-labelledby="action-plan-heading">
+                <h4 id="action-plan-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Recommended Next Steps Action Plan</h4>
+                <div class="treatment-list" role="list">
+                  <div class="treatment-item" role="listitem">
+                    <div class="treatment-item__num" aria-hidden="true">01</div>
+                    <div class="treatment-item__text" style="padding:0;">
+                      <strong>Review Soil Test</strong>
+                      <p style="margin:2px 0 0; font-size:0.8rem; color:var(--text-muted);">Double-check laboratory readings for micronutrient deficiencies.</p>
+                    </div>
+                  </div>
+                  <div class="treatment-item" role="listitem">
+                    <div class="treatment-item__num" aria-hidden="true">02</div>
+                    <div class="treatment-item__text" style="padding:0;">
+                      <strong>Monitor Soil Moisture</strong>
+                      <p style="margin:2px 0 0; font-size:0.8rem; color:var(--text-muted);">Set irrigation calendars relative to soil water retention parameters.</p>
+                    </div>
+                  </div>
+                  <div class="treatment-item" role="listitem">
+                    <div class="treatment-item__num" aria-hidden="true">03</div>
+                    <div class="treatment-item__text" style="padding:0;">
+                      <strong>Review Crop Nutrient Requirements</strong>
+                      <p style="margin:2px 0 0; font-size:0.8rem; color:var(--text-muted);">Adjust fertilizers program to prioritize phosphorus gaps.</p>
+                    </div>
+                  </div>
+                  <div class="treatment-item" role="listitem">
+                    <div class="treatment-item__num" aria-hidden="true">04</div>
+                    <div class="treatment-item__text" style="padding:0;">
+                      <strong>Consult Local Agricultural Expert</strong>
+                      <p style="margin:2px 0 0; font-size:0.8rem; color:var(--text-muted);">Contact district extension officers before applying heavy amendments.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- RAG Reference document sources used lists -->
+              <section aria-labelledby="sources-heading">
+                <h4 id="sources-heading" class="dash-section-title" style="margin-bottom:12px; font-size: 0.9rem;">Farming Knowledge References Used</h4>
+                <div class="rag-sources-grid" role="list">
+                  <div class="rag-source-card" role="listitem">
+                    <div class="rag-source-card__icon" aria-hidden="true"><i class="fas fa-file-invoice"></i></div>
+                    <div class="rag-source-card__content">
+                      <span class="rag-source-card__meta">ICAR Guidelines</span>
+                      <h5 class="rag-source-card__title">Soil Nutrient Management Standard Guide</h5>
+                      <p class="rag-source-card__desc">ICAR soil amendment and phosphatic deficiency guides for black soil conditions.</p>
+                    </div>
+                  </div>
+                  <div class="rag-source-card" role="listitem">
+                    <div class="rag-source-card__icon" aria-hidden="true"><i class="fas fa-landmark"></i></div>
+                    <div class="rag-source-card__content">
+                      <span class="rag-source-card__meta">Govt Portal</span>
+                      <h5 class="rag-source-card__title">Soil Health Card Program Directives</h5>
+                      <p class="rag-source-card__desc">Official guidelines for critical thresholds of nitrogen, phosphorus, and organic carbon.</p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- AI Confidence score card -->
+              <div class="health-score-container" style="padding:14px 20px;">
+                <div style="flex:1;">
+                  <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:700; color:var(--text-primary); margin-bottom:4px;">
+                    <span>AI Advisory Extraction Confidence</span>
+                    <strong id="res-confidence-pct" style="color:var(--primary);">84%</strong>
+                  </div>
+                  <div class="confidence-track" style="width:100%; height:6px; border-radius:6px; background:var(--gray-200); overflow:hidden;" aria-hidden="true">
+                    <div id="res-confidence-bar" class="confidence-fill" style="width:84%; height:100%; border-radius:6px; background:var(--primary);"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Disclaimer warning notes -->
+              <p style="font-size:0.7rem; color: var(--text-light); line-height: 1.45; text-align: center; margin: 4px 0 0;">
+                <i class="fas fa-exclamation-triangle" aria-hidden="true" style="margin-right:3px;"></i>
+                <strong>Safety Disclaimer:</strong> AI-assisted educational guidance. Soil management decisions should be based on verified laboratory results, crop requirements, local conditions, and qualified agricultural guidance.
+              </p>
+
+              <hr style="border: 0; border-top: 1px solid var(--dash-border); margin: 4px 0;" aria-hidden="true" />
+
+              <!-- Action Controls Buttons wrap -->
+              <div class="actions-wrap">
+                <button type="button" id="btn-soil-another" class="km-btn km-btn--outline" aria-label="Upload and analyze another PDF report document">
+                  <i class="fas fa-redo-alt" aria-hidden="true"></i> Analyze Another Report
+                </button>
+                <button type="button" id="btn-soil-save" class="km-btn km-btn--primary" aria-label="Save soil report diagnostic log to history record">
+                  <i class="fas fa-save" aria-hidden="true"></i> Save Analysis
+                </button>
+                <button type="button" id="btn-soil-download" class="km-btn km-btn--ghost" style="color:var(--text-primary); border:1px solid var(--gray-300);" aria-label="Download compiled PDF report advisory summary">
+                  <i class="fas fa-file-pdf" aria-hidden="true"></i> Download Report
+                </button>
+              </div>
+
+            </div><!-- /dash-card -->
+          </div><!-- /soil-result-section -->
+
+        </section><!-- /soil-results-viewport -->
+
+      </div><!-- /nutrient-grid-layout -->
+
+      <!-- Recent soil reports log table -->
+      <section class="analysis-card" aria-labelledby="history-table-title" style="margin-top: 24px;">
+        <div class="analysis-card__header">
+          <h2 id="history-table-title" class="dash-section-title">Recent Soil Reports</h2>
+          <a href="history.html" class="dash-section-link" aria-label="Go to historical diagnostic list">
+            View History <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </a>
+        </div>
+
+        <div class="analysis-table-wrap">
+          <table class="analysis-table" aria-label="History logs table">
+            <thead>
+              <tr>
+                <th scope="col">Date</th>
+                <th scope="col">File Name</th>
+                <th scope="col">Target Crop</th>
+                <th scope="col">Overall Soil Health</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody id="recent-reports-tbody">
+              <!-- Injected by soil-analysis.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Bottom padding spacing -->
+      <div style="height:24px;" aria-hidden="true"></div>
+
+    </main>
+  </div><!-- /km-app-main -->
+</div><!-- /km-app-wrapper -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED BOTTOM CHATBOT FLOATING CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="chatbot-container"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SHARED FOOTER CONTAINER (components.js)
+════════════════════════════════════════════════════════════ -->
+<div id="footer-container"></div>
+
+<!-- Global Components Loader Script -->
+<script src="../js/components.js"></script>
+
+<!-- PDF upload engine logic -->
+<script src="../js/pdf-upload.js"></script>
+
+<!-- Soil analysis result logic -->
+<script src="../js/soil-analysis.js"></script>
+
+</body>
+</html>

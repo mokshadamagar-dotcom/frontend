@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Government Schemes – KrishiMitra AI</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      background:linear-gradient(135deg,#0a0f1e 0%,#0f172a 60%,#0d1a12 100%);
+      min-height:100vh;color:#f1f5f9;font-family:'Inter',sans-serif;
+    }
+
+    /* TOPNAV */
+    .gs-topnav{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 28px;background:rgba(15,23,42,0.96);
+      backdrop-filter:blur(12px);border-bottom:1px solid #334155;
+      position:sticky;top:0;z-index:100;
+    }
+    .gs-topnav__logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:#f1f5f9;}
+    .gs-topnav__logo-icon{
+      width:36px;height:36px;border-radius:9px;
+      background:linear-gradient(135deg,#22c55e,#16a34a);
+      display:flex;align-items:center;justify-content:center;font-size:17px;color:#fff;
+    }
+    .gs-topnav__logo span{font-weight:700;}
+    .gs-topnav__right{display:flex;align-items:center;gap:10px;}
+    .gs-topnav__back{
+      display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;
+      background:rgba(34,197,94,0.1);color:#22c55e;text-decoration:none;
+      font-size:0.82rem;font-weight:600;border:1px solid rgba(34,197,94,0.25);
+    }
+    .gs-topnav__saved{
+      display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;
+      background:rgba(251,191,36,0.1);color:#fbbf24;cursor:pointer;
+      font-size:0.82rem;font-weight:600;border:1px solid rgba(251,191,36,0.25);
+    }
+
+    /* HERO */
+    .gs-hero{
+      text-align:center;padding:56px 24px 40px;
+      background:radial-gradient(ellipse at 50% 0%,rgba(34,197,94,0.1) 0%,transparent 70%);
+    }
+    .gs-hero__icon{
+      width:72px;height:72px;border-radius:50%;
+      background:linear-gradient(135deg,#22c55e,#16a34a);
+      display:flex;align-items:center;justify-content:center;
+      font-size:32px;color:#fff;margin:0 auto 18px;
+      box-shadow:0 0 32px rgba(34,197,94,0.35);
+    }
+    .gs-hero h1{font-size:2.1rem;font-weight:800;font-family:'Poppins',sans-serif;color:#fff;margin-bottom:10px;}
+    .gs-hero p{font-size:0.95rem;color:#94a3b8;max-width:500px;margin:0 auto 28px;}
+
+    /* SEARCH + FILTER BAR */
+    .gs-filterbar{
+      max-width:1100px;margin:0 auto;padding:0 20px 28px;
+      display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+    }
+    .gs-search{
+      flex:1;min-width:200px;display:flex;align-items:center;
+      background:rgba(30,41,59,0.8);border:1px solid #334155;border-radius:10px;
+      padding:10px 16px;gap:10px;
+    }
+    .gs-search i{color:#64748b;}
+    .gs-search input{
+      flex:1;background:transparent;border:none;outline:none;
+      color:#f1f5f9;font-size:0.88rem;font-family:'Inter',sans-serif;
+    }
+    .gs-search input::placeholder{color:#64748b;}
+    .gs-filter-select{
+      padding:10px 14px;border-radius:10px;border:1px solid #334155;
+      background:rgba(30,41,59,0.8);color:#f1f5f9;font-size:0.85rem;
+      font-family:'Inter',sans-serif;cursor:pointer;
+    }
+
+    /* CATEGORY TABS */
+    .gs-cats{
+      max-width:1100px;margin:0 auto;padding:0 20px 24px;
+      display:flex;gap:8px;flex-wrap:wrap;
+    }
+    .gs-cat-btn{
+      padding:7px 18px;border-radius:50px;font-size:0.8rem;font-weight:600;
+      border:1px solid #334155;background:rgba(30,41,59,0.6);
+      color:#94a3b8;cursor:pointer;transition:all .2s;
+    }
+    .gs-cat-btn.active,.gs-cat-btn:hover{
+      background:rgba(34,197,94,0.12);border-color:#22c55e;color:#22c55e;
+    }
+
+    /* MAIN GRID */
+    .gs-main{max-width:1100px;margin:0 auto;padding:0 20px 80px;}
+    .gs-results-info{font-size:0.82rem;color:#64748b;margin-bottom:16px;}
+
+    .schemes-grid{
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;
+    }
+
+    /* SCHEME CARD */
+    .scheme-card{
+      background:rgba(30,41,59,0.7);border:1px solid #334155;border-radius:16px;
+      overflow:hidden;transition:transform .2s,border-color .2s;
+      display:flex;flex-direction:column;
+    }
+    .scheme-card:hover{transform:translateY(-4px);border-color:rgba(34,197,94,0.35);}
+
+    .scheme-card__header{
+      padding:20px 20px 14px;display:flex;align-items:flex-start;gap:14px;
+    }
+    .scheme-card__icon{
+      width:52px;height:52px;border-radius:14px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;font-size:24px;
+    }
+    .scheme-card__title-wrap{flex:1;}
+    .scheme-card__name{font-weight:700;font-size:1rem;color:#fff;margin-bottom:4px;line-height:1.3;}
+    .scheme-card__ministry{font-size:0.75rem;color:#64748b;}
+    .scheme-card__save{
+      width:36px;height:36px;border-radius:9px;border:1px solid #334155;
+      background:transparent;color:#64748b;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;font-size:15px;
+      flex-shrink:0;transition:all .2s;
+    }
+    .scheme-card__save.saved{background:rgba(251,191,36,0.12);color:#fbbf24;border-color:rgba(251,191,36,0.3);}
+    .scheme-card__save:hover{border-color:#22c55e;color:#22c55e;}
+
+    .scheme-card__body{padding:0 20px 14px;flex:1;}
+    .scheme-card__desc{font-size:0.85rem;color:#94a3b8;line-height:1.65;margin-bottom:12px;}
+
+    .scheme-badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+    .scheme-badge{
+      font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:50px;
+    }
+    .badge-central{background:rgba(59,130,246,0.15);color:#60a5fa;}
+    .badge-state{background:rgba(168,85,247,0.15);color:#c084fc;}
+    .badge-insurance{background:rgba(251,191,36,0.15);color:#fbbf24;}
+    .badge-loan{background:rgba(20,184,166,0.15);color:#2dd4bf;}
+    .badge-subsidy{background:rgba(34,197,94,0.15);color:#4ade80;}
+    .badge-income{background:rgba(239,68,68,0.15);color:#f87171;}
+
+    .scheme-card__benefit{
+      display:flex;align-items:center;gap:8px;font-size:0.82rem;color:#f1f5f9;
+      background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.15);
+      border-radius:8px;padding:8px 12px;margin-bottom:4px;
+    }
+    .scheme-card__benefit i{color:#22c55e;flex-shrink:0;}
+
+    .scheme-card__footer{
+      padding:14px 20px;border-top:1px solid #1e293b;
+      display:flex;gap:8px;align-items:center;
+    }
+    .scheme-btn{
+      flex:1;padding:10px;border-radius:9px;font-size:0.82rem;font-weight:600;
+      cursor:pointer;transition:all .2s;text-align:center;text-decoration:none;
+      display:flex;align-items:center;justify-content:center;gap:6px;
+      font-family:'Inter',sans-serif;
+    }
+    .scheme-btn--primary{
+      background:rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3);
+    }
+    .scheme-btn--primary:hover{background:rgba(34,197,94,0.25);}
+    .scheme-btn--secondary{
+      background:rgba(59,130,246,0.12);color:#60a5fa;border:1px solid rgba(59,130,246,0.25);
+    }
+    .scheme-btn--secondary:hover{background:rgba(59,130,246,0.22);}
+
+    /* SAVED PANEL */
+    .saved-panel{
+      position:fixed;top:0;right:0;width:360px;height:100vh;
+      background:rgba(15,23,42,0.97);border-left:1px solid #334155;
+      backdrop-filter:blur(12px);z-index:200;
+      transform:translateX(100%);transition:transform .3s ease;
+      display:flex;flex-direction:column;overflow:hidden;
+    }
+    .saved-panel.open{transform:translateX(0);}
+    .saved-panel__header{
+      padding:20px 20px 16px;border-bottom:1px solid #334155;
+      display:flex;align-items:center;justify-content:space-between;
+    }
+    .saved-panel__title{font-weight:700;font-size:1rem;color:#fff;display:flex;align-items:center;gap:8px;}
+    .saved-panel__close{
+      width:32px;height:32px;border-radius:8px;border:1px solid #334155;
+      background:transparent;color:#94a3b8;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;font-size:14px;
+    }
+    .saved-panel__body{flex:1;overflow-y:auto;padding:16px;}
+    .saved-item{
+      background:rgba(30,41,59,0.7);border:1px solid #334155;border-radius:10px;
+      padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start;
+    }
+    .saved-item__icon{
+      width:38px;height:38px;border-radius:10px;flex-shrink:0;
+      display:flex;align-items:center;justify-content:center;font-size:18px;
+    }
+    .saved-item__name{font-weight:600;font-size:0.88rem;color:#f1f5f9;}
+    .saved-item__ministry{font-size:0.75rem;color:#64748b;margin-top:3px;}
+    .saved-item__remove{
+      width:28px;height:28px;border-radius:7px;border:1px solid #334155;
+      background:transparent;color:#64748b;cursor:pointer;font-size:12px;
+      display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;
+    }
+    .saved-item__remove:hover{color:#f87171;border-color:rgba(239,68,68,0.4);}
+    .saved-empty{text-align:center;padding:48px 16px;color:#64748b;}
+
+    /* OVERLAY */
+    .saved-overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,0.5);
+      z-index:190;opacity:0;pointer-events:none;transition:opacity .3s;
+    }
+    .saved-overlay.open{opacity:1;pointer-events:auto;}
+
+    @media(max-width:600px){
+      .schemes-grid{grid-template-columns:1fr;}
+      .gs-hero h1{font-size:1.6rem;}
+      .saved-panel{width:100%;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- SAVED OVERLAY -->
+<div class="saved-overlay" id="saved-overlay" onclick="closeSavedPanel()"></div>
+
+<!-- SAVED PANEL -->
+<div class="saved-panel" id="saved-panel" role="dialog" aria-label="Saved schemes" aria-modal="true">
+  <div class="saved-panel__header">
+    <div class="saved-panel__title"><i class="fas fa-bookmark" style="color:#fbbf24;"></i> Saved Schemes</div>
+    <button class="saved-panel__close" onclick="closeSavedPanel()" aria-label="Close saved schemes">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="saved-panel__body" id="saved-panel-body">
+    <!-- populated by JS -->
+  </div>
+</div>
+
+<!-- TOP NAV -->
+<nav class="gs-topnav" role="navigation">
+  <a href="dashboard.html" class="gs-topnav__logo">
+    <div class="gs-topnav__logo-icon"><i class="fas fa-seedling"></i></div>
+    <span>KrishiMitra AI</span>
+  </a>
+  <div class="gs-topnav__right">
+    <button class="gs-topnav__saved" id="open-saved-btn" aria-label="View saved schemes">
+      <i class="fas fa-bookmark"></i>
+      Saved Schemes (<span id="saved-count">0</span>)
+    </button>
+    <a href="dashboard.html" class="gs-topnav__back">
+      <i class="fas fa-arrow-left"></i> Dashboard
+    </a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="gs-hero">
+  <div class="gs-hero__icon"><i class="fas fa-landmark"></i></div>
+  <h1>Government Schemes for Farmers</h1>
+  <p>Explore central and state government agricultural schemes, subsidies, insurance, and income support programs.</p>
+</section>
+
+<!-- FILTER BAR -->
+<div class="gs-filterbar" role="search" aria-label="Search and filter schemes">
+  <div class="gs-search">
+    <i class="fas fa-search" aria-hidden="true"></i>
+    <input type="text" id="scheme-search" placeholder="Search schemes (e.g. PM-KISAN, insurance, subsidy…)" aria-label="Search schemes" />
+  </div>
+  <select class="gs-filter-select" id="state-filter" aria-label="Filter by state">
+    <option value="all">All States</option>
+    <option value="MH">Maharashtra</option>
+    <option value="UP">Uttar Pradesh</option>
+    <option value="MP">Madhya Pradesh</option>
+    <option value="RJ">Rajasthan</option>
+    <option value="GJ">Gujarat</option>
+    <option value="PB">Punjab</option>
+    <option value="HR">Haryana</option>
+    <option value="all">All India (Central)</option>
+  </select>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="gs-cats" role="group" aria-label="Scheme categories">
+  <button class="gs-cat-btn active" data-cat="all">All Schemes</button>
+  <button class="gs-cat-btn" data-cat="income">💰 Income Support</button>
+  <button class="gs-cat-btn" data-cat="insurance">🛡️ Crop Insurance</button>
+  <button class="gs-cat-btn" data-cat="loan">💳 Credit & Loan</button>
+  <button class="gs-cat-btn" data-cat="subsidy">🔩 Subsidy</button>
+  <button class="gs-cat-btn" data-cat="soil">🌍 Soil & Input</button>
+  <button class="gs-cat-btn" data-cat="state">🏛️ State Schemes</button>
+</div>
+
+<!-- MAIN -->
+<main class="gs-main">
+  <div class="gs-results-info" id="results-info">Showing all 12 schemes</div>
+  <div class="schemes-grid" id="schemes-grid" role="list" aria-label="Government schemes">
+    <!-- populated by JS -->
+  </div>
+</main>
+
+<script>
+'use strict';
+
+const SAVED_KEY = 'km_saved_schemes_v2';
+
+/* ── SCHEME DATA ─────────────────────────────────────────── */
+const SCHEMES = [
+  {
+    id: 's01', cat: 'income', state: 'all',
+    name: 'PM-KISAN Samman Nidhi',
+    ministry: 'Ministry of Agriculture & Farmers Welfare',
+    icon: '💰', iconBg: 'rgba(34,197,94,0.15)', iconColor: '#4ade80',
+    badges: ['badge-central badge-income'],
+    badgeLabels: ['Central Scheme', 'Income Support'],
+    benefit: '₹6,000 per year in 3 equal installments of ₹2,000',
+    desc: 'Provides income support to all farmer families across India who hold cultivable land. Benefit is transferred directly to bank accounts of beneficiaries.',
+    eligibility: 'All land-holding farmers with cultivable land',
+    docs: 'Aadhaar card, bank passbook, land records (7/12 Utara)',
+    applyUrl: 'https://pmkisan.gov.in',
+    applyLabel: 'Apply at pmkisan.gov.in',
+  },
+  {
+    id: 's02', cat: 'insurance', state: 'all',
+    name: 'PM Fasal Bima Yojana (PMFBY)',
+    ministry: 'Ministry of Agriculture & Farmers Welfare',
+    icon: '🛡️', iconBg: 'rgba(59,130,246,0.15)', iconColor: '#60a5fa',
+    badges: ['badge-central badge-insurance'],
+    badgeLabels: ['Central Scheme', 'Insurance'],
+    benefit: 'Full crop insurance coverage at just 1.5–2% premium for farmers',
+    desc: 'Provides comprehensive risk coverage to farmers against crop failure due to natural calamities, pests, and diseases from pre-sowing to post-harvest.',
+    eligibility: 'All farmers (compulsory for loanee farmers)',
+    docs: 'Aadhaar, bank account, land details, crop sowing certificate',
+    applyUrl: 'https://pmfby.gov.in',
+    applyLabel: 'Apply via Bank or CSC',
+  },
+  {
+    id: 's03', cat: 'loan', state: 'all',
+    name: 'Kisan Credit Card (KCC)',
+    ministry: 'Ministry of Agriculture & Farmers Welfare',
+    icon: '💳', iconBg: 'rgba(20,184,166,0.15)', iconColor: '#2dd4bf',
+    badges: ['badge-central badge-loan'],
+    badgeLabels: ['Central Scheme', 'Credit'],
+    benefit: 'Short-term credit up to ₹3 lakh at 4% interest rate per annum',
+    desc: 'Provides farmers with timely credit support for agricultural needs. KCC holders can withdraw funds as needed up to their sanctioned credit limit.',
+    eligibility: 'Farmers, self-help groups, joint liability groups',
+    docs: 'Identity proof, land ownership document, passport photo',
+    applyUrl: 'https://agricoop.nic.in',
+    applyLabel: 'Apply at nearest bank',
+  },
+  {
+    id: 's04', cat: 'soil', state: 'all',
+    name: 'Soil Health Card Scheme',
+    ministry: 'Ministry of Agriculture & Farmers Welfare',
+    icon: '🌍', iconBg: 'rgba(161,98,7,0.15)', iconColor: '#d97706',
+    badges: ['badge-central badge-subsidy'],
+    badgeLabels: ['Central Scheme', 'Free Service'],
+    benefit: 'Free soil health card with NPK, pH, and micro-nutrient status',
+    desc: 'Issues Soil Health Cards to farmers to help them understand soil nutrient status and recommend appropriate fertilizers to improve productivity.',
+    eligibility: 'All farmers in India',
+    docs: 'Aadhaar card, land holding details',
+    applyUrl: 'https://soilhealth.dac.gov.in',
+    applyLabel: 'Register at soilhealth.dac.gov.in',
+  },
+  {
+    id: 's05', cat: 'subsidy', state: 'all',
+    name: 'PM KUSUM Yojana',
+    ministry: 'Ministry of New and Renewable Energy',
+    icon: '☀️', iconBg: 'rgba(251,191,36,0.15)', iconColor: '#fbbf24',
+    badges: ['badge-central badge-subsidy'],
+    badgeLabels: ['Central Scheme', '60% Subsidy'],
+    benefit: '60% government subsidy on solar pump installation',
+    desc: 'Helps farmers install solar-powered irrigation pumps to reduce diesel and electricity costs. Also allows surplus solar power sale to electricity boards.',
+    eligibility: 'Farmers with agricultural land and irrigation need',
+    docs: 'Aadhaar, land documents, bank account, electricity bill',
+    applyUrl: '#',
+    applyLabel: 'Apply via State Nodal Agency',
+  },
+  {
+    id: 's06', cat: 'subsidy', state: 'all',
+    name: 'SMAM (Farm Mechanization)',
+    ministry: 'Ministry of Agriculture & Farmers Welfare',
+    icon: '🚜', iconBg: 'rgba(168,85,247,0.15)', iconColor: '#c084fc',
+    badges: ['badge-central badge-subsidy'],
+    badgeLabels: ['Central Scheme', '50% Subsidy'],
+    benefit: '40–50% subsidy on tractors, threshers, and other farm equipment',
+    desc: 'Sub-Mission on Agricultural Mechanization promotes farm mechanization to reduce drudgery, increase production, and decrease input costs.',
+    eligibility: 'Small & marginal farmers (priority to SC/ST/women farmers)',
+    docs: 'Aadhaar, bank account, land certificate, SC/ST certificate if applicable',
+    applyUrl: '#',
+    applyLabel: 'Apply at District Agriculture Office',
+  },
+  {
+    id: 's07', cat: 'income', state: 'all',
+    name: 'e-NAM (National Agriculture Market)',
+    ministry: 'Ministry of Agriculture & Farmers Welfare',
+    icon: '📈', iconBg: 'rgba(99,102,241,0.15)', iconColor: '#818cf8',
+    badges: ['badge-central'],
+    badgeLabels: ['Central Scheme'],
+    benefit: 'Sell produce at better prices via online national market',
+    desc: 'Pan-India electronic trading portal that networks existing APMCs to create a unified national market for agricultural commodities.',
+    eligibility: 'All farmers registered at their local APMC mandi',
+    docs: 'Aadhaar, bank account, mobile number',
+    applyUrl: 'https://enam.gov.in',
+    applyLabel: 'Register at enam.gov.in',
+  },
+  {
+    id: 's08', cat: 'loan', state: 'all',
+    name: 'NABARD Farm Loan Scheme',
+    ministry: 'NABARD (National Bank for Agriculture)',
+    icon: '🏦', iconBg: 'rgba(59,130,246,0.15)', iconColor: '#60a5fa',
+    badges: ['badge-central badge-loan'],
+    badgeLabels: ['Central Scheme', 'Loan'],
+    benefit: 'Medium/long-term loans for farm infrastructure at concessional rates',
+    desc: 'NABARD provides refinance to banks for agricultural term loans including land development, irrigation, horticulture, and agro-processing.',
+    eligibility: 'Farmers with viable agricultural projects',
+    docs: 'Project report, land documents, bank statements, Aadhaar',
+    applyUrl: 'https://nabard.org',
+    applyLabel: 'Apply via your bank branch',
+  },
+  {
+    id: 's09', cat: 'state', state: 'MH',
+    name: 'Namo Shetkari Mahasanman Nidhi',
+    ministry: 'Maharashtra State Government',
+    icon: '🌾', iconBg: 'rgba(34,197,94,0.15)', iconColor: '#22c55e',
+    badges: ['badge-state badge-income'],
+    badgeLabels: ['Maharashtra', 'Income Support'],
+    benefit: 'Additional ₹6,000/year on top of PM-KISAN (total ₹12,000/year)',
+    desc: 'Maharashtra\'s state-level income support scheme that provides an additional ₹6,000 per year to farmers who are already beneficiaries of PM-KISAN.',
+    eligibility: 'Maharashtra farmers already receiving PM-KISAN benefits',
+    docs: 'Same as PM-KISAN + Maharashtra residency proof',
+    applyUrl: '#',
+    applyLabel: 'Apply via Maharashtra Agri Dept',
+  },
+  {
+    id: 's10', cat: 'state', state: 'MH',
+    name: 'Mahatma Jyotirao Phule Karj Mukti Yojana',
+    ministry: 'Maharashtra State Government',
+    icon: '✅', iconBg: 'rgba(34,197,94,0.15)', iconColor: '#4ade80',
+    badges: ['badge-state badge-loan'],
+    badgeLabels: ['Maharashtra', 'Loan Waiver'],
+    benefit: 'Agricultural loan waiver up to ₹2 lakh for eligible farmers',
+    desc: 'Maharashtra farm loan waiver scheme to provide relief to distressed farmers. Eligible farmers receive direct credit to their bank accounts.',
+    eligibility: 'Small & marginal farmers in Maharashtra with overdue crop loans',
+    docs: 'Aadhaar, bank loan documents, 7/12 Utara, bank passbook',
+    applyUrl: '#',
+    applyLabel: 'Apply at District Bank',
+  },
+  {
+    id: 's11', cat: 'soil', state: 'all',
+    name: 'Paramparagat Krishi Vikas Yojana (PKVY)',
+    ministry: 'Ministry of Agriculture & Farmers Welfare',
+    icon: '🌱', iconBg: 'rgba(34,197,94,0.12)', iconColor: '#4ade80',
+    badges: ['badge-central badge-subsidy'],
+    badgeLabels: ['Central Scheme', 'Organic Farming'],
+    benefit: '₹50,000 per hectare over 3 years for organic farming transition',
+    desc: 'Promotes organic farming by supporting farmers during the transition from conventional to organic practices with financial assistance and certification support.',
+    eligibility: 'Farmers willing to adopt organic farming for 3+ years',
+    docs: 'Aadhaar, land records, willingness certificate',
+    applyUrl: 'https://pgsindia-ncof.gov.in',
+    applyLabel: 'Apply at State Agriculture Dept',
+  },
+  {
+    id: 's12', cat: 'insurance', state: 'MH',
+    name: 'Maharashtra Shetkari Apghat Vima Yojana',
+    ministry: 'Maharashtra State Government',
+    icon: '💙', iconBg: 'rgba(239,68,68,0.15)', iconColor: '#f87171',
+    badges: ['badge-state badge-insurance'],
+    badgeLabels: ['Maharashtra', 'Accident Insurance'],
+    benefit: '₹2 lakh accidental insurance coverage for farmers aged 10–75',
+    desc: 'Personal accidental insurance scheme for farmers in Maharashtra. In case of accidental death or disability, the family receives compensation.',
+    eligibility: 'Farmers aged 10–75 years registered in Maharashtra land records',
+    docs: 'Aadhaar, 7/12 Utara, FIR/medical report (at time of claim)',
+    applyUrl: '#',
+    applyLabel: 'Auto-enrolled via land records',
+  },
+];
+
+/* ── STATE ───────────────────────────────────────────────── */
+let savedIds = [];
+let activeCat = 'all';
+let searchTerm = '';
+let stateFilter = 'all';
+
+function loadSaved() {
+  try { savedIds = JSON.parse(localStorage.getItem(SAVED_KEY) || '[]'); } catch { savedIds = []; }
+  updateSavedCount();
+}
+function saveSaved() { localStorage.setItem(SAVED_KEY, JSON.stringify(savedIds)); }
+
+function toggleSave(id) {
+  if (savedIds.includes(id)) {
+    savedIds = savedIds.filter(x => x !== id);
+  } else {
+    savedIds.push(id);
+    showToast('Scheme saved! Access it from Saved Schemes.', 'success');
+  }
+  saveSaved();
+  updateSavedCount();
+  renderSchemes();
+  renderSavedPanel();
+}
+
+function updateSavedCount() {
+  const el = document.getElementById('saved-count');
+  if (el) el.textContent = savedIds.length;
+}
+
+/* ── RENDER SCHEMES ──────────────────────────────────────── */
+function renderSchemes() {
+  const grid = document.getElementById('schemes-grid');
+  const info = document.getElementById('results-info');
+  if (!grid) return;
+
+  let filtered = SCHEMES.filter(s => {
+    const matchCat   = activeCat === 'all' || s.cat === activeCat;
+    const matchState = stateFilter === 'all' || s.state === 'all' || s.state === stateFilter;
+    const matchSearch = !searchTerm ||
+      s.name.toLowerCase().includes(searchTerm) ||
+      s.desc.toLowerCase().includes(searchTerm) ||
+      s.benefit.toLowerCase().includes(searchTerm);
+    return matchCat && matchState && matchSearch;
+  });
+
+  if (info) info.textContent = `Showing ${filtered.length} of ${SCHEMES.length} schemes`;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:64px;color:#64748b;">
+      <i class="fas fa-search" style="font-size:36px;display:block;margin-bottom:14px;"></i>
+      No schemes found. Try adjusting your filters.
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(s => {
+    const isSaved = savedIds.includes(s.id);
+    const badgesHtml = s.badgeLabels.map((label, i) =>
+      `<span class="scheme-badge ${s.badges[0]?.split(' ')[i] || 'badge-central'}">${label}</span>`
+    ).join('');
+
+    return `
+    <div class="scheme-card" role="listitem" id="sc-${s.id}" aria-label="${s.name}">
+      <div class="scheme-card__header">
+        <div class="scheme-card__icon" style="background:${s.iconBg};">${s.icon}</div>
+        <div class="scheme-card__title-wrap">
+          <div class="scheme-card__name">${s.name}</div>
+          <div class="scheme-card__ministry">${s.ministry}</div>
+        </div>
+        <button class="scheme-card__save ${isSaved ? 'saved' : ''}"
+                onclick="toggleSave('${s.id}')"
+                aria-label="${isSaved ? 'Remove from saved' : 'Save scheme'}"
+                title="${isSaved ? 'Remove from saved' : 'Save for later'}">
+          <i class="fas fa-bookmark"></i>
+        </button>
+      </div>
+
+      <div class="scheme-card__body">
+        <div class="scheme-badges">${badgesHtml}</div>
+        <p class="scheme-card__desc">${s.desc}</p>
+        <div class="scheme-card__benefit">
+          <i class="fas fa-star"></i>
+          <span>${s.benefit}</span>
+        </div>
+      </div>
+
+      <div class="scheme-card__footer">
+        <button class="scheme-btn scheme-btn--primary" onclick="showSchemeDetail('${s.id}')"
+                id="details-btn-${s.id}" aria-label="View details of ${s.name}">
+          <i class="fas fa-info-circle"></i> Eligibility & Docs
+        </button>
+        <a href="${s.applyUrl}" target="_blank" rel="noopener"
+           class="scheme-btn scheme-btn--secondary" aria-label="Apply for ${s.name}">
+          <i class="fas fa-external-link-alt"></i> Apply
+        </a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── SCHEME DETAIL MODAL ─────────────────────────────────── */
+function showSchemeDetail(id) {
+  const s = SCHEMES.find(x => x.id === id);
+  if (!s) return;
+
+  let modal = document.getElementById('scheme-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'scheme-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;';
+    document.body.appendChild(modal);
+  }
+
+  modal.innerHTML = `
+    <div style="background:#1e293b;border:1px solid #334155;border-radius:16px;max-width:520px;width:100%;padding:28px;max-height:90vh;overflow-y:auto;position:relative;">
+      <button onclick="document.getElementById('scheme-modal').remove()"
+              style="position:absolute;top:16px;right:16px;background:rgba(30,41,59,0.8);border:1px solid #334155;color:#94a3b8;width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:14px;"
+              aria-label="Close">✕</button>
+      <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:20px;">
+        <div style="width:52px;height:52px;border-radius:14px;background:${s.iconBg};display:flex;align-items:center;justify-content:center;font-size:26px;flex-shrink:0;">${s.icon}</div>
+        <div>
+          <div style="font-weight:700;font-size:1.1rem;color:#fff;margin-bottom:4px;">${s.name}</div>
+          <div style="font-size:0.78rem;color:#64748b;">${s.ministry}</div>
+        </div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-weight:700;font-size:0.85rem;color:#22c55e;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;">Benefit</div>
+        <div style="background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.15);border-radius:8px;padding:10px 14px;font-size:0.88rem;color:#f1f5f9;">${s.benefit}</div>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div style="font-weight:700;font-size:0.85rem;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;">Who Can Apply</div>
+        <div style="font-size:0.88rem;color:#cbd5e1;line-height:1.6;">${s.eligibility}</div>
+      </div>
+      <div style="margin-bottom:20px;">
+        <div style="font-weight:700;font-size:0.85rem;color:#94a3b8;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;">Required Documents</div>
+        <div style="font-size:0.88rem;color:#cbd5e1;line-height:1.6;">${s.docs}</div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <a href="${s.applyUrl}" target="_blank" rel="noopener"
+           style="flex:1;padding:11px;border-radius:9px;background:rgba(34,197,94,0.15);color:#22c55e;border:1px solid rgba(34,197,94,0.3);text-align:center;text-decoration:none;font-weight:600;font-size:0.85rem;display:flex;align-items:center;justify-content:center;gap:6px;">
+          <i class="fas fa-external-link-alt"></i> ${s.applyLabel}
+        </a>
+        <button onclick="toggleSave('${s.id}');document.getElementById('scheme-modal').remove()"
+                style="padding:11px 18px;border-radius:9px;background:rgba(251,191,36,0.1);color:#fbbf24;border:1px solid rgba(251,191,36,0.25);cursor:pointer;font-weight:600;font-size:0.85rem;font-family:Inter,sans-serif;">
+          <i class="fas fa-bookmark"></i> ${savedIds.includes(s.id) ? 'Unsave' : 'Save'}
+        </button>
+      </div>
+    </div>`;
+
+  modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
+}
+
+/* ── SAVED PANEL ─────────────────────────────────────────── */
+function openSavedPanel() {
+  renderSavedPanel();
+  document.getElementById('saved-panel')?.classList.add('open');
+  document.getElementById('saved-overlay')?.classList.add('open');
+}
+function closeSavedPanel() {
+  document.getElementById('saved-panel')?.classList.remove('open');
+  document.getElementById('saved-overlay')?.classList.remove('open');
+}
+function renderSavedPanel() {
+  const body = document.getElementById('saved-panel-body');
+  if (!body) return;
+  const saved = SCHEMES.filter(s => savedIds.includes(s.id));
+  if (!saved.length) {
+    body.innerHTML = `<div class="saved-empty"><i class="fas fa-bookmark" style="font-size:36px;display:block;margin-bottom:12px;"></i><p>No saved schemes yet.<br>Bookmark schemes to access them here.</p></div>`;
+    return;
+  }
+  body.innerHTML = saved.map(s => `
+    <div class="saved-item">
+      <div class="saved-item__icon" style="background:${s.iconBg};">${s.icon}</div>
+      <div style="flex:1;">
+        <div class="saved-item__name">${s.name}</div>
+        <div class="saved-item__ministry">${s.ministry}</div>
+      </div>
+      <button class="saved-item__remove" onclick="toggleSave('${s.id}')" aria-label="Remove from saved">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>`).join('');
+}
+
+/* ── TOAST ───────────────────────────────────────────────── */
+function showToast(msg, type) {
+  let c = document.getElementById('gs-toast');
+  if (!c) {
+    c = document.createElement('div');
+    c.id = 'gs-toast';
+    c.style.cssText = 'position:fixed;bottom:24px;right:24px;z-index:400;';
+    document.body.appendChild(c);
+  }
+  const bg = type === 'success' ? '#22c55e' : '#3b82f6';
+  c.innerHTML = `<div style="background:${bg};color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-family:Inter,sans-serif;box-shadow:0 4px 20px rgba(0,0,0,.3);">✓ ${msg}</div>`;
+  setTimeout(() => c.innerHTML = '', 3000);
+}
+
+/* ── EVENT LISTENERS ──────────────────────────────────────── */
+document.querySelectorAll('.gs-cat-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.gs-cat-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    activeCat = this.dataset.cat;
+    renderSchemes();
+  });
+});
+
+document.getElementById('scheme-search')?.addEventListener('input', function() {
+  searchTerm = this.value.toLowerCase().trim();
+  renderSchemes();
+});
+
+document.getElementById('state-filter')?.addEventListener('change', function() {
+  stateFilter = this.value;
+  renderSchemes();
+});
+
+document.getElementById('open-saved-btn')?.addEventListener('click', openSavedPanel);
+
+/* ── INIT ────────────────────────────────────────────────── */
+loadSaved();
+renderSchemes();
+</script>
+</body>
+</html>

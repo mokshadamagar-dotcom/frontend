@@ -1,0 +1,133 @@
+<!-- ============================================================
+     KrishiMitra AI – navbar.html
+     Reusable Top Navbar Component
+     Loaded via components.js → loadComponent()
+     ============================================================ -->
+
+<header class="dash-topbar" role="banner" aria-label="Application top navigation">
+
+  <!-- Sidebar Toggle -->
+  <button
+    class="topbar__toggle"
+    data-sidebar-toggle
+    aria-label="Toggle sidebar navigation"
+    aria-controls="main-sidebar"
+    aria-expanded="false"
+    title="Toggle sidebar"
+  >
+    <i class="fas fa-bars" aria-hidden="true"></i>
+  </button>
+
+  <!-- Page Title -->
+  <div class="topbar__title" aria-live="polite">
+    <div class="topbar__page-name" id="topbar-page-name">
+      <i class="fas fa-th-large" id="topbar-page-icon" aria-hidden="true" style="color:var(--primary);margin-right:7px;font-size:.9rem;"></i>
+      Dashboard
+    </div>
+    <nav class="topbar__breadcrumb" aria-label="Breadcrumb">
+      <a href="dashboard.html" aria-label="Home">Home</a>
+      <span aria-hidden="true"> › </span>
+      <span id="topbar-breadcrumb-page">Dashboard</span>
+    </nav>
+  </div>
+
+  <!-- Right Controls -->
+  <div class="topbar__right" role="group" aria-label="User controls">
+
+    <!-- Language Selector -->
+    <div class="topbar__lang" aria-label="Language selector">
+      <i class="fas fa-globe" aria-hidden="true"></i>
+      <select
+        id="dash-lang-select"
+        aria-label="Select display language"
+        title="Choose language"
+      >
+        <option value="en">English</option>
+        <option value="hi">हिंदी</option>
+        <option value="mr">मराठी</option>
+      </select>
+    </div>
+
+    <!-- Notification Bell -->
+    <button
+      class="topbar__icon-btn"
+      id="notif-bell-btn"
+      aria-label="View notifications (3 unread)"
+      title="Notifications"
+      data-tooltip="Notifications"
+    >
+      <i class="fas fa-bell" aria-hidden="true"></i>
+      <span class="topbar__notif-dot" aria-hidden="true"></span>
+    </button>
+
+    <!-- Profile Dropdown -->
+    <div
+      class="topbar__profile"
+      id="profile-dropdown-trigger"
+      role="button"
+      tabindex="0"
+      aria-haspopup="true"
+      aria-expanded="false"
+      aria-label="User profile menu – click to expand"
+    >
+      <!-- Avatar -->
+      <div class="topbar__avatar" aria-hidden="true">
+        <span data-user-initials>DF</span>
+      </div>
+
+      <!-- Name -->
+      <span class="topbar__user-name" data-user-name>Demo Farmer</span>
+
+      <!-- Caret -->
+      <i class="fas fa-chevron-down topbar__profile-caret" aria-hidden="true"></i>
+
+      <!-- Dropdown Menu -->
+      <div class="profile-dropdown" role="menu" aria-label="Profile menu options">
+
+        <!-- User Info Header -->
+        <div class="profile-dropdown__header" role="presentation">
+          <div class="profile-dropdown__name" data-user-name>Demo Farmer</div>
+          <div class="profile-dropdown__email" data-user-email>farmer@example.com</div>
+          <span class="profile-dropdown__role" data-user-role>🌾 Farmer</span>
+        </div>
+
+        <a href="profile.html"
+           class="profile-dropdown__item"
+           role="menuitem"
+           aria-label="Go to My Profile">
+          <i class="fas fa-user" aria-hidden="true"></i>
+          My Profile
+        </a>
+
+        <a href="profile.html"
+           class="profile-dropdown__item"
+           role="menuitem"
+           aria-label="Go to Settings">
+          <i class="fas fa-cog" aria-hidden="true"></i>
+          Settings
+        </a>
+
+        <a href="#"
+           class="profile-dropdown__item"
+           role="menuitem"
+           aria-label="Help and Support">
+          <i class="fas fa-question-circle" aria-hidden="true"></i>
+          Help &amp; Support
+        </a>
+
+        <div class="profile-dropdown__divider" aria-hidden="true"></div>
+
+        <a href="#"
+           class="profile-dropdown__item profile-dropdown__item--logout"
+           role="menuitem"
+           data-action="logout"
+           aria-label="Logout from KrishiMitra AI">
+          <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+          Logout
+        </a>
+
+      </div><!-- /profile-dropdown -->
+    </div><!-- /topbar__profile -->
+
+  </div><!-- /topbar__right -->
+</header>
