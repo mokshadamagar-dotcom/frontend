@@ -62,7 +62,8 @@ const MOCK_BOT_RESPONSES = {
    ============================================================ */
 let currentConversationId = null;
 let conversationsList = [];
-let activeLang = "mr";
+// Initialize from global language system (localStorage) or fall back to 'mr'
+let activeLang = localStorage.getItem('km_language') || 'mr';
 let selectedImageFile = null;
 
 /* ════════════════════════════════════════════════════════════
@@ -78,14 +79,39 @@ document.addEventListener('DOMContentLoaded', () => {
   initImageAttachment();
   initChatHeaderActions();
   startNewChat();
+
+  // Sync with global language system – when navbar selector changes, chatbot
+  // also updates its active language so responses are in the correct language.
+  document.addEventListener('languageChanged', (e) => {
+    const newLang = e.detail && e.detail.lang ? e.detail.lang : 'mr';
+    activeLang = newLang;
+    // Sync radio card UI to match global language
+    document.querySelectorAll('.lang-radio-card').forEach(card => {
+      card.classList.toggle('active', card.dataset.lang === newLang);
+    });
+    // Update selected-lang-label if present
+    const label = document.getElementById('selected-lang-label');
+    if (label) {
+      const langNames = { mr: 'Marathi', hi: 'Hindi', en: 'English' };
+      label.textContent = `Selected Language: ${langNames[newLang] || newLang}`;
+    }
+    // Update chat input placeholder
+    const input = document.getElementById('chat-input');
+    if (input && window.KM_Lang) {
+      input.placeholder = window.KM_Lang.t('chatbot.placeholder', newLang);
+    }
+  });
 });
 
 /* ════════════════════════════════════════════════════════════
-   LANGUAGE SELECTOR HANDLER
+   LANGUAGE SELECTOR HANDLER (in-page radio cards)
    ============================================================ */
 function initLanguageSelector() {
   const selectors = document.querySelectorAll('.lang-radio-card');
   const label = document.getElementById('selected-lang-label');
+
+  // Reflect current global language on the radio cards
+  selectors.forEach(s => s.classList.toggle('active', s.dataset.lang === activeLang));
 
   selectors.forEach(sel => {
     sel.addEventListener('click', function() {
@@ -98,7 +124,11 @@ function initLanguageSelector() {
         label.textContent = `Selected Language: ${langNames[activeLang]}`;
       }
 
-      // TODO: Send selected language to FastAPI in future requests.
+      // Push into global language system so navbar selector and all
+      // other pages reflect the change immediately
+      if (window.KM_Lang && typeof window.KM_Lang.applyLanguage === 'function') {
+        window.KM_Lang.applyLanguage(activeLang);
+      }
     });
   });
 }

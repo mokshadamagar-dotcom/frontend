@@ -46,8 +46,9 @@ const MOCK_HISTORY_LOGS = [
 
 /* ════════════════════════════════════════════════════════════
    STATE VARIABLES
-   ============================================================ */
-let activeLanguageCode = "mr";
+   ════════════════════════════════════════════════════════════ */
+// Initialize from global language system (falls back to 'mr' for Marathi default)
+let activeLanguageCode = localStorage.getItem('km_language') || 'mr';
 let recognitionEngine = null;
 let synthesisUtterance = null;
 let isVoiceRecording = false;
@@ -56,13 +57,35 @@ let recordingSeconds = 0;
 
 /* ════════════════════════════════════════════════════════════
    DOM CONTROLLERS
-   ============================================================ */
+   ════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
   initLanguageSelectors();
   initSpeechRecognition();
   initTryQuestions();
   initVoiceControls();
   loadHistoryLogs();
+
+  // Listen to global language changes (e.g. from the navbar selector)
+  document.addEventListener('languageChanged', (e) => {
+    const newLang = (e.detail && e.detail.lang) ? e.detail.lang : 'mr';
+    activeLanguageCode = newLang;
+
+    // Update recognition engine language on-the-fly
+    if (recognitionEngine) {
+      recognitionEngine.lang = voiceLanguages[newLang]?.recognition || 'mr-IN';
+    }
+
+    // Sync the in-page radio card UI
+    document.querySelectorAll('.lang-radio-card').forEach(card => {
+      card.classList.toggle('active', card.dataset.lang === newLang);
+    });
+
+    // Update selected-lang-label
+    const label = document.getElementById('selected-lang-label');
+    if (label && voiceLanguages[newLang]) {
+      label.textContent = `Selected Language: ${voiceLanguages[newLang].name}`;
+    }
+  });
 });
 
 /* ════════════════════════════════════════════════════════════

@@ -172,30 +172,30 @@
     <div class="notif-header__left">
       <h1>
         <i class="fas fa-bell"></i>
-        Notifications
+        <span data-i18n="notif.title">Notifications</span>
         <span class="notif-badge" id="unread-badge" aria-label="unread count">3 Unread</span>
       </h1>
-      <p>Stay updated with AI-powered farm alerts and advisory messages</p>
+      <p data-i18n="notif.subtitle">Stay updated with AI-powered farm alerts and advisory messages</p>
     </div>
     <div class="notif-header__actions">
       <button class="notif-action-btn" id="mark-all-read-btn" aria-label="Mark all as read">
-        <i class="fas fa-check-double"></i> Mark All Read
+        <i class="fas fa-check-double"></i> <span data-i18n="notif.mark_all_read">Mark All Read</span>
       </button>
       <button class="notif-action-btn" id="clear-all-btn" aria-label="Clear all notifications">
-        <i class="fas fa-trash-alt"></i> Clear All
+        <i class="fas fa-trash-alt"></i> <span data-i18n="notif.clear_all">Clear All</span>
       </button>
     </div>
   </div>
 
   <!-- FILTERS -->
   <div class="notif-filters" role="group" aria-label="Filter notifications">
-    <button class="notif-filter-btn active" data-filter="all" id="filter-all">All</button>
-    <button class="notif-filter-btn" data-filter="unread" id="filter-unread">Unread</button>
-    <button class="notif-filter-btn" data-filter="weather" id="filter-weather">🌧️ Weather</button>
-    <button class="notif-filter-btn" data-filter="pest" id="filter-pest">🐛 Pest</button>
-    <button class="notif-filter-btn" data-filter="disease" id="filter-disease">🌿 Disease</button>
-    <button class="notif-filter-btn" data-filter="scheme" id="filter-scheme">🏛️ Schemes</button>
-    <button class="notif-filter-btn" data-filter="irrigation" id="filter-irrigation">💧 Irrigation</button>
+    <button class="notif-filter-btn active" data-filter="all" id="filter-all" data-i18n="notif.all">All</button>
+    <button class="notif-filter-btn" data-filter="unread" id="filter-unread" data-i18n="notif.unread">Unread</button>
+    <button class="notif-filter-btn" data-filter="weather" id="filter-weather">🌧️ <span data-i18n="dash.weather">Weather</span></button>
+    <button class="notif-filter-btn" data-filter="pest" id="filter-pest">🐛 <span data-i18n="nav.pest">Pest</span></button>
+    <button class="notif-filter-btn" data-filter="disease" id="filter-disease">🌿 <span data-i18n="nav.disease">Disease</span></button>
+    <button class="notif-filter-btn" data-filter="scheme" id="filter-scheme">🏛️ <span data-i18n="nav.schemes">Schemes</span></button>
+    <button class="notif-filter-btn" data-filter="irrigation" id="filter-irrigation">💧 <span data-i18n="nav.irrigation">Irrigation</span></button>
   </div>
 
   <!-- NOTIFICATION LIST -->
@@ -293,6 +293,9 @@ function loadNotifications() {
 
 function saveNotifications() {
   localStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(notifications));
+  if (typeof window.updateNavbarNotifBadge === 'function') {
+    window.updateNavbarNotifBadge();
+  }
 }
 
 /* ── RENDER ──────────────────────────────────────────────── */
@@ -419,5 +422,6 @@ document.querySelectorAll('.notif-filter-btn').forEach(btn => {
 loadNotifications();
 renderNotifications();
 </script>
+<script src="../js/language.js" defer></script>
 </body>
 </html>

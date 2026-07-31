@@ -79,30 +79,33 @@
           <section class="dash-card" aria-labelledby="pdf-upload-title">
             <div class="dash-card__header">
               <h2 id="pdf-upload-title" class="dash-card__title">
-                <i class="fas fa-file-pdf" aria-hidden="true"></i>
-                Upload Soil Report Document
+                <i class="fas fa-file-invoice" aria-hidden="true"></i>
+                Upload Soil Report (PDF/Photo)
               </h2>
             </div>
             <div class="dash-card__body">
-              <form id="pdf-upload-form" novalidate aria-label="PDF file upload form">
+              <form id="pdf-upload-form" novalidate aria-label="PDF or Photo upload form">
 
                 <!-- Upload Drop Zone -->
                 <div class="form-group" style="margin-bottom: 16px;">
-                  <label class="form-label" for="pdf-file-input">Laboratory PDF Report</label>
+                  <label class="form-label" for="pdf-file-input">Laboratory PDF or Photo Report</label>
 
-                  <div id="pdf-drop-zone" class="upload-zone" role="button" tabindex="0" aria-label="Drag and drop PDF report file here, or click to browse files.">
+                  <div id="pdf-drop-zone" class="upload-zone" role="button" tabindex="0" aria-label="Drag and drop PDF report or photo here, or click to browse files.">
                     <!-- Placeholder state -->
                     <div id="pdf-upload-placeholder" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                      <i class="fas fa-file-pdf upload-zone__icon" aria-hidden="true" style="color:#ef4444;"></i>
-                      <span class="upload-zone__title">Drag &amp; Drop soil report here</span>
-                      <span class="upload-zone__desc">Supports PDF documents only<br />Maximum file size: 10 MB</span>
+                      <div style="display: flex; gap: 10px; align-items: center;">
+                        <i class="fas fa-file-pdf upload-zone__icon" aria-hidden="true" style="color:#ef4444; font-size: 2.2rem; margin: 0;"></i>
+                        <i class="fas fa-image upload-zone__icon" aria-hidden="true" style="color:#3b82f6; font-size: 2.2rem; margin: 0;"></i>
+                      </div>
+                      <span class="upload-zone__title">Drag &amp; Drop soil report photo or PDF here</span>
+                      <span class="upload-zone__desc">Supports PDF documents &amp; Photos (JPG, PNG)<br />Maximum file size: 10 MB</span>
                       <button type="button" class="upload-zone__browse-btn" aria-hidden="true">Browse Files</button>
                     </div>
 
                     <!-- PDF Preview Container (Hidden by default) -->
                     <div id="pdf-preview-box" class="preview-container" style="display: none; width: 100%; border: 1px dashed var(--primary); background: var(--green-50);">
                       <div class="preview-image-wrap" style="width: 50px; height: 50px; border-radius: 50%; background: #fee2e2; border: none;" aria-hidden="true">
-                        <i class="fas fa-file-pdf" style="color:#ef4444; font-size:1.4rem;"></i>
+                        <i id="preview-file-icon" class="fas fa-file-pdf" style="color:#ef4444; font-size:1.4rem;"></i>
                       </div>
                       <div class="preview-details" style="border:none; background:transparent; padding:0;">
                         <div class="preview-meta" style="text-align: center; width: 100%;">
@@ -122,7 +125,7 @@
                     type="file"
                     id="pdf-file-input"
                     name="pdf_report"
-                    accept="application/pdf"
+                    accept="application/pdf,image/*"
                     style="display: none;"
                     aria-required="true"
                   />
@@ -201,15 +204,15 @@
             <!-- Loading Checkpoints Steps list -->
             <div class="advisory-loading-steps" role="presentation">
               <div id="step-upload" class="advisory-loading-step">
-                <span>Uploading Soil Report Document</span>
+                <span>Uploading Soil Report</span>
                 <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
               </div>
               <div id="step-read" class="advisory-loading-step">
-                <span>Reading PDF Contents</span>
+                <span>Reading Report Contents</span>
                 <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
               </div>
               <div id="step-text" class="advisory-loading-step">
-                <span>Extracting Text and OCR Tables</span>
+                <span>Extracting Text via AI OCR</span>
                 <i class="fas fa-check-circle advisory-loading-step__check" aria-hidden="true"></i>
               </div>
               <div id="step-detect" class="advisory-loading-step">
@@ -574,5 +577,6 @@
 <!-- Soil analysis result logic -->
 <script src="../js/soil-analysis.js"></script>
 
+<script src="../js/language.js" defer></script>
 </body>
 </html>

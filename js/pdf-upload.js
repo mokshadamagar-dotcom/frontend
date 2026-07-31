@@ -66,10 +66,12 @@ function initPdfUploadHandlers() {
   }
 
   function handlePdfFile(file) {
-    // Validate type (must be PDF)
-    if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
+    // Validate type (must be PDF or Image)
+    const isImage = file.type.startsWith('image/');
+    const isPdf = file.type === 'application/pdf' || file.name.endsWith('.pdf');
+    if (!isPdf && !isImage) {
       if (typeof window.showToast === 'function') {
-        window.showToast('Please upload a valid PDF file.', 'error');
+        window.showToast('Please upload a valid PDF or Image file.', 'error');
       }
       return;
     }
@@ -92,6 +94,22 @@ function initPdfUploadHandlers() {
     // Swap layouts
     placeholder.style.display = 'none';
     previewBox.style.display = 'flex';
+
+    // Update preview icon based on file type
+    const previewIcon = document.getElementById('preview-file-icon');
+    const previewWrap = previewIcon ? previewIcon.parentElement : null;
+    if (previewIcon) {
+      if (isImage) {
+        previewIcon.className = 'fas fa-file-image';
+        previewIcon.style.color = '#3b82f6';
+        if (previewWrap) previewWrap.style.background = '#dbeafe';
+      } else {
+        previewIcon.className = 'fas fa-file-pdf';
+        previewIcon.style.color = '#ef4444';
+        if (previewWrap) previewWrap.style.background = '#fee2e2';
+      }
+    }
+
     if (analyzeBtn) {
       analyzeBtn.disabled = false;
       analyzeBtn.focus();

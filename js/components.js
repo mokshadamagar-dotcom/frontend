@@ -273,9 +273,15 @@ function initNotifBell() {
 }
 
 /* ════════════════════════════════════════════════════════════
-   LANGUAGE SELECTOR
+   LANGUAGE SELECTOR  (delegates to language.js KM_Lang)
 ════════════════════════════════════════════════════════════ */
 function initLanguageSelector() {
+  // If language.js is loaded, use its full system (preferred)
+  if (window.KM_Lang && typeof window.KM_Lang.initLanguageSystem === 'function') {
+    window.KM_Lang.initLanguageSystem();
+    return;
+  }
+  // Fallback: minimal local handler
   const sel = document.getElementById('dash-lang-select');
   if (!sel) return;
   sel.value = localStorage.getItem(KM.LANG_KEY) || 'en';
@@ -283,7 +289,6 @@ function initLanguageSelector() {
     localStorage.setItem(KM.LANG_KEY, this.value);
     const names = { en:'English', hi:'हिंदी', mr:'मराठी' };
     showToast(`Language changed to ${names[this.value] || this.value}`, 'success');
-    // TODO: Reload page content via FastAPI i18n endpoint
   });
 }
 
@@ -915,6 +920,18 @@ async function initKrishiMitraComponents() {
   initLogout();
   initNotifBell();
   initLanguageSelector();
+
+  // 6. Fire event so language.js (loaded before this script) can apply
+  //    translations to the freshly injected sidebar, navbar, footer HTML.
+  document.dispatchEvent(new CustomEvent('kmComponentsLoaded'));
+
+  // 7. Belt-and-suspenders: also call KM_Lang directly if available
+  if (window.KM_Lang && typeof window.KM_Lang.applyLanguage === 'function') {
+    window.KM_Lang.applyLanguage(window.KM_Lang.getCurrentLang());
+  }
+
+  // 8. Start live notifications simulation
+  startLiveNotificationEngine();
 }
 
 document.addEventListener('DOMContentLoaded', initKrishiMitraComponents);
@@ -929,3 +946,131 @@ window.showToast = showToast;
 window.showLoading  = showLoading;
 window.hideLoading  = hideLoading;
 window.createErrorState = createErrorState;
+
+
+/* ════════════════════════════════════════════════════════════
+   LIVE NOTIFICATION ENGINE
+   Simulates real-time agricultural alerts
+════════════════════════════════════════════════════════════ */
+const LIVE_NOTIF_TEMPLATES = [
+  {
+    cat: 'weather',
+    title: '🌧️ Live Weather Update',
+    text: 'Unseasonal light rain forecasted for your area in the next 3-4 hours. Keep harvested produce in a dry place.',
+    tag: 'Weather Alert',
+    tagClass: 'tag-weather',
+    icon: 'fa-cloud-rain',
+    iconColor: '#60a5fa',
+    iconBg: 'rgba(59,130,246,0.15)'
+  },
+  {
+    cat: 'pest',
+    title: '🐛 Active Pest Threat Alert',
+    text: 'Localized whitefly alerts reported near Nashik district. Inspect tomato and cotton leaf undersides immediately.',
+    tag: 'Pest Threat',
+    tagClass: 'tag-pest',
+    icon: 'fa-bug',
+    iconColor: '#f87171',
+    iconBg: 'rgba(239,68,68,0.15)'
+  },
+  {
+    cat: 'market',
+    title: '📈 Live Mandi Price Surge',
+    text: 'Wheat price at local APMC mandis has hit ₹2,650/quintal, up by 4% today. Ideal time to sell your stock.',
+    tag: 'Market Live',
+    tagClass: 'tag-market',
+    icon: 'fa-chart-line',
+    iconColor: '#c084fc',
+    iconBg: 'rgba(168,85,247,0.15)'
+  },
+  {
+    cat: 'irrigation',
+    title: '💧 Smart Irrigation Advisor',
+    text: 'High temperature forecasted for tomorrow. An early morning irrigation cycle is recommended for optimum root moisture.',
+    tag: 'Irrigation',
+    tagClass: 'tag-irrigation',
+    icon: 'fa-tint',
+    iconColor: '#2dd4bf',
+    iconBg: 'rgba(20,184,166,0.15)'
+  },
+  {
+    cat: 'disease',
+    title: '🌿 Powdery Mildew Alert',
+    text: 'High humidity is creating a high risk of Powdery Mildew in vine and vegetable crops. Inspect leaves for white spots.',
+    tag: 'Disease Alert',
+    tagClass: 'tag-disease',
+    icon: 'fa-leaf',
+    iconColor: '#fb923c',
+    iconBg: 'rgba(249,115,22,0.15)'
+  }
+];
+
+function updateNavbarNotifBadge() {
+  const notifDot = document.querySelector('.topbar__notif-dot');
+  const notifBtn = document.getElementById('notif-bell-btn');
+  if (!notifBtn) return;
+
+  const stored = localStorage.getItem('km_notifications_v2');
+  let unreadCount = 0;
+  if (stored) {
+    try {
+      const notifs = JSON.parse(stored);
+      unreadCount = notifs.filter(n => n.unread).length;
+    } catch (e) {
+      unreadCount = 3;
+    }
+  } else {
+    unreadCount = 3;
+  }
+
+  if (notifDot) {
+    notifDot.style.display = unreadCount > 0 ? 'block' : 'none';
+  }
+  notifBtn.setAttribute('aria-label', `View notifications (${unreadCount} unread)`);
+}
+
+function generateLiveNotification() {
+  const stored = localStorage.getItem('km_notifications_v2');
+  let list = [];
+  if (stored) {
+    try { list = JSON.parse(stored); } catch { list = []; }
+  }
+
+  const template = LIVE_NOTIF_TEMPLATES[Math.floor(Math.random() * LIVE_NOTIF_TEMPLATES.length)];
+  const newNotif = {
+    id: 'live_' + Date.now(),
+    cat: template.cat,
+    unread: true,
+    time: 'Just now',
+    icon: template.icon,
+    iconBg: template.iconBg,
+    iconColor: template.iconColor,
+    title: template.title,
+    text: template.text,
+    tag: template.tag,
+    tagClass: template.tagClass
+  };
+
+  list.unshift(newNotif);
+  localStorage.setItem('km_notifications_v2', JSON.stringify(list));
+
+  if (typeof window.showToast === 'function') {
+    window.showToast(template.text, 'info', template.title, 6000);
+  }
+
+  updateNavbarNotifBadge();
+
+  if (window.location.pathname.includes('notifications.html') && typeof loadNotifications === 'function' && typeof renderNotifications === 'function') {
+    loadNotifications();
+    renderNotifications();
+  }
+}
+
+function startLiveNotificationEngine() {
+  updateNavbarNotifBadge();
+  setInterval(() => {
+    generateLiveNotification();
+  }, 30000);
+}
+
+window.updateNavbarNotifBadge = updateNavbarNotifBadge;

@@ -212,7 +212,9 @@
 
           <!-- 3. AI ANALYSIS RESULT SECTION (Hidden by default) -->
           <div id="analysis-result-section" style="display: none;">
-            <div class="dash-card" style="display: flex; flex-direction: column; gap: 20px; padding: 24px;">
+            
+            <!-- Normal Disease Result Card -->
+            <div id="disease-result-card" class="dash-card" style="display: flex; flex-direction: column; gap: 20px; padding: 24px;">
 
               <!-- Header Overview -->
               <div class="welcome-banner" style="padding: 24px; border-radius: var(--radius-lg);">
@@ -331,8 +333,22 @@
                   <i class="fas fa-comments" aria-hidden="true"></i> Ask AI Chatbot
                 </button>
               </div>
+            </div><!-- /disease-result-card -->
 
-            </div><!-- /dash-card -->
+            <!-- No Crop/Plant Detected Card -->
+            <div id="no-crop-detected-card" class="dash-card" style="display: none; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 40px; text-align: center;">
+              <div style="width: 80px; height: 80px; background: rgba(239, 68, 68, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ef4444; font-size: 2.5rem; margin-bottom: 10px;">
+                <i class="fas fa-exclamation-circle"></i>
+              </div>
+              <h3 id="no-crop-title" style="font-size: 1.55rem; font-weight: 700; color: var(--text-primary); margin: 0;">No Crop Detected</h3>
+              <p id="no-crop-message" style="font-size: 1.05rem; color: var(--text-light); max-width: 500px; margin: 0; line-height: 1.5;">
+                The uploaded image does not appear to be a crop or plant leaf. Please upload a clear picture of a crop leaf.
+              </p>
+              <button type="button" id="btn-no-crop-retry" class="km-btn km-btn--primary" style="margin-top: 10px; width: fit-content; padding: 10px 24px;">
+                <i class="fas fa-redo-alt" aria-hidden="true" style="margin-right: 8px;"></i> Try Another Image
+              </button>
+            </div>
+
           </div><!-- /analysis-result-section -->
 
         </section><!-- /results-viewport -->
@@ -392,5 +408,6 @@
 <!-- Crop Disease specific logic -->
 <script src="../js/crop-disease.js"></script>
 
+<script src="../js/language.js" defer></script>
 </body>
 </html>

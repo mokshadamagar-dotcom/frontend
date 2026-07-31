@@ -1,6 +1,6 @@
 <!-- ============================================================
      KrishiMitra AI – navbar.html
-     Reusable Top Navbar Component
+     Reusable Top Navbar Component (multilingual data-i18n)
      Loaded via components.js → loadComponent()
      ============================================================ -->
 
@@ -22,12 +22,12 @@
   <div class="topbar__title" aria-live="polite">
     <div class="topbar__page-name" id="topbar-page-name">
       <i class="fas fa-th-large" id="topbar-page-icon" aria-hidden="true" style="color:var(--primary);margin-right:7px;font-size:.9rem;"></i>
-      Dashboard
+      <span data-i18n="nav.dashboard">Dashboard</span>
     </div>
     <nav class="topbar__breadcrumb" aria-label="Breadcrumb">
-      <a href="dashboard.html" aria-label="Home">Home</a>
+      <a href="dashboard.html" aria-label="Home" data-i18n="dash.breadcrumb_home">Home</a>
       <span aria-hidden="true"> › </span>
-      <span id="topbar-breadcrumb-page">Dashboard</span>
+      <span id="topbar-breadcrumb-page" data-i18n="nav.dashboard">Dashboard</span>
     </nav>
   </div>
 
@@ -39,6 +39,7 @@
       <i class="fas fa-globe" aria-hidden="true"></i>
       <select
         id="dash-lang-select"
+        class="km-lang-select"
         aria-label="Select display language"
         title="Choose language"
       >
@@ -52,7 +53,8 @@
     <button
       class="topbar__icon-btn"
       id="notif-bell-btn"
-      aria-label="View notifications (3 unread)"
+      aria-label="View notifications"
+      data-i18n-aria="topbar.notifications"
       title="Notifications"
       data-tooltip="Notifications"
     >
@@ -96,7 +98,7 @@
            role="menuitem"
            aria-label="Go to My Profile">
           <i class="fas fa-user" aria-hidden="true"></i>
-          My Profile
+          <span data-i18n="topbar.my_profile">My Profile</span>
         </a>
 
         <a href="profile.html"
@@ -104,15 +106,15 @@
            role="menuitem"
            aria-label="Go to Settings">
           <i class="fas fa-cog" aria-hidden="true"></i>
-          Settings
+          <span data-i18n="topbar.settings">Settings</span>
         </a>
 
-        <a href="#"
+        <a href="help-center.html"
            class="profile-dropdown__item"
            role="menuitem"
            aria-label="Help and Support">
           <i class="fas fa-question-circle" aria-hidden="true"></i>
-          Help &amp; Support
+          <span data-i18n="topbar.help_support">Help &amp; Support</span>
         </a>
 
         <div class="profile-dropdown__divider" aria-hidden="true"></div>
@@ -123,7 +125,7 @@
            data-action="logout"
            aria-label="Logout from KrishiMitra AI">
           <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-          Logout
+          <span data-i18n="topbar.logout">Logout</span>
         </a>
 
       </div><!-- /profile-dropdown -->

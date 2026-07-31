@@ -240,7 +240,7 @@
       <!-- Language Selector -->
       <div class="topbar__lang" aria-label="Language selector">
         <i class="fas fa-globe" aria-hidden="true"></i>
-        <select id="dash-lang-select" aria-label="Select display language" title="Choose language">
+        <select id="dash-lang-select" class="km-lang-select" aria-label="Select display language" title="Choose language">
           <option value="en">English</option>
           <option value="hi">हिंदी</option>
           <option value="mr">मराठी</option>
@@ -284,11 +284,11 @@
 
           <a href="profile.html" class="profile-dropdown__item" role="menuitem" aria-label="My Profile">
             <i class="fas fa-user" aria-hidden="true"></i>
-            My Profile
+            <span data-i18n="topbar.my_profile">My Profile</span>
           </a>
           <a href="profile.html" class="profile-dropdown__item" role="menuitem" aria-label="Settings">
             <i class="fas fa-cog" aria-hidden="true"></i>
-            Settings
+            <span data-i18n="topbar.settings">Settings</span>
           </a>
 
           <div class="profile-dropdown__divider" aria-hidden="true"></div>
@@ -296,7 +296,7 @@
           <a href="#" class="profile-dropdown__item profile-dropdown__item--logout" role="menuitem"
              data-action="logout" aria-label="Logout" id="topbar-logout-btn">
             <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
-            Logout
+            <span data-i18n="topbar.logout">Logout</span>
           </a>
         </div>
       </div><!-- /profile -->
@@ -359,8 +359,8 @@
     <section aria-labelledby="stats-heading">
       <div class="dash-section-header">
         <div>
-          <h2 id="stats-heading" class="dash-section-title">Farm Overview</h2>
-          <p class="dash-section-sub">Your current season at a glance</p>
+          <h2 id="stats-heading" class="dash-section-title" data-i18n="dash.farm_overview">Farm Overview</h2>
+          <p class="dash-section-sub" data-i18n="dash.season_glance">Your current season at a glance</p>
         </div>
       </div>
 
@@ -377,7 +377,7 @@
           </div>
           <div>
             <div class="stat-card__value" id="stat-crops" aria-label="Number of active crops">04</div>
-            <div class="stat-card__label">Active Crops</div>
+            <div class="stat-card__label" data-i18n="dash.active_crops">Active Crops</div>
           </div>
         </div>
 
@@ -392,7 +392,7 @@
           </div>
           <div>
             <div class="stat-card__value" id="stat-analyses" aria-label="Total AI analyses">12</div>
-            <div class="stat-card__label">Total AI Analyses</div>
+            <div class="stat-card__label" data-i18n="dash.total_analyses">Total AI Analyses</div>
           </div>
         </div>
 
@@ -407,7 +407,7 @@
           </div>
           <div>
             <div class="stat-card__value" id="stat-saved" aria-label="Saved insights count">08</div>
-            <div class="stat-card__label">Saved Insights</div>
+            <div class="stat-card__label" data-i18n="dash.saved_insights">Saved Insights</div>
           </div>
         </div>
 
@@ -422,7 +422,7 @@
           </div>
           <div>
             <div class="stat-card__value" id="stat-alerts" aria-label="Number of new alerts">03</div>
-            <div class="stat-card__label">New Alerts</div>
+            <div class="stat-card__label" data-i18n="dash.new_alerts">New Alerts</div>
           </div>
         </div>
 
@@ -437,59 +437,55 @@
         <div>
           <h2 id="ai-actions-heading" class="dash-section-title">
             <i class="fas fa-robot" style="color:var(--primary);margin-right:8px;" aria-hidden="true"></i>
-            AI Agriculture Assistant
+            <span data-i18n="dash.ai_assistant">AI Agriculture Assistant</span>
           </h2>
-          <p class="dash-section-sub">Choose an AI-powered service to get instant farming guidance.</p>
+          <p class="dash-section-sub" data-i18n="dash.choose_service">Choose an AI-powered service to get instant farming guidance.</p>
         </div>
       </div>
 
       <div class="ai-actions-grid" role="list" aria-label="AI feature quick actions">
 
-        <!-- Disease Detection -->
         <article class="ai-action-card" role="listitem" aria-label="Crop Disease Detection">
           <div class="ai-action-card__icon icon--green" aria-hidden="true">
             <i class="fas fa-microscope"></i>
           </div>
-          <h3 class="ai-action-card__title">Disease Detection</h3>
-          <p class="ai-action-card__desc">Upload a crop image and instantly identify possible diseases with treatment advice.</p>
+          <h3 class="ai-action-card__title" data-i18n="nav.disease">Disease Detection</h3>
+          <p class="ai-action-card__desc" data-i18n="dash.crop_disease_desc">Upload a crop image and instantly identify possible diseases with treatment advice.</p>
           <a href="crop-disease.html" class="ai-action-card__btn" aria-label="Analyze your crop for diseases">
-            <i class="fas fa-camera" aria-hidden="true"></i> Analyze Crop
+            <i class="fas fa-camera" aria-hidden="true"></i> <span data-i18n="dash.analyze_crop">Analyze Crop</span>
           </a>
         </article>
 
-        <!-- Pest Radar -->
         <article class="ai-action-card" role="listitem" aria-label="Pest Radar">
           <div class="ai-action-card__icon icon--orange" aria-hidden="true">
             <i class="fas fa-bug"></i>
           </div>
-          <h3 class="ai-action-card__title">Pest Radar</h3>
-          <p class="ai-action-card__desc">Detect common pests affecting your crops using AI-powered image analysis.</p>
+          <h3 class="ai-action-card__title" data-i18n="nav.pest">Pest Radar</h3>
+          <p class="ai-action-card__desc" data-i18n="dash.pest_radar_desc">Detect common pests affecting your crops using AI-powered image analysis.</p>
           <a href="pest-detection.html" class="ai-action-card__btn" aria-label="Detect pests with Pest Radar">
-            <i class="fas fa-search" aria-hidden="true"></i> Open Pest Radar
+            <i class="fas fa-search" aria-hidden="true"></i> <span data-i18n="dash.open_pest_radar">Open Pest Radar</span>
           </a>
         </article>
 
-        <!-- Fertilizer -->
         <article class="ai-action-card" role="listitem" aria-label="Fertilizer Recommendation">
           <div class="ai-action-card__icon icon--teal" aria-hidden="true">
             <i class="fas fa-vial"></i>
           </div>
-          <h3 class="ai-action-card__title">Fertilizer Recommendation</h3>
-          <p class="ai-action-card__desc">Get precise fertilizer dosage recommendations based on crop type and soil data.</p>
+          <h3 class="ai-action-card__title" data-i18n="nav.fertilizer">Fertilizer Recommendation</h3>
+          <p class="ai-action-card__desc" data-i18n="dash.fertilizer_desc">Get precise fertilizer dosage recommendations based on crop type and soil data.</p>
           <a href="fertilizer.html" class="ai-action-card__btn" aria-label="Get fertilizer recommendations">
-            <i class="fas fa-flask" aria-hidden="true"></i> Get Recommendation
+            <i class="fas fa-flask" aria-hidden="true"></i> <span data-i18n="dash.get_recommendation">Get Recommendation</span>
           </a>
         </article>
 
-        <!-- Irrigation -->
         <article class="ai-action-card" role="listitem" aria-label="Irrigation Advisory">
           <div class="ai-action-card__icon icon--cyan" aria-hidden="true">
             <i class="fas fa-tint"></i>
           </div>
-          <h3 class="ai-action-card__title">Irrigation Advisory</h3>
-          <p class="ai-action-card__desc">Get smart irrigation schedules based on your crop, soil moisture, and weather.</p>
+          <h3 class="ai-action-card__title" data-i18n="nav.irrigation">Irrigation Advisory</h3>
+          <p class="ai-action-card__desc" data-i18n="dash.irrigation_desc">Get smart irrigation schedules based on your crop, soil moisture, and weather.</p>
           <a href="irrigation.html" class="ai-action-card__btn" aria-label="Check irrigation advice">
-            <i class="fas fa-water" aria-hidden="true"></i> Check Irrigation
+            <i class="fas fa-water" aria-hidden="true"></i> <span data-i18n="dash.check_irrigation">Check Irrigation</span>
           </a>
         </article>
 
@@ -505,27 +501,25 @@
           </a>
         </article>
 
-        <!-- AI Chatbot -->
         <article class="ai-action-card" role="listitem" aria-label="AI Chatbot">
           <div class="ai-action-card__icon icon--blue" aria-hidden="true">
             <i class="fas fa-comments"></i>
           </div>
-          <h3 class="ai-action-card__title">AI Chatbot</h3>
-          <p class="ai-action-card__desc">Ask KrishiMitra anything about farming and get expert AI-powered guidance.</p>
+          <h3 class="ai-action-card__title" data-i18n="nav.chatbot">AI Chatbot</h3>
+          <p class="ai-action-card__desc" data-i18n="dash.chatbot_desc">Ask KrishiMitra anything about farming and get expert AI-powered guidance.</p>
           <a href="chatbot.html" class="ai-action-card__btn" aria-label="Start a conversation with AI">
-            <i class="fas fa-robot" aria-hidden="true"></i> Ask AI
+            <i class="fas fa-robot" aria-hidden="true"></i> <span data-i18n="dash.ask_ai">Ask AI</span>
           </a>
         </article>
 
-        <!-- Voice Assistant -->
         <article class="ai-action-card" role="listitem" aria-label="Voice Assistant">
           <div class="ai-action-card__icon icon--purple" aria-hidden="true">
             <i class="fas fa-microphone"></i>
           </div>
-          <h3 class="ai-action-card__title">Voice Assistant</h3>
-          <p class="ai-action-card__desc">Talk to your agriculture advisor in Hindi, Marathi, or English.</p>
+          <h3 class="ai-action-card__title" data-i18n="nav.voice">Voice Assistant</h3>
+          <p class="ai-action-card__desc" data-i18n="dash.voice_desc">Talk to your agriculture advisor in Hindi, Marathi, or English.</p>
           <a href="voice-assistant.html" class="ai-action-card__btn" aria-label="Start voice assistant">
-            <i class="fas fa-volume-up" aria-hidden="true"></i> Start Voice
+            <i class="fas fa-volume-up" aria-hidden="true"></i> <span data-i18n="dash.start_voice">Start Voice</span>
           </a>
         </article>
 
