@@ -187,21 +187,60 @@
                   <label class="form-label" for="pr-district">District</label>
                   <select id="pr-district" class="form-select no-icon" aria-required="true">
                     <option value="">Select District</option>
-                    <option value="Nagpur" selected>Nagpur</option>
-                    <option value="Pune">Pune</option>
-                    <option value="Nashik">Nashik</option>
-                    <option value="Aurangabad">Aurangabad</option>
+                    <option value="Ahmednagar">Ahmednagar</option>
+                    <option value="Akola">Akola</option>
                     <option value="Amravati">Amravati</option>
-                    <option value="Wardha">Wardha</option>
-                    <option value="Yavatmal">Yavatmal</option>
+                    <option value="Aurangabad">Aurangabad</option>
+                    <option value="Beed">Beed</option>
+                    <option value="Bhandara">Bhandara</option>
+                    <option value="Buldhana">Buldhana</option>
+                    <option value="Chandrapur">Chandrapur</option>
+                    <option value="Dhule">Dhule</option>
+                    <option value="Gadchiroli">Gadchiroli</option>
+                    <option value="Gondia">Gondia</option>
+                    <option value="Hingoli">Hingoli</option>
+                    <option value="Jalgaon">Jalgaon</option>
+                    <option value="Jalna">Jalna</option>
+                    <option value="Kolhapur">Kolhapur</option>
                     <option value="Latur">Latur</option>
+                    <option value="Mumbai City">Mumbai City</option>
+                    <option value="Mumbai Suburban">Mumbai Suburban</option>
+                    <option value="Nagpur" selected>Nagpur</option>
+                    <option value="Nanded">Nanded</option>
+                    <option value="Nandurbar">Nandurbar</option>
+                    <option value="Nashik">Nashik</option>
+                    <option value="Osmanabad">Osmanabad</option>
+                    <option value="Palghar">Palghar</option>
+                    <option value="Parbhani">Parbhani</option>
+                    <option value="Pune">Pune</option>
+                    <option value="Raigad">Raigad</option>
+                    <option value="Ratnagiri">Ratnagiri</option>
+                    <option value="Sangli">Sangli</option>
+                    <option value="Satara">Satara</option>
+                    <option value="Sindhudurg">Sindhudurg</option>
+                    <option value="Solapur">Solapur</option>
+                    <option value="Thane">Thane</option>
+                    <option value="Wardha">Wardha</option>
+                    <option value="Washim">Washim</option>
+                    <option value="Yavatmal">Yavatmal</option>
                   </select>
                 </div>
               </div>
 
+              <!-- Taluka row -->
               <div class="form-group" style="margin-bottom:14px;">
-                <label class="form-label" for="pr-village">Village / Taluka</label>
-                <input type="text" id="pr-village" class="form-input" placeholder="e.g. Kamptee, Hingna" />
+                <label class="form-label" for="pr-taluka">Taluka</label>
+                <select id="pr-taluka" class="form-select no-icon">
+                  <option value="">Select Taluka</option>
+                </select>
+              </div>
+
+              <!-- Village row -->
+              <div class="form-group" style="margin-bottom:14px;">
+                <label class="form-label" for="pr-village">Village</label>
+                <select id="pr-village" class="form-select no-icon">
+                  <option value="">Select Village</option>
+                </select>
               </div>
 
               <div class="form-row pr-form-row">
@@ -246,6 +285,12 @@
               <button type="button" id="pr-gps-btn" class="pr-btn pr-btn--outline pr-gps-btn" style="width:100%;margin-bottom:12px;">
                 <i class="fas fa-location-crosshairs" aria-hidden="true"></i> Auto-Detect My Location (GPS)
               </button>
+
+              <!-- Selected Location Display -->
+              <div id="pr-selected-location-box" style="display:none;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:0.82rem;color:#166534;">
+                <i class="fas fa-location-dot" style="color:#16a34a;margin-right:6px;"></i>
+                <span id="pr-selected-location-text">Maharashtra</span>
+              </div>
 
               <button type="submit" id="pr-run-btn" class="pr-btn pr-btn--primary" style="width:100%;">
                 <i class="fas fa-radar" aria-hidden="true"></i> Run Pest Radar Analysis
@@ -775,6 +820,103 @@
 <script src="../js/pdf-generator.js"></script>
 <script src="../js/pest-radar.js"></script>
 
+<script src="../js/mh-location-data.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  const districtSel = document.getElementById('pr-district');
+  const talukaSel   = document.getElementById('pr-taluka');
+  const villageSel  = document.getElementById('pr-village');
+
+  function resetSelect(sel, placeholder) {
+    sel.innerHTML = '<option value="">' + placeholder + '</option>';
+    sel.disabled = true;
+  }
+
+  function populateTalukas(districtName) {
+    resetSelect(talukaSel, 'Select Taluka');
+    resetSelect(villageSel, 'Select Village');
+
+    const districtData = MH_LOCATION_DATA[districtName];
+    if (!districtData || !districtData.talukas) return;
+
+    districtData.talukas.forEach(function(t) {
+      const opt = document.createElement('option');
+      opt.value = t.name;
+      opt.textContent = t.name;
+      talukaSel.appendChild(opt);
+    });
+    talukaSel.disabled = false;
+  }
+
+  function populateVillages(districtName, talukaName) {
+    resetSelect(villageSel, 'Select Village');
+
+    const districtData = MH_LOCATION_DATA[districtName];
+    if (!districtData) return;
+
+    const talukaData = districtData.talukas.find(function(t) { return t.name === talukaName; });
+    if (!talukaData || !talukaData.villages) return;
+
+    talukaData.villages.forEach(function(v) {
+      const opt = document.createElement('option');
+      opt.value = v;
+      opt.textContent = v;
+      villageSel.appendChild(opt);
+    });
+    villageSel.disabled = false;
+  }
+
+  // Init: disable taluka & village until district is chosen
+  talukaSel.disabled  = true;
+  villageSel.disabled = true;
+
+  // ── Location display box ──────────────────────────────────
+  var locationBox  = document.getElementById('pr-selected-location-box');
+  var locationText = document.getElementById('pr-selected-location-text');
+
+  function updateLocationDisplay() {
+    var district = districtSel.value;
+    var taluka   = talukaSel.value;
+    var village  = villageSel.value;
+
+    if (!district) {
+      if (locationBox) locationBox.style.display = 'none';
+      return;
+    }
+
+    // Build human-readable label from what is selected
+    var parts = ['Maharashtra'];
+    if (district) parts.push(district);
+    if (taluka)   parts.push(taluka);
+    if (village)  parts.push(village);
+
+    if (locationText) locationText.textContent = parts.join(' › ');
+    if (locationBox)  locationBox.style.display = 'block';
+  }
+
+  // Pre-populate if a district is already selected (e.g. Nagpur default)
+  if (districtSel.value) {
+    populateTalukas(districtSel.value);
+    updateLocationDisplay();
+  }
+
+  districtSel.addEventListener('change', function() {
+    populateTalukas(this.value);
+    updateLocationDisplay();
+  });
+
+  talukaSel.addEventListener('change', function() {
+    populateVillages(districtSel.value, this.value);
+    updateLocationDisplay();
+  });
+
+  villageSel.addEventListener('change', function() {
+    updateLocationDisplay();
+  });
+})();
+</script>
 <script src="../js/language.js" defer></script>
 </body>
 </html>

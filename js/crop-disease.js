@@ -487,8 +487,7 @@ async function analyzeCropImage(imageFile) {
     'car', 'dog', 'cat', 'person', 'people', 'human', 'building', 'office', 'room', 
     'laptop', 'phone', 'bike', 'motorcycle', 'shirt', 'pants', 'shoe', 'face', 'food', 
     'drink', 'document', 'pdf', 'txt', 'receipt', 'selfie', 'screenshot', 'logo', 'icon', 
-    'chatgpt', 'whatsapp', 'wa', 'fb', 'instagram', 'profile', 'avatar', 'selphy', 'user', 
-    'girl', 'boy', 'man', 'woman', 'picture', 'photo'
+    'profile', 'avatar', 'selphy', 'user', 'girl', 'boy', 'man', 'woman'
   ];
   
   // Crop keywords to override general photo/picture checks
@@ -499,7 +498,7 @@ async function analyzeCropImage(imageFile) {
     'stem', 'agriculture', 'vegetable', 'fruit'
   ];
 
-  // If the filename matches unrelated terms (like face, selfie, chatgpt) and DOES NOT explicitly contain any crop keyword, reject it.
+  // If the filename matches unrelated terms (like face, selfie) and DOES NOT explicitly contain any crop keyword, reject it.
   const hasUnrelatedKeyword = unrelatedKeywords.some(kw => fileName.includes(kw));
   const hasCropKeyword = cropKeywords.some(kw => fileName.includes(kw));
 
@@ -508,8 +507,11 @@ async function analyzeCropImage(imageFile) {
   if (hasUnrelatedKeyword && !hasCropKeyword) {
     isCrop = false;
   } else if (!selectedCrop) {
-    // If no crop type is explicitly selected, check if filename looks like a crop or a general camera photo
-    const generalPrefixes = ['img', 'dsc', 'wp_', 'image', 'photo', 'camera', 'capture', 'upload'];
+    // If no crop type is explicitly selected, check if filename looks like a crop or a general camera photo/download
+    const generalPrefixes = [
+      'img', 'dsc', 'wp_', 'image', 'photo', 'camera', 'capture', 'upload', 
+      'chatgpt', 'whatsapp', 'wa', 'fb', 'instagram', 'picture', 'download'
+    ];
     const hasGeneralPrefix = generalPrefixes.some(pref => fileName.startsWith(pref) || fileName.includes(pref));
     
     if (!hasCropKeyword && !hasGeneralPrefix) {

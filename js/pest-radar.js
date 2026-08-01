@@ -823,9 +823,25 @@ function initAnalysisForm() {
     await sleep(1800);
 
     const district = document.getElementById('pr-district')?.value || 'Nagpur';
+    const taluka   = document.getElementById('pr-taluka')?.value  || '';
+    const village  = document.getElementById('pr-village')?.value || '';
+
     PR_STATE.district = district;
 
-    // Update weather based on location
+    // Build full location string from what the user actually selected
+    const locationParts = ['Maharashtra'];
+    if (district) locationParts.push(district);
+    if (taluka)   locationParts.push(taluka);
+    if (village)  locationParts.push(village);
+    const fullLocation = locationParts.join(' › ');
+
+    // Update location display box to reflect real selection
+    const locBox  = document.getElementById('pr-selected-location-box');
+    const locText = document.getElementById('pr-selected-location-text');
+    if (locText) locText.textContent = fullLocation;
+    if (locBox)  locBox.style.display = district ? 'block' : 'none';
+
+    // Update weather panel based on selected district
     updateWeatherForDistrict(district);
 
     // Update risk score (simulate)
@@ -834,7 +850,7 @@ function initAnalysisForm() {
     runBtn.disabled = false;
     runBtn.innerHTML = `<i class="fas fa-radar"></i> Run Pest Radar Analysis`;
 
-    showToastMessage(t('analysisComplete'), 'success');
+    showToastMessage(`${t('analysisComplete')} (${fullLocation})`, 'success');
 
     // Scroll to results
     document.getElementById('pr-prediction-results')?.scrollIntoView({ behavior: 'smooth', block: 'start' });

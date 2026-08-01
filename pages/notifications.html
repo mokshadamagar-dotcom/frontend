@@ -421,6 +421,10 @@ document.querySelectorAll('.notif-filter-btn').forEach(btn => {
 /* ── INIT ────────────────────────────────────────────────── */
 loadNotifications();
 renderNotifications();
+
+// Expose functions globally for WebSocket trigger updates
+window.loadNotifications = loadNotifications;
+window.renderNotifications = renderNotifications;
 </script>
 <script src="../js/language.js" defer></script>
 </body>

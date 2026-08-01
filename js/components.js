@@ -930,8 +930,17 @@ async function initKrishiMitraComponents() {
     window.KM_Lang.applyLanguage(window.KM_Lang.getCurrentLang());
   }
 
-  // 8. Start live notifications simulation
-  startLiveNotificationEngine();
+  // 8. Start real-time notifications via WebSockets
+  const jsBase = isInPages ? '../js/' : 'js/';
+  const notifScript = document.createElement('script');
+  notifScript.src = jsBase + 'notifications.js';
+  notifScript.defer = true;
+  document.head.appendChild(notifScript);
+
+  // Initialize navbar notification badge on load
+  if (typeof updateNavbarNotifBadge === 'function') {
+    updateNavbarNotifBadge();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', initKrishiMitraComponents);
@@ -1068,9 +1077,7 @@ function generateLiveNotification() {
 
 function startLiveNotificationEngine() {
   updateNavbarNotifBadge();
-  setInterval(() => {
-    generateLiveNotification();
-  }, 30000);
+  // Disabled mock interval to use real-time WebSockets
 }
 
 window.updateNavbarNotifBadge = updateNavbarNotifBadge;
