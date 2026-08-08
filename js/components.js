@@ -774,10 +774,12 @@ function injectComponentStyles() {
       background: #f4f7f5;
       min-height: 100vh;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-y: auto !important;
     }
     .km-app-wrapper {
       display: flex;
       min-height: 100vh;
+      overflow-y: auto !important;
     }
     .km-app-main {
       margin-left: 256px;
@@ -787,6 +789,7 @@ function injectComponentStyles() {
       flex-direction: column;
       min-height: 100vh;
       transition: margin-left .3s ease;
+      overflow-y: visible !important;
     }
     .km-page-content {
       flex: 1;
@@ -794,6 +797,7 @@ function injectComponentStyles() {
       display: flex;
       flex-direction: column;
       gap: 24px;
+      overflow-y: visible !important;
     }
     @media (max-width: 900px) {
       .km-app-main { margin-left: 0; }

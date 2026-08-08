@@ -18,6 +18,10 @@
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
+  <!-- Leaflet CSS & JS CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
   <!-- Stylesheets -->
   <link rel="stylesheet" href="../css/style.css" />
   <link rel="stylesheet" href="../css/components.css" />
@@ -71,7 +75,7 @@
               <option value="mr">Marathi (मराठी)</option>
             </select>
           </div>
-          <span class="pr-live-badge" aria-label="System status: Live monitoring">
+          <span class="pr-live-badge" id="pr-live-badge" aria-label="System status: Live monitoring">
             <span class="pr-live-dot"></span> Live Monitoring
           </span>
         </div>
@@ -116,9 +120,10 @@
             </div>
           </div>
           <div class="pr-stat-card__footer">
-            <span><i class="fas fa-location-dot"></i> Nagpur, Maharashtra</span>
-            <span><i class="fas fa-clock"></i> Updated 15 min ago</span>
+            <span><i class="fas fa-location-dot"></i> <span id="pr-footer-location">Nagpur, Maharashtra</span></span>
+            <span><i class="fas fa-clock"></i> <span id="pr-last-updated">Waiting for analysis…</span></span>
           </div>
+
         </div>
 
         <div class="pr-stat-card">
@@ -290,6 +295,10 @@
               <div id="pr-selected-location-box" style="display:none;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1px solid #86efac;border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:0.82rem;color:#166534;">
                 <i class="fas fa-location-dot" style="color:#16a34a;margin-right:6px;"></i>
                 <span id="pr-selected-location-text">Maharashtra</span>
+                <div style="display:flex;gap:12px;margin-top:5px;font-size:0.75rem;color:#15803d;">
+                  <span><i class="fas fa-crosshairs" style="margin-right:3px;"></i>Lat: <strong id="pr-lat-display">—</strong></span>
+                  <span><i class="fas fa-crosshairs" style="margin-right:3px;"></i>Lon: <strong id="pr-lon-display">—</strong></span>
+                </div>
               </div>
 
               <button type="submit" id="pr-run-btn" class="pr-btn pr-btn--primary" style="width:100%;">
@@ -299,32 +308,42 @@
               <!-- Weather Snapshot -->
               <div class="pr-form-divider" aria-hidden="true" style="margin:20px 0;border-top:1px solid var(--dash-border);"></div>
               <div class="pr-weather-snap" aria-label="Current weather snapshot">
-                <div class="pr-weather-snap__title"><i class="fas fa-cloud-sun"></i> Live Weather Snapshot</div>
+                <div class="pr-weather-snap__title" style="display:flex;align-items:center;justify-content:space-between;">
+                  <span><i class="fas fa-cloud-sun"></i> Live Weather Snapshot</span>
+                  <span id="pr-weather-source-badge" style="font-size:0.68rem;padding:2px 8px;border-radius:20px;background:#dcfce7;color:#166534;display:inline-flex;align-items:center;gap:4px;">
+                    <i class="fas fa-circle" style="color:#22c55e;font-size:0.5rem;"></i> Live Data
+                  </span>
+                </div>
                 <div class="pr-weather-snap__grid">
                   <div class="pr-weather-tile">
                     <i class="fas fa-temperature-high" style="color:#ef4444;"></i>
-                    <span class="pr-weather-tile__val" id="pr-w-temp">36°C</span>
+                    <span class="pr-weather-tile__val" id="pr-w-temp">—</span>
                     <span class="pr-weather-tile__lbl">Temp</span>
                   </div>
                   <div class="pr-weather-tile">
                     <i class="fas fa-droplet" style="color:#3b82f6;"></i>
-                    <span class="pr-weather-tile__val" id="pr-w-humidity">82%</span>
+                    <span class="pr-weather-tile__val" id="pr-w-humidity">—</span>
                     <span class="pr-weather-tile__lbl">Humidity</span>
                   </div>
                   <div class="pr-weather-tile">
                     <i class="fas fa-cloud-rain" style="color:#6366f1;"></i>
-                    <span class="pr-weather-tile__val" id="pr-w-rain">18mm</span>
+                    <span class="pr-weather-tile__val" id="pr-w-rain">—</span>
                     <span class="pr-weather-tile__lbl">Rainfall</span>
                   </div>
                   <div class="pr-weather-tile">
                     <i class="fas fa-wind" style="color:#10b981;"></i>
-                    <span class="pr-weather-tile__val" id="pr-w-wind">12 km/h</span>
+                    <span class="pr-weather-tile__val" id="pr-w-wind">—</span>
                     <span class="pr-weather-tile__lbl">Wind</span>
+                  </div>
+                  <div class="pr-weather-tile">
+                    <i class="fas fa-gauge-high" style="color:#8b5cf6;"></i>
+                    <span class="pr-weather-tile__val" id="pr-w-pressure">—</span>
+                    <span class="pr-weather-tile__lbl">Pressure</span>
                   </div>
                 </div>
                 <div class="pr-weather-snap__assess" id="pr-weather-assessment">
-                  <i class="fas fa-triangle-exclamation"></i>
-                  High humidity + warm temperature = Optimal pest breeding conditions
+                  <i class="fas fa-circle-info"></i>
+                  Fetching live weather data...
                 </div>
               </div>
 
@@ -347,50 +366,8 @@
           </div>
           <div class="km-card__body" style="padding:0;">
 
-            <div class="pr-map-visual" id="pr-map-visual" role="img" aria-label="Interactive pest risk map of Maharashtra showing outbreak hotspots">
-              <!-- Radar sweep animation -->
-              <div class="pr-radar-sweep-wrap" aria-hidden="true">
-                <div class="pr-radar-circle pr-radar-circle--1"></div>
-                <div class="pr-radar-circle pr-radar-circle--2"></div>
-                <div class="pr-radar-circle pr-radar-circle--3"></div>
-                <div class="pr-radar-sweep"></div>
-              </div>
-
-              <!-- Hotspot Markers -->
-              <div class="pr-hotspot pr-hotspot--critical" style="top:28%;left:42%;" data-district="Nagpur" data-pest="Cotton Bollworm" data-risk="91" data-risk-level="Critical" data-farms="1,240" tabindex="0" role="button" aria-label="Nagpur: Cotton Bollworm - Critical 91%">
-                <span class="pr-hotspot__pulse"></span><span class="pr-hotspot__label">Nagpur</span>
-              </div>
-              <div class="pr-hotspot pr-hotspot--high" style="top:48%;left:22%;" data-district="Wardha" data-pest="Pink Bollworm" data-risk="74" data-risk-level="High" data-farms="680" tabindex="0" role="button" aria-label="Wardha: Pink Bollworm - High 74%">
-                <span class="pr-hotspot__pulse"></span><span class="pr-hotspot__label">Wardha</span>
-              </div>
-              <div class="pr-hotspot pr-hotspot--high" style="top:55%;left:60%;" data-district="Yavatmal" data-pest="Whitefly" data-risk="68" data-risk-level="High" data-farms="920" tabindex="0" role="button" aria-label="Yavatmal: Whitefly - High 68%">
-                <span class="pr-hotspot__pulse"></span><span class="pr-hotspot__label">Yavatmal</span>
-              </div>
-              <div class="pr-hotspot pr-hotspot--moderate" style="top:65%;left:35%;" data-district="Amravati" data-pest="Thrips" data-risk="52" data-risk-level="Moderate" data-farms="430" tabindex="0" role="button" aria-label="Amravati: Thrips - Moderate 52%">
-                <span class="pr-hotspot__label">Amravati</span>
-              </div>
-              <div class="pr-hotspot pr-hotspot--moderate" style="top:72%;left:20%;" data-district="Akola" data-pest="Aphids" data-risk="45" data-risk-level="Moderate" data-farms="310" tabindex="0" role="button" aria-label="Akola: Aphids - Moderate 45%">
-                <span class="pr-hotspot__label">Akola</span>
-              </div>
-              <div class="pr-hotspot pr-hotspot--low" style="top:75%;left:70%;" data-district="Latur" data-pest="Stem Borer" data-risk="22" data-risk-level="Low" data-farms="95" tabindex="0" role="button" aria-label="Latur: Stem Borer - Low 22%">
-                <span class="pr-hotspot__label">Latur</span>
-              </div>
-              <div class="pr-hotspot pr-hotspot--low" style="top:30%;left:68%;" data-district="Chandrapur" data-pest="Mealybug" data-risk="18" data-risk-level="Low" data-farms="72" tabindex="0" role="button" aria-label="Chandrapur: Mealybug - Low 18%">
-                <span class="pr-hotspot__label">Chandrapur</span>
-              </div>
-
-              <!-- Tooltip -->
-              <div class="pr-map-tooltip" id="pr-map-tooltip" role="tooltip" aria-hidden="true">
-                <div class="pr-map-tooltip__header">
-                  <strong id="pr-tt-district">Nagpur</strong>
-                  <span class="pr-risk-chip pr-risk-chip--critical" id="pr-tt-level">Critical</span>
-                </div>
-                <div class="pr-map-tooltip__row"><i class="fas fa-bug"></i> <span id="pr-tt-pest">Cotton Bollworm</span></div>
-                <div class="pr-map-tooltip__row"><i class="fas fa-chart-simple"></i> Risk: <strong id="pr-tt-risk">91%</strong></div>
-                <div class="pr-map-tooltip__row"><i class="fas fa-tractor"></i> <span id="pr-tt-farms">1,240</span> farms affected</div>
-              </div>
-
-              <span class="pr-map-watermark">Demo Risk Visualization · KrishiMitra AI</span>
+            <div class="pr-map-visual" style="position: relative; overflow: hidden; padding: 0; min-height: 480px;">
+              <div id="pr-leaflet-map" style="height: 480px; width: 100%; z-index: 10;"></div>
             </div>
 
             <!-- Nearby Outbreaks List -->
@@ -626,42 +603,300 @@
         </div>
       </section>
 
-      <!-- ══ SECTION 9: TREND GRAPHS ══════════════════════════ -->
+      <!-- ══ SECTION 9: ADVANCED ANALYTICS DASHBOARD ═══════════ -->
       <section class="km-card pr-trend-section" style="margin-top:24px;" aria-labelledby="pr-trend-title">
+        <style>
+          .pr-btn-mini {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 0.72rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .pr-btn-mini:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+            border-color: rgba(0,0,0,0.15);
+          }
+          .pr-chart-grid-15 {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+            margin-top: 16px;
+          }
+          .pr-chart-card-full {
+            grid-column: 1 / -1;
+          }
+          .pr-chart-card {
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+          }
+          .pr-chart-title-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding-bottom: 8px;
+          }
+          .pr-chart-canvas-wrap {
+            position: relative;
+            height: 220px;
+            width: 100%;
+          }
+        </style>
         <div class="km-card__header" style="justify-content:space-between;flex-wrap:wrap;gap:8px;">
           <h2 id="pr-trend-title" class="km-card__title">
-            <i class="fas fa-chart-line" aria-hidden="true"></i> Pest Outbreak Trends &amp; History
+            <i class="fas fa-chart-line" aria-hidden="true"></i> Advanced Pest Analytics Dashboard
           </h2>
-          <select id="pr-trend-period" class="form-select no-icon" style="font-size:0.75rem;padding:6px 12px;width:auto;" aria-label="Select trend period" onchange="updateTrendCharts(this.value)">
-            <option value="7">Last 7 Days</option>
-            <option value="30" selected>Last 30 Days</option>
-            <option value="90">Last 3 Months</option>
-            <option value="365">This Season</option>
-          </select>
-        </div>
-        <div class="km-card__body">
-          <div class="pr-chart-grid">
-            <div class="pr-chart-card">
-              <div class="pr-chart-card__header">
-                <span class="pr-chart-card__title">Risk Score Over Time</span>
-                <span class="pr-risk-chip pr-risk-chip--high" style="font-size:0.62rem;">Nagpur</span>
-              </div>
-              <canvas id="pr-trend-chart" height="200" aria-label="Pest risk score trend chart"></canvas>
-            </div>
-            <div class="pr-chart-card">
-              <div class="pr-chart-card__header">
-                <span class="pr-chart-card__title">Pest Frequency by Type</span>
-                <span class="pr-risk-chip" style="font-size:0.62rem;background:#f1f5f9;color:#475569;">This Season</span>
-              </div>
-              <canvas id="pr-pest-freq-chart" height="200" aria-label="Pest frequency bar chart"></canvas>
-            </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select id="pr-trend-period" class="form-select no-icon" style="font-size:0.75rem;padding:6px 12px;width:auto;" aria-label="Select trend period">
+              <option value="7">Last 7 Days</option>
+              <option value="30" selected>Last 30 Days</option>
+              <option value="90">Last 3 Months</option>
+              <option value="365">This Season</option>
+            </select>
           </div>
-          <div class="pr-chart-card" style="margin-top:16px;">
-            <div class="pr-chart-card__header">
-              <span class="pr-chart-card__title">District-Wise Pest Risk Comparison</span>
-              <span class="pr-risk-chip" style="font-size:0.62rem;background:#f1f5f9;color:#475569;">Maharashtra</span>
+        </div>
+        <div class="km-card__body" style="padding: 16px 0 0 0;">
+          <div class="pr-chart-grid-15">
+
+            <!-- 1. Risk Score Over Time -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-chart-area"></i> Pest Risk Trend</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-trend-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-trend-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-trend-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-trend-chart"></canvas>
+              </div>
             </div>
-            <canvas id="pr-district-chart" height="120" aria-label="District-wise pest risk comparison chart"></canvas>
+
+            <!-- 2. Weekly Pest Activity -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-calendar-week"></i> Weekly Pest Activity</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-weekly-activity-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-weekly-activity-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-weekly-activity-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-weekly-activity-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 3. Temperature vs Pest Risk -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-temperature-high"></i> Temp vs Pest Risk</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-temp-vs-risk-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-temp-vs-risk-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-temp-vs-risk-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-temp-vs-risk-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 4. Humidity vs Pest Risk -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-droplet"></i> Humidity vs Pest Risk</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-humidity-vs-risk-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-humidity-vs-risk-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-humidity-vs-risk-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-humidity-vs-risk-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 5. Rainfall vs Pest Risk -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-cloud-rain"></i> Rainfall vs Pest Risk</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-rain-vs-risk-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-rain-vs-risk-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-rain-vs-risk-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-rain-vs-risk-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 6. Weather Trend -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-cloud-sun"></i> Weather Trend</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-weather-trend-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-weather-trend-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-weather-trend-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-weather-trend-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 7. Crop Distribution -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-chart-pie"></i> Crop Distribution</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-crop-dist-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-crop-dist-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-crop-dist-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-crop-dist-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 8. District Distribution -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-map-location-dot"></i> District Risk Comparison</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-district-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-district-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-district-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-district-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 9. Risk Distribution -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-chart-column"></i> Risk Level Distribution</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-risk-dist-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-risk-dist-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-risk-dist-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-risk-dist-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 10. Seasonal Comparison -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-clock-rotate-left"></i> Seasonal Comparison</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-seasonal-compare-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-seasonal-compare-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-seasonal-compare-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-seasonal-compare-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 11. Top Dangerous Pests -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-bug"></i> Top Dangerous Pests</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-top-pests-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-top-pests-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-top-pests-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-top-pests-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 12. Prediction Accuracy -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-bullseye"></i> Prediction Accuracy Trend</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-accuracy-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-accuracy-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-accuracy-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-accuracy-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 13. Confidence Score Trend -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-circle-check"></i> Confidence Score Trend</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-confidence-trend-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-confidence-trend-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-confidence-trend-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-confidence-trend-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 14. Monthly Outbreak Report -->
+            <div class="pr-chart-card">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-skull-crossbones"></i> Monthly Outbreak Report</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-monthly-outbreak-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-monthly-outbreak-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-monthly-outbreak-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap">
+                <canvas id="pr-monthly-outbreak-chart"></canvas>
+              </div>
+            </div>
+
+            <!-- 15. Historical Timeline -->
+            <div class="pr-chart-card pr-chart-card-full">
+              <div class="pr-chart-title-bar">
+                <span class="pr-chart-card__title" style="font-weight: 600; font-size: 0.85rem;"><i class="fas fa-clock"></i> Historical Pest Timeline</span>
+                <div style="display:flex;gap:4px;">
+                  <button onclick="downloadChart('pr-historical-timeline-chart', 'png')" class="pr-btn-mini" title="Download PNG"><i class="fas fa-image"></i></button>
+                  <button onclick="downloadChart('pr-historical-timeline-chart', 'pdf')" class="pr-btn-mini" title="Download PDF"><i class="fas fa-file-pdf"></i></button>
+                  <button onclick="exportChartCSV('pr-historical-timeline-chart')" class="pr-btn-mini" title="Export CSV"><i class="fas fa-file-csv"></i></button>
+                </div>
+              </div>
+              <div class="pr-chart-canvas-wrap" style="height: 300px;">
+                <canvas id="pr-historical-timeline-chart"></canvas>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

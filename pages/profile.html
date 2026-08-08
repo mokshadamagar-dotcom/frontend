@@ -193,9 +193,10 @@
           <p class="st-card__sub">Update your personal details and contact info.</p>
         </div>
         <div class="avatar-upload">
-          <div class="avatar-preview"><i class="fas fa-user-tie"></i></div>
+          <div class="avatar-preview" id="pf-avatar-preview"><i class="fas fa-user-tie"></i></div>
           <div>
-            <button class="avatar-btn"><i class="fas fa-camera"></i> Change Photo</button>
+            <input type="file" id="pf-avatar-input" accept="image/png, image/jpeg" style="display:none;" />
+            <button class="avatar-btn" id="pf-avatar-btn"><i class="fas fa-camera"></i> Change Photo</button>
             <div style="font-size:0.75rem;color:var(--muted);margin-top:6px;">JPG, PNG up to 2MB</div>
           </div>
         </div>
@@ -206,7 +207,7 @@
           </div>
           <div class="form-group">
             <label>Mobile Number</label>
-            <input type="tel" class="form-input" id="pf-mobile" placeholder="+91 00000 00000" disabled style="opacity:0.7;" title="Mobile number cannot be changed" />
+            <input type="tel" class="form-input" id="pf-mobile" placeholder="+91 00000 00000" title="Update mobile number" />
           </div>
         </div>
         <div class="form-group">
@@ -384,10 +385,55 @@ function loadData() {
   const lang = localStorage.getItem('km_language') || 'en';
   document.querySelectorAll('.lang-card').forEach(c => c.classList.remove('active'));
   document.querySelector(`.lang-card[data-lang="${lang}"]`)?.classList.add('active');
+
+  // Load Avatar
+  const savedAvatar = localStorage.getItem('km_user_avatar');
+  if (savedAvatar) {
+    document.getElementById('pf-avatar-preview').innerHTML = `<img src="${savedAvatar}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
+  }
 }
+
+// Avatar upload handlers
+document.addEventListener('DOMContentLoaded', () => {
+  const avatarBtn = document.getElementById('pf-avatar-btn');
+  const avatarInput = document.getElementById('pf-avatar-input');
+  const avatarPreview = document.getElementById('pf-avatar-preview');
+
+  if (avatarBtn && avatarInput) {
+    avatarBtn.addEventListener('click', () => {
+      avatarInput.click();
+    });
+
+    avatarInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.size > 2 * 1024 * 1024) {
+        showToast('File size exceeds 2MB limit!');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const base64Data = event.target.result;
+        localStorage.setItem('km_user_avatar', base64Data);
+        avatarPreview.innerHTML = `<img src="${base64Data}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
+        showToast('Photo uploaded successfully!');
+
+        // Update topbar profile image dynamically if it exists
+        const topbarAvatar = document.querySelector('.topbar__avatar');
+        if (topbarAvatar) {
+          topbarAvatar.innerHTML = `<img src="${base64Data}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />`;
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+});
 
 function saveProfile() {
   user.name = document.getElementById('pf-name').value;
+  user.mobile = document.getElementById('pf-mobile').value;
   user.state = document.getElementById('pf-state').value;
   user.district = document.getElementById('pf-district').value;
   localStorage.setItem(USER_KEY, JSON.stringify(user));

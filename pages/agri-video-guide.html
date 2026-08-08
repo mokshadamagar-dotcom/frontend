@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Agri Video Guide – AI-powered YouTube agricultural video search. Find relevant farming videos for your crop problems. KrishiMitra AI." />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Agri Video Guide – KrishiMitra AI</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/components.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="../assets/images/logo.png" />
+
+  <style>
+    /* ─── Page Variables ──────────────────────────────────────── */
+    :root {
+      --avd-red:       #dc2626;
+      --avd-red-light: #fef2f2;
+      --avd-green:     #1a6b3c;
+      --avd-card-bg:   #ffffff;
+      --avd-border:    #e8eeeb;
+      --avd-muted:     #6b7280;
+      --avd-bg:        #f4f7f5;
+    }
+
+    /* ─── Page Layout ─────────────────────────────────────────── */
+    .avd-page { display: flex; flex-direction: column; gap: 24px; }
+
+    /* ─── Page Header ─────────────────────────────────────────── */
+    .avd-header {
+      background: linear-gradient(135deg, #0d3d22 0%, #1a6b3c 50%, #2d9b5a 100%);
+      border-radius: 20px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      position: relative;
+      overflow: hidden;
+    }
+    .avd-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 10% 80%, rgba(255,255,255,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 90% 20%, rgba(255,255,255,0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .avd-header__left { position: relative; }
+    .avd-header__badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .avd-header__badge i { color: #ff4444; font-size: 0.65rem; }
+    .avd-header__title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+      line-height: 1.2;
+    }
+    .avd-header__title span { color: #86efac; }
+    .avd-header__subtitle {
+      font-size: 0.875rem;
+      color: rgba(255,255,255,0.7);
+      max-width: 480px;
+      line-height: 1.5;
+    }
+    .avd-header__yt-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #ff4444;
+      flex-shrink: 0;
+    }
+
+    /* ─── Search Box ──────────────────────────────────────────── */
+    .avd-search-wrap {
+      background: #fff;
+      border: 1px solid var(--avd-border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .avd-search-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #0f2d1a;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .avd-search-label i { color: var(--avd-green); }
+
+    .avd-search-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .avd-search-input-wrap {
+      flex: 1;
+      position: relative;
+    }
+    .avd-search-input {
+      width: 100%;
+      padding: 13px 50px 13px 46px;
+      border: 1.5px solid var(--avd-border);
+      border-radius: 12px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: #0f2d1a;
+      background: #f9fafb;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .avd-search-input:focus {
+      border-color: var(--avd-green);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(26,107,60,0.1);
+    }
+    .avd-search-input::placeholder { color: #9ca3af; }
+    .avd-search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--avd-muted);
+      font-size: 0.9rem;
+      pointer-events: none;
+    }
+    .avd-search-clear {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--avd-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: none;
+    }
+    .avd-search-clear.visible { display: block; }
+    .avd-search-btn {
+      padding: 13px 24px;
+      background: linear-gradient(135deg,#1a6b3c,#2d9b5a);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(26,107,60,0.3);
+    }
+    .avd-search-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,107,60,0.4); }
+    .avd-search-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    /* ─── Filters ──────────────────────────────────────────────── */
+    .avd-filters {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .avd-filter-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .avd-filter-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--avd-muted);
+      white-space: nowrap;
+    }
+    .avd-select {
+      padding: 7px 12px;
+      border: 1.5px solid var(--avd-border);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      color: #374151;
+      background: #f9fafb;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .avd-select:focus { border-color: var(--avd-green); }
+
+    /* ─── Quick Topic Pills ────────────────────────────────────── */
+    .avd-topics {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--avd-border);
+    }
+    .avd-topic-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--avd-muted);
+      align-self: center;
+      white-space: nowrap;
+    }
+    .avd-topic-pill {
+      padding: 6px 14px;
+      border: 1.5px solid var(--avd-border);
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #374151;
+      cursor: pointer;
+      background: #f9fafb;
+      transition: all 0.18s ease;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+    .avd-topic-pill:hover, .avd-topic-pill.active {
+      background: #f0fdf4;
+      border-color: var(--avd-green);
+      color: var(--avd-green);
+    }
+
+    /* ─── Status / Info Bar ────────────────────────────────────── */
+    .avd-status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .avd-result-count {
+      font-size: 0.84rem;
+      color: var(--avd-muted);
+      font-weight: 500;
+    }
+    .avd-result-count strong { color: #0f2d1a; }
+    .avd-api-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid;
+    }
+    .avd-api-status--live { color: #15803d; background: #f0fdf4; border-color: #bbf7d0; }
+    .avd-api-status--fallback { color: #92400e; background: #fffbeb; border-color: #fde68a; }
+    .avd-api-status__dot { width: 7px; height: 7px; border-radius: 50%; }
+    .avd-api-status--live .avd-api-status__dot { background: #22c55e; }
+    .avd-api-status--fallback .avd-api-status__dot { background: #f59e0b; }
+
+    /* ─── Video Grid ───────────────────────────────────────────── */
+    .avd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    @media (max-width: 600px) { .avd-grid { grid-template-columns: 1fr; } }
+
+    /* ─── Video Card ───────────────────────────────────────────── */
+    .avd-card {
+      background: var(--avd-card-bg);
+      border: 1px solid var(--avd-border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .avd-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+    }
+    .avd-card__thumb-wrap {
+      position: relative;
+      padding-top: 56.25%;
+      background: #1a1a2e;
+      overflow: hidden;
+    }
+    .avd-card__thumb {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+    .avd-card:hover .avd-card__thumb { transform: scale(1.03); }
+    .avd-card__play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0);
+      transition: background 0.25s ease;
+    }
+    .avd-card:hover .avd-card__play-overlay { background: rgba(0,0,0,0.35); }
+    .avd-card__play-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #dc2626;
+      font-size: 1.1rem;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .avd-card:hover .avd-card__play-btn { opacity: 1; transform: scale(1); }
+    .avd-card__duration {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0,0,0,0.75);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 5px;
+    }
+    .avd-card__body { padding: 14px 16px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+    .avd-card__relevance {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+    .avd-relevance--high  { color: #15803d; }
+    .avd-relevance--med   { color: #92400e; }
+    .avd-relevance--low   { color: #4b5563; }
+    .avd-card__title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #0f2d1a;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .avd-card__channel {
+      font-size: 0.76rem;
+      color: var(--avd-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .avd-card__channel i { color: var(--avd-green); font-size: 0.65rem; }
+    .avd-card__desc {
+      font-size: 0.76rem;
+      color: #6b7280;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .avd-card__meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.72rem;
+      color: var(--avd-muted);
+      margin-top: auto;
+      padding-top: 8px;
+    }
+    .avd-card__meta span { display: flex; align-items: center; gap: 3px; }
+    .avd-card__footer { padding: 12px 16px; border-top: 1px solid var(--avd-border); }
+    .avd-card__watch-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px;
+      background: #dc2626;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .avd-card__watch-btn:hover { background: #b91c1c; transform: translateY(-1px); color: #fff; }
+
+    /* ─── Skeleton Cards ────────────────────────────────────────── */
+    .avd-skeleton {
+      background: var(--avd-card-bg);
+      border: 1px solid var(--avd-border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .avd-skeleton__thumb {
+      height: 160px;
+      background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+      background-size: 200% 100%;
+      animation: skel-wave 1.4s infinite;
+    }
+    .avd-skeleton__body { padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+    .avd-skeleton__line {
+      border-radius: 6px;
+      background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+      background-size: 200% 100%;
+      animation: skel-wave 1.4s infinite;
+    }
+    @keyframes skel-wave {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* ─── States (empty, error, fallback) ──────────────────────── */
+    .avd-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 32px;
+      gap: 14px;
+    }
+    .avd-state__icon {
+      font-size: 2.8rem;
+      line-height: 1;
+    }
+    .avd-state__title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0f2d1a;
+    }
+    .avd-state__msg {
+      font-size: 0.85rem;
+      color: var(--avd-muted);
+      max-width: 380px;
+      line-height: 1.6;
+    }
+    .avd-state__fallback-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      background: #dc2626;
+      color: #fff;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .avd-state__fallback-btn:hover { background: #b91c1c; color: #fff; }
+
+    /* ─── Results section header ────────────────────────────────── */
+    .avd-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .avd-section-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0f2d1a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .avd-section-title i { color: var(--avd-red); }
+
+    /* ─── Initial welcome state ─────────────────────────────────── */
+    .avd-welcome {
+      background: #fff;
+      border: 1px solid var(--avd-border);
+      border-radius: 20px;
+      padding: 48px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+    }
+    .avd-welcome__icon {
+      font-size: 3.2rem;
+      line-height: 1;
+    }
+    .avd-welcome__title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #0f2d1a;
+    }
+    .avd-welcome__desc {
+      font-size: 0.9rem;
+      color: var(--avd-muted);
+      max-width: 500px;
+      line-height: 1.65;
+    }
+    .avd-welcome__examples {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+    }
+    .avd-example-chip {
+      padding: 7px 16px;
+      background: #f0fdf4;
+      border: 1px solid #dcfce7;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--avd-green);
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+    .avd-example-chip:hover {
+      background: #dcfce7;
+      border-color: var(--avd-green);
+    }
+
+    /* ─── Responsive ────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .avd-header { padding: 20px 18px; }
+      .avd-header__title { font-size: 1.25rem; }
+      .avd-search-bar { flex-direction: column; }
+      .avd-search-btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+
+<body class="km-app-body">
+
+<!-- SIDEBAR CONTAINER -->
+<div id="sidebar-container"></div>
+
+<div class="km-app-wrapper">
+  <div class="km-app-main" id="dashboard-main">
+
+    <div id="navbar-container"></div>
+
+    <main class="km-page-content" aria-label="Agri Video Guide">
+
+      <div class="avd-page" id="avd-root">
+
+        <!-- ── PAGE HEADER ──────────────────────────────────────── -->
+        <header class="avd-header" aria-label="Agri Video Guide header">
+          <div class="avd-header__left">
+            <div class="avd-header__badge">
+              <i class="fab fa-youtube"></i> YouTube Powered
+            </div>
+            <h1 class="avd-header__title">
+              Agri <span>Video Guide</span>
+            </h1>
+            <p class="avd-header__subtitle">
+              AI-powered agricultural video search. Describe your farming problem and discover expert videos to help you protect your crops.
+            </p>
+          </div>
+          <div class="avd-header__yt-icon" aria-hidden="true">
+            <i class="fab fa-youtube"></i>
+          </div>
+        </header>
+
+        <!-- ── SEARCH BOX ───────────────────────────────────────── -->
+        <section class="avd-search-wrap" aria-label="Search for agricultural videos">
+          <div class="avd-search-label">
+            <i class="fas fa-search"></i>
+            Describe your farming problem or search topic
+          </div>
+
+          <!-- Search Bar -->
+          <div class="avd-search-bar">
+            <div class="avd-search-input-wrap">
+              <i class="fas fa-search avd-search-icon" aria-hidden="true"></i>
+              <input
+                type="text"
+                id="avd-search-input"
+                class="avd-search-input"
+                placeholder="E.g. 'Cotton bollworm management' or 'टोमॅटोच्या पानांवर डाग'"
+                maxlength="300"
+                autocomplete="off"
+                aria-label="Search agricultural videos"
+              />
+              <i class="fas fa-times avd-search-clear" id="avd-clear-btn" aria-hidden="true" title="Clear search"></i>
+            </div>
+            <button class="avd-search-btn" id="avd-search-btn" aria-label="Search videos">
+              <i class="fas fa-play-circle"></i>
+              Find Videos
+            </button>
+          </div>
+
+          <!-- Filters -->
+          <div class="avd-filters">
+            <div class="avd-filter-group">
+              <span class="avd-filter-label"><i class="fas fa-globe-asia"></i> Language:</span>
+              <select class="avd-select" id="avd-lang-select" aria-label="Select language">
+                <option value="en">English</option>
+                <option value="hi">हिंदी (Hindi)</option>
+                <option value="mr">मराठी (Marathi)</option>
+              </select>
+            </div>
+            <div class="avd-filter-group">
+              <span class="avd-filter-label"><i class="fas fa-seedling"></i> Crop:</span>
+              <select class="avd-select" id="avd-crop-select" aria-label="Select crop">
+                <option value="">All Crops</option>
+                <option value="cotton">Cotton / कापूस</option>
+                <option value="wheat">Wheat / गहू</option>
+                <option value="rice">Rice / भात</option>
+                <option value="soybean">Soybean / सोयाबीन</option>
+                <option value="tomato">Tomato / टोमॅटो</option>
+                <option value="onion">Onion / कांदा</option>
+                <option value="chilli">Chilli / मिरची</option>
+                <option value="maize">Maize / मका</option>
+                <option value="sugarcane">Sugarcane / ऊस</option>
+                <option value="groundnut">Groundnut / भुईमूग</option>
+              </select>
+            </div>
+            <div class="avd-filter-group">
+              <span class="avd-filter-label"><i class="fas fa-tag"></i> Topic:</span>
+              <select class="avd-select" id="avd-topic-select" aria-label="Select topic">
+                <option value="">All Topics</option>
+                <option value="pest management">Pest Management</option>
+                <option value="disease control">Disease Control</option>
+                <option value="fertilizer application">Fertilizer</option>
+                <option value="irrigation">Irrigation</option>
+                <option value="organic farming">Organic Farming</option>
+                <option value="soil health">Soil Health</option>
+                <option value="harvesting">Harvesting</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Quick Topic Pills -->
+          <div class="avd-topics">
+            <span class="avd-topic-label">Quick search:</span>
+            <button class="avd-topic-pill" data-query="pest management cotton" aria-label="Cotton pest management">
+              <i class="fas fa-bug"></i> Cotton Pest
+            </button>
+            <button class="avd-topic-pill" data-query="tomato leaf disease prevention" aria-label="Tomato disease">
+              <i class="fas fa-leaf"></i> Tomato Disease
+            </button>
+            <button class="avd-topic-pill" data-query="soybean yellow leaves treatment" aria-label="Soybean problem">
+              <i class="fas fa-seedling"></i> Soybean
+            </button>
+            <button class="avd-topic-pill" data-query="organic pest control farming india" aria-label="Organic farming">
+              <i class="fas fa-recycle"></i> Organic IPM
+            </button>
+            <button class="avd-topic-pill" data-query="fertilizer application crop india" aria-label="Fertilizer guide">
+              <i class="fas fa-vial"></i> Fertilizer Guide
+            </button>
+            <button class="avd-topic-pill" data-query="drip irrigation vegetable farming" aria-label="Irrigation">
+              <i class="fas fa-tint"></i> Irrigation
+            </button>
+            <button class="avd-topic-pill" data-query="कापूस बोंड अळी नियंत्रण" aria-label="Bollworm in Marathi">
+              <i class="fas fa-language"></i> बोंड अळी
+            </button>
+          </div>
+        </section>
+
+        <!-- ── RESULTS SECTION ──────────────────────────────────── -->
+        <section id="avd-results-section" aria-label="Video search results">
+          <!-- Status Bar (shown after search) -->
+          <div class="avd-status-bar" id="avd-status-bar" style="display:none; margin-bottom:16px;">
+            <div class="avd-result-count" id="avd-result-count">
+              Showing <strong id="avd-count-num">0</strong> videos
+            </div>
+            <div class="avd-api-status avd-api-status--live" id="avd-api-status">
+              <span class="avd-api-status__dot"></span>
+              <span id="avd-api-status-text">Live Search</span>
+            </div>
+          </div>
+
+          <!-- Video Grid / State container -->
+          <div id="avd-content">
+            <!-- Initial Welcome State -->
+            <div class="avd-welcome" id="avd-welcome-state" aria-label="Welcome to Agri Video Guide">
+              <div class="avd-welcome__icon">🎥</div>
+              <h2 class="avd-welcome__title">Find Agricultural Videos Instantly</h2>
+              <p class="avd-welcome__desc">
+                Type your crop problem above, or click one of the quick topics. The AI will generate an optimized search query and find the most relevant agricultural videos for you.
+              </p>
+              <div class="avd-welcome__examples" aria-label="Example search queries">
+                <button class="avd-example-chip" data-query="cotton bollworm prevention management">Cotton Bollworm</button>
+                <button class="avd-example-chip" data-query="tomato early blight disease control">Tomato Blight</button>
+                <button class="avd-example-chip" data-query="सोयाबीन पिवळी पाने उपाय">सोयाबीन पिवळी पाने</button>
+                <button class="avd-example-chip" data-query="wheat rust disease prevention India">Wheat Rust</button>
+                <button class="avd-example-chip" data-query="drip irrigation installation guide">Drip Irrigation</button>
+                <button class="avd-example-chip" data-query="organic farming pest control neem">Organic Pest Control</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div><!-- /.avd-page -->
+    </main>
+  </div>
+</div>
+
+<!-- ─── Language System ─── -->
+<script src="../js/language.js"></script>
+<!-- ─── Components (Sidebar, Navbar, Auth Guard) ─── -->
+<script src="../js/components.js"></script>
+<!-- ─── Agri Video Guide Logic ─── -->
+<script src="../js/agri-video-guide.js"></script>
+
+</body>
+</html>
